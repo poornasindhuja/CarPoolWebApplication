@@ -15,7 +15,7 @@ namespace CarPool.Services
 
 //        List<RideProvider> rideProviders = new List<RideProvider>();
 
-        public void AddRide(string id,string carNo,string source,string destination,DateTime startTime,string endTime,int noOfSeats,List<string> viaPlaces,decimal costPerKillometer,DateTime dateOfRide)
+        public void AddRide(string id,string carNo,string source,string destination,DateTime startTime,DateTime endTime,int noOfSeats,List<string> viaPlaces,decimal costPerKillometer,DateTime dateOfRide)
         {
             
             //Console.WriteLine("Enter CarNo");

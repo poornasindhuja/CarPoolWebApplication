@@ -70,7 +70,7 @@ namespace CarPool
             for(int i = 0; i < bookings.Count; i++)
             {
                 Console.WriteLine($"\n-------------------------------------------------------------------------------------------------------------\n" +
-                    $"{i}.Booking Date:{bookings[i].BookingDate}\nFrom:{bookings[i].Source}\t\tTo:{bookings[i].Destination}\nJourney Time:{bookings[i].StartTime}-{bookings[i].EndTime}");
+                    $"{i}.Booking Date:{bookings[i].BookingDate.ToShortDateString()}\nFrom:{bookings[i].Source}\t\tTo:{bookings[i].Destination}\nJourney Time:{bookings[i].StartTime}-{bookings[i].EndTime}");
                 //$"Status:{(bookings[i].Status?"Approved":"NotApproved")}");
                 if (bookings[i].DoesProviderViewed)
                 {
@@ -146,7 +146,7 @@ namespace CarPool
                     Console.Write(place + " ");
                 }
                 Car currentCar = rideServices.GetCarDetails(r.CarNumber);
-                Console.WriteLine($"\nStarting Time:{ r.StartTime}\t\t\t Reach By:{r.EndTime}\nSeats Available={r.NoOfSeatsAvailable}");
+                Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n Journey Date:{r.DateOfRide.ToShortDateString()}");
                 Console.WriteLine($"Car Details\nCarName:{ currentCar.CarName}\t Ac/NON-AC:{(currentCar.CarType?"Ac":"Non-Ac")}\nCarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");                
                 Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");   
             }

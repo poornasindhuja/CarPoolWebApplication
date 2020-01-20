@@ -9,12 +9,12 @@ namespace CarPool.Services
     {
         static DateTime date=new DateTime(2020,2,1);
 
-        static DateTime startTime = DateTime.ParseExact("04:00:00", "hh:mm:ss", CultureInfo.InvariantCulture);
-
+        static DateTime startTime = DateTime.ParseExact("12:00:00", "HH:mm:ss", CultureInfo.InvariantCulture);
+        static DateTime endTime= DateTime.ParseExact("13:40:00", "HH:mm:ss", CultureInfo.InvariantCulture);
         public static List<Ride> Rides = new List<Ride>() {
-            new Ride("1","1","09 TS 071998","miyapur","madhapur",startTime,"20:00",3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date),
-            new Ride("2","1","10 TS 071930","miyapur","madhapur",startTime,"08:25",3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},5,date),
-            new Ride("3","2","01 TS 045398","miyapur","madhapur",startTime,"12:50",3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date)
+            new Ride("1","1","09 TS 071998","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date),
+            new Ride("2","1","10 TS 071930","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},5,date),
+            new Ride("3","2","01 TS 045398","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date)
         };
 
         public static List<Car> Cars = new List<Car>()

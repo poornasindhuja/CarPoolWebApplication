@@ -14,7 +14,7 @@ namespace CarPool.Models
 
         public DateTime StartTime { get; set; }
 
-        public string EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public string Source { get; set; }
 
@@ -36,7 +36,7 @@ namespace CarPool.Models
 
         //List<User> RideTakers;
 
-        public Ride(string id,string rideProviderID,string carNumber, string source, string destination, DateTime startTime, string endTime, int noOfSeats, List<string> viaPlaces, decimal amount,DateTime dateOfRide)
+        public Ride(string id,string rideProviderID,string carNumber, string source, string destination, DateTime startTime, DateTime endTime, int noOfSeats, List<string> viaPlaces, decimal amount,DateTime dateOfRide)
         {
             this.RideId = id;
             this.RideProviderId = rideProviderID;

@@ -61,6 +61,7 @@
     <Compile Include="Services\RideServices.cs" />
     <Compile Include="Services\RideTakerServices.cs" />
     <Compile Include="UserActions.cs" />
+    <Compile Include="Validations\RideDataValidations.cs" />
     <Compile Include="Validations\SignInValidations.cs" />
     <Compile Include="Validations\SignUpValidations.cs" />
   </ItemGroup>

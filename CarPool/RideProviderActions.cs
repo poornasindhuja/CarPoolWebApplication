@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CarPool.Models;
 using CarPool.Services;
+using CarPool.Validations;
 
 namespace CarPool
 {
@@ -65,7 +66,7 @@ namespace CarPool
             List<Ride> currentRides = rideProviderServices.PastRides(UserServices.CurrentUser.UserId);
             foreach (Ride r in currentRides)
             {
-                Console.WriteLine($"{i++}.RideId:{r.RideId}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime}\tEndTime:{r.EndTime}");
+                Console.WriteLine($"{i++}.RideId:{r.RideId}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime.ToShortTimeString()}\tEndTime:{r.EndTime.ToShortTimeString()}");
                 int j = 1;
                 foreach (Booking booking in rideServices.GetBookings(r.RideId))
                 {
@@ -88,7 +89,7 @@ namespace CarPool
             Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
             foreach (Ride r in currentRides)
             {
-                Console.WriteLine($"{i++}.Ridedate:{r.DateOfRide.Date}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime}\tEndTime:{r.EndTime}\n" +
+                Console.WriteLine($"{i++}.Ridedate:{r.DateOfRide.Date}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime.TimeOfDay}\tEndTime:{r.EndTime.ToLocalTime()}\n" +
                     $"Booking Requests:{rideServices.GetNewBookingRequests(r.RideId).Count}");
                 Console.WriteLine("\n-----------------------------------------------------------------------------------------------------\n\n");
             }
@@ -210,6 +211,10 @@ namespace CarPool
 
             string providerId = UserServices.CurrentUser.UserId;
 
+            string time;
+
+            int noOfSeats;
+
             if (rideProviderServices.IscarLinked(providerId))
             {
                 Console.WriteLine("Enter 1 to continue with this car \n" +
@@ -225,17 +230,26 @@ namespace CarPool
             Console.WriteLine("Enter Starting Point");
             string source = Console.ReadLine();
 
-            Console.WriteLine("Enter start time (HH:MM) In 24 Hour Format");
-            //string startTime = Console.ReadLine();
-            DateTime startTime = DateTime.ParseExact(Console.ReadLine(), "HH:MM", CultureInfo.InvariantCulture);
+            RideDataValidations rideDataValidations = new RideDataValidations();
+
+            do
+            {
+                Console.WriteLine("Enter start time (HH:MM:SS) In 24 Hour Format");
+                time = Console.ReadLine();
+            } while (!rideDataValidations.IsValidTimeFormat(time));
+            
+            DateTime startTime = DateTime.ParseExact(time, "HH:mm:ss", CultureInfo.InvariantCulture);
 
             Console.WriteLine("Enter End Point");
             string destination = Console.ReadLine();
 
-            Console.WriteLine("Enter Reach time");
-            string endTime = Console.ReadLine();
-
-            int noOfSeats;
+            do
+            {
+                Console.WriteLine("Enter Reach time");
+                time = Console.ReadLine();
+            } while (!rideDataValidations.IsValidTimeFormat(time));
+            
+            DateTime endTime = DateTime.ParseExact(time, "HH:mm:ss", CultureInfo.InvariantCulture);
 
             do
             {
@@ -254,7 +268,15 @@ namespace CarPool
             }
 
             Console.WriteLine("Enter date of Journey(e.g. 10 / 22 / 1987): ");
-            dateOfRide= DateTime.Parse(Console.ReadLine()); 
+            try
+            {
+                dateOfRide = DateTime.Parse(Console.ReadLine());
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Invalid Time Format");
+            }
+             
      
             Console.WriteLine("Cost per Kilometer(Rupees.paise");
             Decimal amount = Convert.ToDecimal(Console.ReadLine());
