@@ -4,11 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarPool
+namespace CarPool.Models
 {
     public class User
     {
-        public string UserId,UserName, PhoneNumber,EmailAddress,Address, Gender,PetName,CarNo,Password;
+        public string UserId;
+
+        public string UserName;
+
+        public string PhoneNumber;
+
+        public string EmailAddress;
+
+        public string Address;
+
+        public string Gender;
+
+        public string PetName;
+
+        public string CarNo;
+
+        public string Password;
 
         public User(string userId, string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
         {
@@ -24,7 +40,7 @@ namespace CarPool
 
         public User()
         {
-
+            
         }
     }
 }

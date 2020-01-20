@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using CarPool.Models;
 
 namespace CarPool.Services
 {
     public class RideServices
     {
-        static List<Ride> Rides = new List<Ride>() {
-            new Ride("1","1","09 TS 071998","Miyapur","Madhapur","19:00","20:00",3,new List<string>(){"kothaguda,kondapur,hitech,durgamcheruvu"},4),
-            new Ride("2","1","10 TS 071930","Miyapur","Madhapur","07:00","08:25",3,new List<string>(){"kothaguda,kondapur,hitech,durgamcheruvu"},5),
-            new Ride("3","2","01 TS 045398","Miyapur","Madhapur","12:00","12:50",3,new List<string>(){"kothaguda,kondapur,hitech,durgamcheruvu"},4)
+        static DateTime date=new DateTime(2020,2,1);
+
+        static DateTime startTime = DateTime.ParseExact("04:00:00", "hh:mm:ss", CultureInfo.InvariantCulture);
+
+        public static List<Ride> Rides = new List<Ride>() {
+            new Ride("1","1","09 TS 071998","miyapur","madhapur",startTime,"20:00",3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date),
+            new Ride("2","1","10 TS 071930","miyapur","madhapur",startTime,"08:25",3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},5,date),
+            new Ride("3","2","01 TS 045398","miyapur","madhapur",startTime,"12:50",3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date)
         };
 
-        static List<Car> cars = new List<Car>()
+        public static List<Car> Cars = new List<Car>()
         {
-            new Car("09 TS 071998","Maruthi",4,"NON-AC"),
-            new Car("10 TS 071930","Suzuki",4,"AC"),
-            new Car("01 TS 045398","Indica",4,"AC")
+            new Car("09 TS 071998","Maruthi",4,false,"1"),
+            new Car("10 TS 071930","Suzuki",4,true,"1"),
+            new Car("01 TS 045398","Indica",4,true,"2")
         };
 
+        public static List<Booking> Bookings = new List<Booking>();
 
         public void AddRide(Ride ride)
         {
@@ -36,7 +39,7 @@ namespace CarPool.Services
             {
                 Console.WriteLine($"{index++}.RideId:{r.RideId}\t\tRideProvide Name:{UserServices.users.Find(u => u.UserId == r.RideProviderId).UserName}");
 
-                Car currentCar = cars.Find(c => c.CarNo == r.CarNumber);
+                Car currentCar = Cars.Find(c => c.CarNo == r.CarNumber);
 
                 Console.WriteLine($"Car Details:{ currentCar.CarName} Ac/NON-AC:{currentCar.CarType} {currentCar.CarNo} capacity:{currentCar.Capacity}");
                 Console.WriteLine($"From: {r.Source}\t\t\tStarting Time:{r.StartTime}");
@@ -50,39 +53,64 @@ namespace CarPool.Services
             }
         }
 
-        internal void AddCar(Car car)
+        public Car GetCarDetails(string carNo) => Cars.Find(c => c.CarNo == carNo);
+
+        public void AddCar(Car car)
         {
-            cars.Add(car);
+            Cars.Add(car);
         }
 
-        internal static void AddBookingToRide(string rideId,Booking booking)
+        internal bool IsvalidRideId(object rideId)
         {
-            Rides.Find(r => r.RideId == rideId).Bookings.Add(booking);
+            return Rides.Find(r => r.RideId == rideId) != null ? true : false;
         }
 
-        internal static void ApproveBooking(string rideId,string bookingId,bool val)
+        public List<Ride> getPreviousRides(string userId) => Rides.FindAll(r => r.RideProviderId == userId && r.DateOfRide < DateTime.Now);
+
+        //public static void AddBookingToRide(string rideId, Booking booking) => Rides.Find(r => r.RideId == rideId).Bookings.Add(booking);
+
+        public void ApproveBooking(string rideId,string bookingId,bool val)
         {
-            Rides.Find(r => r.RideId == rideId).Bookings.Find(b => b.bookingId == bookingId).status = val;
+            Booking booking = Bookings.Find(b => b.BookingId == bookingId);
+
+            Ride currentRide = Rides.Find(r => r.RideId == rideId);
+
+            if (booking != null && currentRide.NoOfSeatsAvailable>0)
+            {
+                booking.Status = val;
+                booking.DoesProviderViewed = true;
+                currentRide.Bookings.Add(bookingId);
+                currentRide.NoOfSeatsAvailable = currentRide.NoOfSeatsAvailable - 1;
+            }  
         }
 
         public List<Ride> getCurrentRides(string userId)
         {
-            return Rides.FindAll(r => r.RideProviderId == userId);
+            return Rides.FindAll(r => r.RideProviderId == userId && r.DateOfRide>=DateTime.Now);
         }
 
-        public static void showBookings(string rideId)
+        //public static void showBookings(string rideId)
+        //{
+        //    int i = 1;
+
+        //    foreach(Booking booking in Rides.Find(r => r.RideId == rideId).Bookings)
+        //    {
+        //        Console.WriteLine($"{i++}.");
+        //        Console.WriteLine(booking.Source);
+        //        Console.WriteLine(booking.Destination);
+        //        Console.WriteLine($"Request From:{booking.UserId}");
+        //        Console.WriteLine("\n---------------------------------------------------------\n");
+        //    }
+        //}
+
+        public List<Booking> GetBookings(string rideId)
         {
-            int i = 1;
-
-            foreach(Booking booking in Rides.Find(r => r.RideId == rideId).Bookings)
-            {
-                Console.WriteLine($"{i++}.");
-                Console.WriteLine(booking.source);
-                Console.WriteLine(booking.destination);
-                Console.WriteLine($"Request From:{booking.userId}");
-                Console.WriteLine("\n---------------------------------------------------------\n");
-            }
+            return Bookings.FindAll(b => b.RideId == rideId);
         }
 
+        public List<Booking> GetNewBookingRequests(string rideId)
+        {
+            return Bookings.FindAll(b => b.RideId == rideId && b.DoesProviderViewed == false);
+        }
     }
 }

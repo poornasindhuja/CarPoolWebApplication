@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarPool.Models;
 
 namespace CarPool.Services
 {
@@ -17,31 +18,32 @@ namespace CarPool.Services
 
         static int id = 3;
 
-        private User currentUser;
+        //private User currentUser;
 
-        public User CurrentUser
-        {
-            get
-            {
-                return currentUser;
-            }
-        }
+        public RideProvider Provider;
 
+        public static User CurrentUser;
+       
 
         public bool SignIn(string phoneNumber,string password)
         {
-            currentUser = users.Find(u => u.PhoneNumber == phoneNumber);
+            CurrentUser = users.Find(u => u.PhoneNumber == phoneNumber);
 
-            if (currentUser == null)
+            if (CurrentUser == null)
             {
                 return false;
             }
-            else if (password != currentUser.Password)
+            else if (password != CurrentUser.Password)
             {
                 return false;
             }
             
             return true;
+        }
+
+        public User GetUser(string userId)
+        {
+            return users.Find(u => u.UserId == userId);
         }
 
         internal void AddRideProvider(string userName, string phoneNumber, string emailAddress, string address, string gender, string password)
@@ -161,5 +163,12 @@ namespace CarPool.Services
         {
             users.Find(u => u.PhoneNumber == phoneNumber).Password = password;
         }
+
+        //internal void UserToProvider()
+        //{
+        //    Console.WriteLine(CurrentUser.UserName);
+        //    Provider = (RideProvider)CurrentUser;
+        //    Console.WriteLine(Provider.UserName);
+        //}
     }
 }

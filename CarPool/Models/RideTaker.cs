@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarPool.Models
 {
-    class RideTaker:User
+    public class RideTaker:User
     {
 
     }

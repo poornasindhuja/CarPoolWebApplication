@@ -12,6 +12,7 @@ namespace CarPool
         string phoneNumber, emailAddress, gender, password, userName, confirmPassword,petName;
 
         UserServices userServices = new UserServices();
+
         public void SignUp()
         {
             SignUpValidations signUpValidations = new SignUpValidations();
@@ -170,19 +171,18 @@ namespace CarPool
                 Console.WriteLine("2.RideTaker");
                 Console.WriteLine("3.logout");
                 int.TryParse(Console.ReadLine(), out choice);
-                if (choice == 2)
+                switch (choice)
                 {
-                    RideProviderActions rideProviderActions = new RideProviderActions();
-                    rideProviderActions.providerOptions();
-                }
-                else if (choice == 1)
-                {
-                    RideTakerActions rideTakerActions = new RideTakerActions();
-                    rideTakerActions.RideTakerOptions();
-                }
-                if (choice == 3)
-                {
-                    break;
+                    case 1:
+                        RideProviderActions rideProviderActions = new RideProviderActions();
+                        rideProviderActions.providerOptions();
+                        break;
+                    case 2:
+                        RideTakerActions rideTakerActions = new RideTakerActions();
+                        rideTakerActions.RideTakerOptions();
+                        break;
+                    case 3:
+                        return;
                 }
             }
             

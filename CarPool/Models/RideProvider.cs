@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CarPool.Models
 {
-    class RideProvider:User
+    public class RideProvider:User
     {
-        public string carNo;
+        
     }
 }

@@ -8,32 +8,34 @@ namespace CarPool.Models
 {
     public class Booking
     {
-        public string bookingId;
+        public string BookingId { get; set; }
 
-        public string rideId;
+        public string RideId { get; set; }
 
-        public string source;
+        public string Source { get; set; }
 
-        public string destination;
+        public string Destination { get; set; }
 
-        public string userId;
+        public string UserId { get; set; }
 
-        public DateTime bookingDate;
+        public DateTime BookingDate { get; set; }
 
-        public bool status;
+        public bool Status { get; set; }
 
-        public string startTime;
+        public bool DoesProviderViewed { get; set; }
 
-        public string endTime;
+        public string StartTime { get; set; }
+
+        public string EndTime { get; set; }
 
         public Booking(string bookingId, string rideId, string source, string destination, string userId, DateTime bookingDate)
         {
-            this.bookingId = bookingId;
-            this.rideId = rideId;
-            this.source = source;
-            this.destination = destination;
-            this.userId = userId;
-            this.bookingDate = bookingDate;
+            this.BookingId = bookingId;
+            this.RideId = rideId;
+            this.Source = source;
+            this.Destination = destination;
+            this.UserId = userId;
+            this.BookingDate = bookingDate;
         }
     }
 }

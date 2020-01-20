@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace CarPool.Models
 {
-    class Car
+    public class Car
     {
-        public string CarNo;
-        public string CarName;
-        public string CarType;
-        public int Capacity;
+        public string CarNo { get; set; }
+        public string CarName { get; set; }
+        public bool CarType { get; set; }
+        public int Capacity { get; set; }
+        public string OwnerId { get; set; }
 
-        public Car(string carNo, string carName, int capacity, string carType)
+        public Car(string carNo, string carName, int capacity, bool carType,string ownerId)
         {
             this.CarNo = carNo;
             this.CarName = carName;
             this.Capacity = capacity;
             this.CarType = carType;
+            this.OwnerId = ownerId;
         }
     }
 }

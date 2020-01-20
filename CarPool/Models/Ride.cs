@@ -8,37 +8,35 @@ namespace CarPool.Models
 {
     public class Ride
     {
-        public string RideId;
+        public string RideId { get; set; }
 
-        //public string TotalNoOfSeats;
+        public int NoOfSeatsAvailable { get; set; }
 
-        public int NoOfSeatsAvailable;
+        public DateTime StartTime { get; set; }
 
-        public string StartTime;
+        public string EndTime { get; set; }
 
-        public string EndTime;
+        public string Source { get; set; }
 
-        public string Source;
+        public string Destination { get; set; }
 
-        public string Destination;
+        public string CarNumber { get; set; }
 
-        public string CarNumber;
+        public List<string> ViaPlaces { get; set; }
 
-        public List<string> ViaPlaces;
+        public List<DateTime> ViaTimings { get; set; }
 
-        public List<DateTime> ViaTimings;
+        public string RideProviderId { get; set; }
 
-        public string RideProviderId;
+        public List<string> Bookings { get; set; }
 
-        public List<Booking> Bookings;
+        public decimal PricePerKilometer { get; set; }
 
-        public decimal PricePerKilometer;
+        public DateTime DateOfRide { get; set; }
 
-        //internal List<Booking> Bookings { get => bookings; set => bookings = value; }
+        //List<User> RideTakers;
 
-        List<User> RideTakers;
-
-        public Ride(string id,string rideProviderID,string carNumber, string source, string destination, string startTime, string endTime, int noOfSeats, List<string> viaPlaces, decimal amount)
+        public Ride(string id,string rideProviderID,string carNumber, string source, string destination, DateTime startTime, string endTime, int noOfSeats, List<string> viaPlaces, decimal amount,DateTime dateOfRide)
         {
             this.RideId = id;
             this.RideProviderId = rideProviderID;
@@ -50,7 +48,8 @@ namespace CarPool.Models
             this.NoOfSeatsAvailable = noOfSeats;
             this.ViaPlaces = viaPlaces;
             this.PricePerKilometer = amount;
-            Bookings = new List<Booking>();
+            Bookings = new List<string>();
+            this.DateOfRide = dateOfRide;
         }
 
         public Ride()

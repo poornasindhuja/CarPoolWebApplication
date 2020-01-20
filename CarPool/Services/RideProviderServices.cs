@@ -13,95 +13,94 @@ namespace CarPool.Services
 
         RideServices rideServices = new RideServices();
 
-        List<RideProvider> rideProviders = new List<RideProvider>();
+//        List<RideProvider> rideProviders = new List<RideProvider>();
 
-        public void AddRide(string id)
+        public void AddRide(string id,string carNo,string source,string destination,DateTime startTime,string endTime,int noOfSeats,List<string> viaPlaces,decimal costPerKillometer,DateTime dateOfRide)
         {
             
-            Console.WriteLine("Enter CarNo");
+            //Console.WriteLine("Enter CarNo");
        
-            string carNo = Console.ReadLine();
+            //string carNo = Console.ReadLine();
 
-            Console.WriteLine("Enter Car Name");
+            //Console.WriteLine("Enter Car Name");
 
-            string carName = Console.ReadLine();
+            //string carName = Console.ReadLine();
 
-            Console.WriteLine("Enter Capacity of car");
+            //Console.WriteLine("Enter Capacity of car");
 
-            int capacity = Convert.ToInt16(Console.ReadLine());
+            //int capacity = Convert.ToInt16(Console.ReadLine());
 
-            Console.WriteLine("Car Type");
+            //Console.WriteLine("Car Type");
 
-            string carType = Console.ReadLine();
+            //string carType = Console.ReadLine();
 
-            Console.WriteLine("Enter Starting Point");
-            string source = Console.ReadLine();
+            //Console.WriteLine("Enter Starting Point");
+            //string source = Console.ReadLine();
 
-            Console.WriteLine("Enter start time (HH:MM) In 24 Hour Format");
-            string startTime = Console.ReadLine();
+            //Console.WriteLine("Enter start time (HH:MM) In 24 Hour Format");
+            //string startTime = Console.ReadLine();
       
-            Console.WriteLine("Enter End Point");
-            string destination = Console.ReadLine();
+            //Console.WriteLine("Enter End Point");
+            //string destination = Console.ReadLine();
 
-            Console.WriteLine("Enter Reach time");
-            string endTime = Console.ReadLine();
+            //Console.WriteLine("Enter Reach time");
+            //string endTime = Console.ReadLine();
 
-            Console.WriteLine("Enter No of seats available");
-            int noOfSeats =Convert.ToInt16(Console.ReadLine());
+            //Console.WriteLine("Enter No of seats available");
+            //int noOfSeats =Convert.ToInt16(Console.ReadLine());
 
-            Console.WriteLine("Enter intermediate places(seperated by ',')");
-            List<string> viaPlaces =new List<string>(Console.ReadLine().Split(','));
+            //Console.WriteLine("Enter intermediate places(seperated by ',')");
+            //List<string> viaPlaces =new List<string>(Console.ReadLine().Split(','));
 
-            Console.WriteLine("Cost per Kilometer(Rupees.paise");
-            Decimal amount =Convert.ToDecimal(Console.ReadLine());
-
-            rideServices.AddCar(new Car(carNo,carName,capacity,carType));
-            rideServices.AddRide(new Ride(rideId++.ToString(),id,carNo, source, destination, startTime, endTime, noOfSeats, viaPlaces, amount));
-
-            Console.WriteLine("Ride Added Sucessfully");
-
+            //Console.WriteLine("Cost per Kilometer(Rupees.paise");
+            //Decimal amount =Convert.ToDecimal(Console.ReadLine());
+            rideServices.AddRide(new Ride(rideId++.ToString(),id,carNo, source, destination, startTime, endTime, noOfSeats, viaPlaces, costPerKillometer,dateOfRide));
         }
 
-        public void showCurrentRides(string userId)
+        public List<Ride> PastRides(string userId)
         {
-            int i=1;
-
-            List<Ride> userRides=rideServices.getCurrentRides(userId);
-
-            foreach(Ride r in userRides)
-            {
-                Console.WriteLine($"{i++}.RideId:{r.RideId}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime}\tEndTime:{r.EndTime}");
-                foreach(Booking booking in r.Bookings)
-                {
-                    Console.WriteLine($"{booking.userId}\t status:{booking.status}");
-                }
-            }
-
-            Console.WriteLine("Enter RideId in which you want to approve bookings");
-
-            var rideId = Console.ReadLine();
-
-            RideServices.showBookings(rideId);
-
-            Console.WriteLine("Enter Booking Id you want to approve/reject:");
-
-            var bookingId = Console.ReadLine();
-
-            Console.WriteLine("Press 1 to approve\n press 2 to reject");
-
-            int approve =Convert.ToInt16( Console.ReadLine());
-
-            if (approve == 1)
-            {
-                RideServices.ApproveBooking(rideId, bookingId, true);
-            }else if (approve == 2)
-            {
-                RideServices.ApproveBooking(rideId, bookingId, false);
-            }
-            else
-            {
-                Console.WriteLine("Invalid Option");
-            }
+            return rideServices.getPreviousRides(userId);
         }
+
+        public List<Ride> CurrentRides(string userId)
+        {
+            return rideServices.getCurrentRides(userId);
+        }
+
+        public void ApproveBooking(string bookingId,bool value)
+        {
+            string rideId=null;
+
+            Booking booking = RideServices.Bookings.Find(b => b.BookingId == bookingId);
+
+            if (booking != null)
+            {
+                rideId = booking.RideId;
+            }
+            //string rideId = RideServices.Bookings.Find(b => b.BookingId == bookingId).RideId;
+            rideServices.ApproveBooking(rideId, bookingId, value);
+        }
+       
+        public void AddCar(string carNo, string carName, int capacity, bool carType, string providerId)
+        {
+            rideServices.AddCar(new Car(carNo, carName, capacity, carType, providerId));
+            UserServices.CurrentUser.CarNo = carNo;
+        }
+
+        public bool IscarLinked(string providerId)
+        {
+            UserServices userServices = new UserServices();
+            if(userServices.GetUser(providerId).CarNo!=null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public List<Car> GetCars(string userId)
+        {
+            return RideServices.Cars.FindAll(c => c.OwnerId == userId);
+        }
+
     }
 }
