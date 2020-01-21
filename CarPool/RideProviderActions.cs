@@ -12,67 +12,75 @@ namespace CarPool
 {
     class RideProviderActions
     {
-        int choice;
+        int choice, capacity;
 
-        string carNo;
-
-        string carName;
-
-        int capacity;
+        string carNo, carName;
 
         bool carType;
 
-        UserServices userServices = new UserServices();
+        RideProviderServices rideProviderServices;
 
-        RideServices rideServices = new RideServices();
+        UserServices userServices;
 
-        RideProviderServices rideProviderServices = new RideProviderServices();
+        RideServices rideServices;
 
-        public void providerOptions()
+        public RideProviderActions()
         {
-            //userServices.UserToProvider();
+            userServices= new UserServices();
+
+            rideProviderServices= new RideProviderServices();
+
+            rideServices = new RideServices();
+        }
+        
+        public void ProviderOptions()
+        {
             bool repeat = true;
             do
             {
+                Console.Clear();
                 Console.WriteLine("Please Choose one of the following options\n" +
-                    "1.Add Ride\n" +
-                    "2.Current Rides\n" +
-                    "3.pastRides" +
+                    "1.Create New Ride Offer\n" +
+                    "2.Available Ride Offers\n" +
+                    "3.Past Rides\n" +
                     "4.Go Back\n" +
                     "5.logout");
 
                 int.TryParse(Console.ReadLine(), out choice);
                 switch (choice)
                 {
-                    case 1:AddRide();
+                    case 1:CreateRideOffer();
                         break;
-                    case 2:currentRides();
+                    case 2:AvailableRideOffers();
                         break;
-                    case 3:showPastRides();
+                    case 3:ShowPastRideOffers();
                         break;
-                    case 4:repeat = false;
+                    case 4:
+                        repeat = false;
                         break;
-                    case 5: return;
+                    case 5:userServices.Logout();
+                        CarPoolMenu.DisplayMainMenu();
+                        break;
                     default:Console.WriteLine("In correct option\n please choose a valid option");
                         break;
                 }
             } while (repeat);
         }
 
-        private void showPastRides()
+        private void ShowPastRideOffers()
         {
             int i = 1;
             Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
-            List<Ride> currentRides = rideProviderServices.PastRides(UserServices.CurrentUser.UserId);
+            List<Ride> currentRides = rideProviderServices.GetPastRideOffers(UserServices.CurrentUser.UserId);
             foreach (Ride r in currentRides)
             {
                 Console.WriteLine($"{i++}.RideId:{r.RideId}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime.ToShortTimeString()}\tEndTime:{r.EndTime.ToShortTimeString()}");
                 int j = 1;
-                foreach (Booking booking in rideServices.GetBookings(r.RideId))
+                foreach (Booking booking in rideProviderServices.GetBookings(r.RideId))
                 {
                     Console.WriteLine($"\t{j++}.{booking.UserId}\t status:{booking.Status}");
                 }
-                if (r.Bookings.Count == 0)
+                if (rideProviderServices.GetBookings(r.RideId).Count==0)
                 {
                     Console.WriteLine("Oops.! There are no Bookings for this ride");
                 }
@@ -80,30 +88,35 @@ namespace CarPool
             }
         }
 
-        private void currentRides()
+        private void AvailableRideOffers()
         {
-            int i = 1, rideNo;
+            int i = 1;
 
-            List<Ride> currentRides=rideProviderServices.CurrentRides(UserServices.CurrentUser.UserId);
+            List<Ride> currentRides=rideProviderServices.GetAvailableRideOffers(UserServices.CurrentUser.UserId);
 
-            Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
-            foreach (Ride r in currentRides)
+            if (currentRides != null)
             {
-                Console.WriteLine($"{i++}.Ridedate:{r.DateOfRide.Date}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime.TimeOfDay}\tEndTime:{r.EndTime.ToLocalTime()}\n" +
-                    $"Booking Requests:{rideServices.GetNewBookingRequests(r.RideId).Count}");
-                Console.WriteLine("\n-----------------------------------------------------------------------------------------------------\n\n");
-            }
+                Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
+                foreach (Ride r in currentRides)
+                {
+                    Console.WriteLine($"{i++}.Ridedate:{r.DateOfRide.Date}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime.TimeOfDay}\tEndTime:{r.EndTime.ToLocalTime()}\n" +
+                        $"New Booking Requests:{rideProviderServices.GetNewBookingRequests(r.RideId).Count}");
+                    Console.WriteLine("\n-----------------------------------------------------------------------------------------------------\n\n");
+                }
 
-            Console.WriteLine("Select a ride from above to approve booking requests");
-            int.TryParse( Console.ReadLine(),out rideNo);
-            //ApproveBooking(rideNo-1, currentRides);
-            ApproveBookings(currentRides[rideNo - 1].RideId);
-            //ApproveBooking(rideServices.GetBookings(currentRides[rideNo-1].RideId));
+                Console.WriteLine("Select a ride from above to approve booking requests");
+                int.TryParse(Console.ReadLine(), out int rideNo);
+                ApproveBookings(currentRides[rideNo - 1].RideId);
+            }
+            else
+            {
+                Console.WriteLine("No Ride Offers available");
+            }
         }
 
-        private void ApproveBookings(string rideId)
+        private void ApproveBookings(int rideId)
         {
-            var bookings = rideServices.GetNewBookingRequests(rideId);
+            var bookings = rideProviderServices.GetNewBookingRequests(rideId);
             int i = 1;
             foreach(Booking booking in bookings)
             {
@@ -115,118 +128,86 @@ namespace CarPool
             {
                 Console.WriteLine("Oops.! There are no Bookings for this ride");
             }
-            while (true)
+            else
             {
-                Console.WriteLine("Please Enter Booking Id you want to approve/reject:");
-
-                var bookingId = Console.ReadLine();
-
-                do
+                while (true)
                 {
-                    Console.WriteLine("Enter 1 to approve\nEnter 2 to reject");
+                    Console.WriteLine("Please Enter Booking Id you want to approve/reject:");
 
-                    int approve = Convert.ToInt16(Console.ReadLine());
-                    if (approve == 1)
+                    int.TryParse(Console.ReadLine(), out int bookingId);
+                    do
                     {
-                        rideProviderServices.ApproveBooking(bookingId, true);
-                        Console.WriteLine("Request Approved");
-                    }
-                    else if (approve == 2)
+                        Console.WriteLine("Enter 1 to approve\nEnter 2 to reject");
+
+                        int.TryParse(Console.ReadLine(), out choice);
+                        if (choice == 1)
+                        {
+                            rideProviderServices.ApproveBooking(bookingId,BookingStatus.Approved);
+                            Console.WriteLine("Request Approved");
+                        }
+                        else if (choice == 2)
+                        {
+                            rideProviderServices.ApproveBooking(bookingId,BookingStatus.Rejected);
+                            Console.WriteLine("Request Rejected");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Option");
+                            continue;
+                        }
+                        break;
+                    } while (true);
+
+                    Console.WriteLine("Enter 1 to continue approving");
+                    Console.WriteLine("Enter 2 to Go Back");
+                    int.TryParse(Console.ReadLine(), out choice);
+                    if (choice == 2)
                     {
-                        rideProviderServices.ApproveBooking(bookingId, false);
-                        Console.WriteLine("Request Rejected");
+                        break;
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid Option");
-                        continue;
-                    }
-                    break;
-                } while (true);
-                
-                Console.WriteLine("Enter 1 to continue approving");
-                Console.WriteLine("Enter 2 to Go Back");
-                int.TryParse(Console.ReadLine(),out choice);
-                if (choice == 2)
-                {
-                    break;
                 }
             }
+            
            
         }
 
-        //private void ApproveBooking(int rideNo, List<Ride> currentRides)
-        //{
-        //    var bookings = currentRides[rideNo].Bookings;
-        //    int i = 1;
-        //    foreach (Booking booking in bookings)
-        //    {
-        //        User requester = userServices.GetUser(booking.UserId);
-        //        Console.WriteLine($"{i++}.Requested BY:{requester.UserName}\nPhone Number:{requester.PhoneNumber}\t \nPick Up Location:{booking.Source}\tDrop Location:{booking.Destination}\n" +
-        //            $"status:{booking.Status}");
-        //    }
-        //    if (bookings.Count == 0)
-        //    {
-        //        Console.WriteLine("Oops.! There are no Bookings for this ride");
-        //    }
-
-        //    while (true)
-        //    {
-        //        Console.WriteLine("Please Enter Booking Id you want to approve/reject:");
-
-        //        var bookingId = Console.ReadLine();
-
-        //        Console.WriteLine("Press 1 to approve\n press 2 to reject");
-
-        //        int approve = Convert.ToInt16(Console.ReadLine());
-
-        //        if (approve == 1)
-        //        {
-        //            rideProviderServices.ApproveBooking(bookingId, true);
-        //            Console.WriteLine("Request Approved");
-        //        }
-        //        else if (approve == 2)
-        //        {
-        //            rideProviderServices.ApproveBooking(bookingId, false);
-        //            Console.WriteLine("Request Rejected");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Invalid Option");
-        //        }
-        //        Console.WriteLine("Enter 1 to continue approving");
-        //        Console.WriteLine("Enter 2 to Go Back");
-        //        int.TryParse(Console.ReadLine(), out choice);
-        //        if (choice == 2)
-        //        {
-        //            break;
-        //        }
-        //    }
-
-        //}
-
-        public void AddRide()
+        public void CreateRideOffer()
         {
             DateTime dateOfRide;
 
-            string providerId = UserServices.CurrentUser.UserId;
+            int noOfSeats,index=1,providerId = UserServices.CurrentUser.UserId;
 
             string time;
 
-            int noOfSeats;
-
-            if (rideProviderServices.IscarLinked(providerId))
+            Console.Clear();
+            if (rideProviderServices.IsCarLinked(providerId))
             {
-                Console.WriteLine("Enter 1 to continue with this car \n" +
-                    "Enter 2 to Add new car");
+                Console.WriteLine("List Of Cars Used:");
+
+                var availableCars = rideProviderServices.GetCarsOfUser(providerId);
+
+                Console.WriteLine("Please Choose One of the following cars:");
+                for (int i = 0; i < availableCars.Count; i++)
+                {
+                    Console.WriteLine($"{i+1}.{availableCars[i].CarNo}");
+                }
+                Console.WriteLine("Enter your choice/enter 0 to add new car ");
                 int.TryParse(Console.ReadLine(), out choice);
-                if (choice == 2)
+                if (choice==0)
                 {
                     AddCar(providerId);
                 }
+                else
+                {
+                    carNo = availableCars[choice].CarNo;
+                    capacity = availableCars[choice].Capacity;
+                }
             }
-            AddCar(providerId);
-
+            else
+            {
+                AddCar(providerId);
+            }
+           
             Console.WriteLine("Enter Starting Point");
             string source = Console.ReadLine();
 
@@ -243,13 +224,14 @@ namespace CarPool
             Console.WriteLine("Enter End Point");
             string destination = Console.ReadLine();
 
-            do
-            {
-                Console.WriteLine("Enter Reach time");
-                time = Console.ReadLine();
-            } while (!rideDataValidations.IsValidTimeFormat(time));
+            DateTime endTime = startTime.AddSeconds(rideServices.GetDurationBetweenPlaces(source, destination));
+            //do
+            //{
+            //    Console.WriteLine("Enter Reach time");
+            //    time = Console.ReadLine();
+            //} while (!rideDataValidations.IsValidTimeFormat(time));
             
-            DateTime endTime = DateTime.ParseExact(time, "HH:mm:ss", CultureInfo.InvariantCulture);
+            //DateTime endTime = DateTime.ParseExact(time, "HH:mm:ss", CultureInfo.InvariantCulture);
 
             do
             {
@@ -267,26 +249,17 @@ namespace CarPool
                 viaPlaces[i] = viaPlaces[i].ToLower();
             }
 
-            Console.WriteLine("Enter date of Journey(e.g. 10 / 22 / 1987): ");
-            try
-            {
-                dateOfRide = DateTime.Parse(Console.ReadLine());
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Invalid Time Format");
-            }
-             
-     
-            Console.WriteLine("Cost per Kilometer(Rupees.paise");
-            Decimal amount = Convert.ToDecimal(Console.ReadLine());
+            Console.WriteLine("Enter date of Journey(e.g. mm/dd/yyyy): ");
+            dateOfRide = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Cost per Kilometer(Rupees.paise)");
+
+            decimal amount = Convert.ToDecimal(Console.ReadLine());
 
             rideProviderServices.AddRide(providerId, carNo, source.ToLower(), destination.ToLower(), startTime, endTime, noOfSeats, viaPlaces, amount,dateOfRide);
-
             Console.WriteLine("Ride Added Sucessfully");
         }
 
-        public void AddCar(string providerId)
+        public void AddCar(int providerId)
         {
             
             do
@@ -314,8 +287,8 @@ namespace CarPool
             } while (choice < 1 || choice > 2);
            
             carType = choice == 1 ? true : false;
-            RideProviderServices rideProviderServices = new RideProviderServices();
             rideProviderServices.AddCar(carNo, carName, capacity, carType,providerId);
         }
     }
+
 }

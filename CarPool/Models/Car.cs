@@ -12,15 +12,15 @@ namespace CarPool.Models
         public string CarName { get; set; }
         public bool CarType { get; set; }
         public int Capacity { get; set; }
-        public string OwnerId { get; set; }
+        public int OwnerId { get; set; }
 
-        public Car(string carNo, string carName, int capacity, bool carType,string ownerId)
+        public Car(string carNo, string carName, int capacity, bool carType,int ownerId)
         {
             this.CarNo = carNo;
             this.CarName = carName;
             this.Capacity = capacity;
             this.CarType = carType;
-            this.OwnerId = ownerId;
+            this.OwnerId= ownerId;
         }
     }
 }

@@ -8,25 +8,25 @@ namespace CarPool.Models
 {
     public class User
     {
-        public string UserId;
+        public int UserId { get; set; }
 
-        public string UserName;
+        public string UserName { get; set; }
 
-        public string PhoneNumber;
+        public string PhoneNumber { get; set; }
 
-        public string EmailAddress;
+        public string EmailAddress { get; set; }
 
-        public string Address;
+        public string Address { get; set; }
 
-        public string Gender;
+        public string Gender { get; set; }
 
-        public string PetName;
+        public string PetName { get; set; }
 
-        public string CarNo;
+        public string CarNo { get; set; }
 
-        public string Password;
+        public string Password { get; set; }
 
-        public User(string userId, string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
+        public User(int userId, string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
         {
             UserId = userId;
             UserName = userName;

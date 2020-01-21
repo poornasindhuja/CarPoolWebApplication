@@ -8,7 +8,7 @@ namespace CarPool.Models
 {
     public class Ride
     {
-        public string RideId { get; set; }
+        public int RideId { get; set; }
 
         public int NoOfSeatsAvailable { get; set; }
 
@@ -26,9 +26,7 @@ namespace CarPool.Models
 
         public List<DateTime> ViaTimings { get; set; }
 
-        public string RideProviderId { get; set; }
-
-        public List<string> Bookings { get; set; }
+        public int RideProviderId { get; set; }
 
         public decimal PricePerKilometer { get; set; }
 
@@ -36,7 +34,7 @@ namespace CarPool.Models
 
         //List<User> RideTakers;
 
-        public Ride(string id,string rideProviderID,string carNumber, string source, string destination, DateTime startTime, DateTime endTime, int noOfSeats, List<string> viaPlaces, decimal amount,DateTime dateOfRide)
+        public Ride(int id,int rideProviderID,string carNumber, string source, string destination, DateTime startTime, DateTime endTime, int noOfSeats, List<string> viaPlaces, decimal amount,DateTime dateOfRide)
         {
             this.RideId = id;
             this.RideProviderId = rideProviderID;
@@ -48,7 +46,6 @@ namespace CarPool.Models
             this.NoOfSeatsAvailable = noOfSeats;
             this.ViaPlaces = viaPlaces;
             this.PricePerKilometer = amount;
-            Bookings = new List<string>();
             this.DateOfRide = dateOfRide;
         }
 

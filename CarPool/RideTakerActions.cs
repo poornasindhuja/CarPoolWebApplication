@@ -14,17 +14,17 @@ namespace CarPool
 
         RideTakerServices rideTakerServices;
 
-        RideServices rideServices;
-
         UserServices userServices;
+
+        RideServices rideServices;
 
         public RideTakerActions()
         {
             rideTakerServices = new RideTakerServices();
 
-            rideServices = new RideServices();
-
             userServices = new UserServices();
+
+            rideServices = new RideServices();
         }
 
         public void RideTakerOptions()
@@ -33,6 +33,7 @@ namespace CarPool
 
             while (repeat)
             {
+                Console.Clear();
                 Console.WriteLine("Please Choose one of the following options");
                 Console.WriteLine("1.view Ride Offers");
                 Console.WriteLine("2.Book a Ride");
@@ -49,7 +50,7 @@ namespace CarPool
                     case 2:
                         BookRide();
                         break;
-                    case 3:viewBookings();
+                    case 3:ViewBookings();
                         break;
                     case 4:
                         repeat = false;
@@ -64,22 +65,16 @@ namespace CarPool
 
         }
 
-        private void viewBookings()
+        private void ViewBookings()
         {
             List<Booking> bookings=rideTakerServices.GetAllBookings();
             for(int i = 0; i < bookings.Count; i++)
             {
                 Console.WriteLine($"\n-------------------------------------------------------------------------------------------------------------\n" +
-                    $"{i}.Booking Date:{bookings[i].BookingDate.ToShortDateString()}\nFrom:{bookings[i].Source}\t\tTo:{bookings[i].Destination}\nJourney Time:{bookings[i].StartTime}-{bookings[i].EndTime}");
-                //$"Status:{(bookings[i].Status?"Approved":"NotApproved")}");
-                if (bookings[i].DoesProviderViewed)
-                {
-                    Console.WriteLine($"Status:{(bookings[i].Status ? "Approved" : "NotApproved")}");
-                }
-                else
-                {
-                    Console.WriteLine($"Status:Pending");
-                }
+                    $"{i}.Booking Date:{bookings[i].BookingDate.ToShortDateString()}\nFrom:{bookings[i].Source}\t\tTo:{bookings[i].Destination}\n" +
+                    $"Journey Time:{bookings[i].StartTime.ToShortTimeString()}-{bookings[i].EndTime.ToShortTimeString()}");
+                //$"Status:{(bookings[i].Status?"Approved":"NotApproved")}");              
+                    Console.WriteLine($"Status:{Enum.GetName(typeof(BookingStatus),bookings[i].Status)}\tCost:{bookings[i]}"); 
             }
             
             Console.WriteLine($"-------------------------------------------------------------------------------------------------------------");
@@ -88,13 +83,13 @@ namespace CarPool
 
         private void BookRide()
         {
-            string rideId;
+            int rideId;
 
             Console.Clear();
 
             while (true)
             {
-                Console.WriteLine("please Enter pickup location:");
+                Console.WriteLine("please Enter pick up location:");
 
                 string pickupLocation = Console.ReadLine();
 
@@ -102,7 +97,7 @@ namespace CarPool
 
                 string dropLocation = Console.ReadLine();
 
-                List<Ride> availableRides = rideTakerServices.searchRides(pickupLocation.ToLower(), dropLocation.ToLower());
+                List<Ride> availableRides = rideTakerServices.SearchRides(pickupLocation.ToLower(), dropLocation.ToLower());
 
                 if (availableRides.Count == 0)
                 {
@@ -110,11 +105,15 @@ namespace CarPool
                 }
                 else
                 {
-                    DisplayRideOffers(availableRides);
+                    DisplayRideOffers(availableRides,pickupLocation,dropLocation);
                     do
                     {
-                        Console.WriteLine("Select a ride by entering rideId:");
-                        rideId = Console.ReadLine();
+                        Console.WriteLine("Select a ride by entering rideId/Enter '0' to go back:");
+                        int.TryParse( Console.ReadLine(),out rideId);
+                        if (rideId == 0)
+                        {
+                            return;
+                        }
                     } while (rideServices.IsvalidRideId(rideId));
 
                     rideTakerServices.BookRide(rideId, pickupLocation, dropLocation);
@@ -122,7 +121,7 @@ namespace CarPool
                     Console.WriteLine("Request Sent sucessfully");
                 }
 
-                Console.WriteLine("Enter 1 to Continue Booking\n Enter 2 to Go Back");
+                Console.WriteLine("Enter 1 to continue booking\n Enter 2 to Go Back");
                 int.TryParse(Console.ReadLine(), out choice);
                 if (choice == 2)
                 {
@@ -133,21 +132,30 @@ namespace CarPool
             
         }
 
-        public void DisplayRideOffers(List<Ride> rideOffers)
+        public void DisplayRideOffers(List<Ride> rideOffers,string source,string destination)
         {
             int index = 1;
 
+            decimal costOfRide;
+            
+            Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
             foreach (Ride r in rideOffers)
             {
-                Console.WriteLine($"{index++}.RideId:{r.RideId}\t\tRideProvide Name:{UserServices.users.Find(u => u.UserId == r.RideProviderId).UserName}" +
+                Console.WriteLine($"{index++}.RideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
                     $"\nFrom: { r.Source}\t\tTo: {r.Destination}\nVia:");
                 foreach (string place in r.ViaPlaces)
                 {
                     Console.Write(place + " ");
                 }
-                Car currentCar = rideServices.GetCarDetails(r.CarNumber);
-                Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n Journey Date:{r.DateOfRide.ToShortDateString()}");
-                Console.WriteLine($"Car Details\nCarName:{ currentCar.CarName}\t Ac/NON-AC:{(currentCar.CarType?"Ac":"Non-Ac")}\nCarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");                
+
+                Car currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
+
+                Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n " +
+                    $"Journey Date:{r.DateOfRide.ToShortDateString()}Car Details\nCarName:{ currentCar.CarName}\t Ac/NON-AC:{(currentCar.CarType?"Ac":"Non-Ac")}\n" +
+                    $"CarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
+
+                costOfRide = rideServices.GetDistanceBetweenPlaces(source,destination) * r.PricePerKilometer;
+                Console.WriteLine($"Cost:{costOfRide}");
                 Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");   
             }
             if (rideOffers == null)
@@ -158,13 +166,42 @@ namespace CarPool
 
         private void DisplayAllRideOffers()
         {
+            int index = 1;
+
+            decimal costOfRide;
+
             Console.Clear();
 
-            List<Ride> rideOffers = rideTakerServices.getAllRideOffers();
+            List<Ride> rideOffers = rideTakerServices.GetAllRideOffers();
 
-            DisplayRideOffers(rideOffers);
+            Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
+            foreach (Ride r in rideOffers)
+            {
+                Console.WriteLine($"{index++}.RideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
+                    $"\nFrom: { r.Source}\t\tTo: {r.Destination}\nVia:");
+                foreach (string place in r.ViaPlaces)
+                {
+                    Console.Write(place + " ");
+                }
+
+                Car currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
+
+                Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n " +
+                    $"Journey Date:{r.DateOfRide.ToShortDateString()}Car Details\nCarName:{ currentCar.CarName}\t Ac/NON-AC:{(currentCar.CarType ? "Ac" : "Non-Ac")}\n" +
+                    $"CarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
+
+                costOfRide = rideServices.GetDistanceBetweenPlaces(r.Source, r.Destination) * r.PricePerKilometer;
+                Console.WriteLine($"Cost:{costOfRide}");
+                Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
+            }
+            if (rideOffers == null)
+            {
+                Console.WriteLine("No rides Available to show");
+            }
             Console.WriteLine("Press any key to GoBack");
             Console.ReadKey();
         }
     }
+
+    
 }

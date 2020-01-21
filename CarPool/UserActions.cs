@@ -51,14 +51,14 @@ namespace CarPool
             // Gender
             while (true)
             {
-                Console.WriteLine("Please Select your Gender\n1.Male\n2.Female\n3.Others");
+                Console.WriteLine("Please Select your Gender by entering your choice\n1.Male\n2.Female\n3.Others");
                 int.TryParse(Console.ReadLine(), out choice);
                 if(choice>0 && choice<3)
                 {
                     gender = choice == 1 ? "Male" : choice == 2 ? "Female" : "Other";
                     break;
                 }
-                Console.WriteLine("Please select valid option");
+                Console.WriteLine("Please enter a valid option");
             }
 
             // Password
@@ -74,12 +74,14 @@ namespace CarPool
                 Console.WriteLine("Confirm your password");
                 confirmPassword = Console.ReadLine();
             } while (password != confirmPassword);
-            Console.WriteLine("What is your first pet Name");
+            Console.Clear();
+            Console.WriteLine("Security Question");
+            Console.WriteLine("Please Enter your first pet Name");
             petName = Console.ReadLine();
             while (true)
             {
-                Console.WriteLine("Press 1 to register");
-                Console.WriteLine("Press 2 to cancel");
+                Console.WriteLine("Enter 1 to register");
+                Console.WriteLine("Enter 2 to cancel");
                 int.TryParse(Console.ReadLine(), out choice);
                 if (choice == 1)
                 {
@@ -92,7 +94,7 @@ namespace CarPool
                 {
                     break;
                 }              
-                Console.WriteLine("please select a valid option");
+                Console.WriteLine("please enter a valid option");
             }
         }
 
@@ -107,9 +109,12 @@ namespace CarPool
                 // Getting a valid phoneNumber from user to login
                 do
                 {
-                    Console.WriteLine("Please Enter your phone number:");
+                    Console.WriteLine("Please enter your phone number /enter * to go back:");
                     phoneNumber = Console.ReadLine();
-
+                    if (phoneNumber == "*")
+                    {
+                        return;
+                    }
                 } while (!SignInValidations.IsValidPhoneNumber(phoneNumber));
 
                 // Getting valid password from user 
@@ -120,37 +125,25 @@ namespace CarPool
 
                 } while (!SignInValidations.IsValidPassword(password));
 
-                //It Checks whether user phoneNumber and password matched or not.
+                // It Checks whether user phoneNumber and password matched or not.
                 if (userServices.SignIn(phoneNumber, password))
                 {
-                    userOptions();
+                    UserOptions();
                     break;
-                }
-                else
-                {
-                    Console.WriteLine("You have entered InCorrect phoneNumber or password\n1.Forgot Password \n2.Exit from login");
-                    var choice=Console.ReadKey().KeyChar;
-                    if (choice == '1')
-                    {
-                        forgotPassword();
-                    }else if (choice == '2')
-                    {
-                        break;
-                    }
-                }
+                }    
             }
         }
 
-        public void forgotPassword()
+        public void ForgotPassword()
         {
             Console.Clear();
-            Console.WriteLine("Enter your Phone Number");
+            Console.WriteLine("Please enter your Phone Number");
             phoneNumber = Console.ReadLine();
-            Console.WriteLine("What is your first petname");
+            Console.WriteLine("Please enter your first petname");
             petName = Console.ReadLine();
             if (userServices.IsValidPetName(phoneNumber, petName))
             {
-                Console.WriteLine("set your new password");
+                Console.WriteLine("Set your new password");
                 password = Console.ReadLine();
                 Console.WriteLine("Confirm new password");
                 confirmPassword = Console.ReadLine();
@@ -162,10 +155,11 @@ namespace CarPool
             }
         }
 
-        public void userOptions()
+        public void UserOptions()
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Please Choose one of the following options");
                 Console.WriteLine("1.RideProvider");
                 Console.WriteLine("2.RideTaker");
@@ -175,17 +169,18 @@ namespace CarPool
                 {
                     case 1:
                         RideProviderActions rideProviderActions = new RideProviderActions();
-                        rideProviderActions.providerOptions();
+                        rideProviderActions.ProviderOptions();
                         break;
                     case 2:
                         RideTakerActions rideTakerActions = new RideTakerActions();
                         rideTakerActions.RideTakerOptions();
                         break;
-                    case 3:
-                        return;
+                    case 3:userServices.Logout();
+                        CarPoolMenu.DisplayMainMenu();
+                        break;
+                        
                 }
-            }
-            
+            }   
         }
     }
 }

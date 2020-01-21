@@ -3,104 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarPool.AppData;
 using CarPool.Models;
 
 namespace CarPool.Services
 {
     class RideProviderServices
     {
-        static int rideId = 4;
 
-        RideServices rideServices = new RideServices();
+        public void AddRide(int providerId,string carNo,string source,string destination,DateTime startTime,DateTime endTime,int noOfSeats,List<string> viaPlaces,decimal costPerKillometer,DateTime dateOfRide)
+        {
+            Database.Rides.Add(new Ride((Database.Rides.Count+1),providerId,carNo, source, destination, startTime, endTime, noOfSeats, viaPlaces, costPerKillometer,dateOfRide));
+        }
 
-//        List<RideProvider> rideProviders = new List<RideProvider>();
+        public List<Ride> GetPastRideOffers(int userId)
+        {
+            //return rideServices.getPreviousRides(userId);
+            return Database.Rides.FindAll(r => r.RideProviderId == userId && r.DateOfRide < DateTime.Now);
+        }
 
-        public void AddRide(string id,string carNo,string source,string destination,DateTime startTime,DateTime endTime,int noOfSeats,List<string> viaPlaces,decimal costPerKillometer,DateTime dateOfRide)
+        public List<Ride> GetAvailableRideOffers(int userId)
+        {
+            return Database.Rides.FindAll(r => r.RideProviderId == userId && r.DateOfRide >= DateTime.Now);
+        }
+
+        public void ApproveBooking(int bookingId,BookingStatus value)
         {
             
-            //Console.WriteLine("Enter CarNo");
-       
-            //string carNo = Console.ReadLine();
+            Booking booking = Database.Bookings.Find(b => b.BookingId == bookingId);
 
-            //Console.WriteLine("Enter Car Name");
+            Ride currentRide =Database.Rides.Find(r => r.RideId == booking.RideId);
 
-            //string carName = Console.ReadLine();
-
-            //Console.WriteLine("Enter Capacity of car");
-
-            //int capacity = Convert.ToInt16(Console.ReadLine());
-
-            //Console.WriteLine("Car Type");
-
-            //string carType = Console.ReadLine();
-
-            //Console.WriteLine("Enter Starting Point");
-            //string source = Console.ReadLine();
-
-            //Console.WriteLine("Enter start time (HH:MM) In 24 Hour Format");
-            //string startTime = Console.ReadLine();
-      
-            //Console.WriteLine("Enter End Point");
-            //string destination = Console.ReadLine();
-
-            //Console.WriteLine("Enter Reach time");
-            //string endTime = Console.ReadLine();
-
-            //Console.WriteLine("Enter No of seats available");
-            //int noOfSeats =Convert.ToInt16(Console.ReadLine());
-
-            //Console.WriteLine("Enter intermediate places(seperated by ',')");
-            //List<string> viaPlaces =new List<string>(Console.ReadLine().Split(','));
-
-            //Console.WriteLine("Cost per Kilometer(Rupees.paise");
-            //Decimal amount =Convert.ToDecimal(Console.ReadLine());
-            rideServices.AddRide(new Ride(rideId++.ToString(),id,carNo, source, destination, startTime, endTime, noOfSeats, viaPlaces, costPerKillometer,dateOfRide));
-        }
-
-        public List<Ride> PastRides(string userId)
-        {
-            return rideServices.getPreviousRides(userId);
-        }
-
-        public List<Ride> CurrentRides(string userId)
-        {
-            return rideServices.getCurrentRides(userId);
-        }
-
-        public void ApproveBooking(string bookingId,bool value)
-        {
-            string rideId=null;
-
-            Booking booking = RideServices.Bookings.Find(b => b.BookingId == bookingId);
-
-            if (booking != null)
+            if (booking != null && currentRide.NoOfSeatsAvailable > 0)
             {
-                rideId = booking.RideId;
+                Database.Bookings.Find(b => b.BookingId == bookingId).Status = value;
+                currentRide.NoOfSeatsAvailable = currentRide.NoOfSeatsAvailable - 1;
             }
-            //string rideId = RideServices.Bookings.Find(b => b.BookingId == bookingId).RideId;
-            rideServices.ApproveBooking(rideId, bookingId, value);
         }
        
-        public void AddCar(string carNo, string carName, int capacity, bool carType, string providerId)
+        public void AddCar(string carNo, string carName, int capacity, bool carType, int providerId)
         {
-            rideServices.AddCar(new Car(carNo, carName, capacity, carType, providerId));
+            Database.Cars.Add(new Car(carNo, carName, capacity, carType, providerId));
             UserServices.CurrentUser.CarNo = carNo;
         }
 
-        public bool IscarLinked(string providerId)
+        public bool IsCarLinked(int providerId)
         {
-            UserServices userServices = new UserServices();
-            if(userServices.GetUser(providerId).CarNo!=null)
-            {
-                return true;
-            }
-            return false;
+            return Database.Cars.FindAll(c => c.OwnerId == providerId).Count!=0 ? true : false;
         }
 
-        public List<Car> GetCars(string userId)
+        public List<Car> GetCarsOfUser(int userId)
         {
-            return RideServices.Cars.FindAll(c => c.OwnerId == userId);
+            return Database.Cars.FindAll(c => c.OwnerId == userId);
         }
 
+        public List<Booking> GetBookings(int rideId)
+        {
+            return Database.Bookings.FindAll(b => b.RideId == rideId);
+        }
+
+        public List<Booking> GetNewBookingRequests(int rideId)
+        {
+            return Database.Bookings.FindAll(b => b.RideId == rideId && b.Status == BookingStatus.Pending);
+        }
     }
 }
