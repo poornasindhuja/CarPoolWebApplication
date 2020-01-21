@@ -49,7 +49,7 @@ namespace CarPool.Services
                 jsonString = reader.ReadToEnd();
             }
 
-            dynamic data =(JourneyDetails)JsonConvert.DeserializeObject(jsonString);
+            dynamic data =JsonConvert.DeserializeObject(jsonString);
 
             return data.rows[0].elements[0];
         }

@@ -8,9 +8,9 @@ namespace CarPool.Models
 {
     public class JourneyDetails
     {
-        List<string> DestinationPlaces;
-        List<string> OrginPlaces;
-        List<distanceItem> rows;
+        public List<string> DestinationPlaces;
+        public List<string> OrginPlaces;
+        public List<distanceItem> rows;
         string status;
         public JourneyDetails()
         {
@@ -22,26 +22,26 @@ namespace CarPool.Models
     
     public class distanceItem
     {
-        List<data> elements;
+        public List<data> elements;
         public distanceItem()
         {
-            elements=new List<data>
+            elements = new List<data>();
         }
     }
     public class data
     {
-        Duration duration;
-        Distance distance;
-        string status;
+        public Duration duration;
+        public Distance distance;
+        public string status;
     }
     public class Duration
     {
-        string text;
-        int value;
+        public string text;
+        public int value;
     }
     public class Distance
     {
-        string text;
-        int value;
+        public string text;
+        public int value;
     }
 }
