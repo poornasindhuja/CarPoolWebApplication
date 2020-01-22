@@ -9,15 +9,14 @@ using CarPool.AppData;
 namespace CarPool.Services
 {
 
-    public class UserServices
+    public class UserServices:IUserServices
     {
-        public RideProvider Provider;
 
-        public static User CurrentUser;
+        public  User CurrentUser;
        
         public bool SignIn(string phoneNumber,string password)
         {
-            CurrentUser =Database.Users.Find(u => u.PhoneNumber == phoneNumber);
+            CurrentUser =CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber);
 
             if (CurrentUser == null)
             {
@@ -33,12 +32,12 @@ namespace CarPool.Services
 
         public User GetUser(int userId)
         {
-            return Database.Users.Find(u => u.UserId == userId);
+            return CarPoolData.Users.Find(u => u.UserId == userId);
         }
 
         public bool IsExistingUser(string phoneNumber)
         {
-            foreach (User user in Database.Users)
+            foreach (User user in CarPoolData.Users)
             {
                 if (user.PhoneNumber == phoneNumber)
                 {
@@ -48,25 +47,25 @@ namespace CarPool.Services
             return false;
         }
 
-        internal void SignUp(string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
+        public void SignUp(string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
         {
             
-            Database.Users.Add(new User(Database.Users.Count+1, userName, phoneNumber, emailAddress, address, gender, password,petName));
+            CarPoolData.Users.Add(new User(CarPoolData.Users.Count+1, userName, phoneNumber, emailAddress, address, gender, password,petName));
         }
 
         public bool IsValidPetName(string phoneNumber,string petName)
         {
-            return Database.Users.Find(u => u.PhoneNumber == phoneNumber).PetName == petName;
+            return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber).PetName == petName;
         }
 
-        internal void ResetPassword(string phoneNumber, string password)
+        public void ResetPassword(string phoneNumber, string password)
         {
-            Database.Users.Find(u => u.PhoneNumber == phoneNumber).Password = password;
+            CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber).Password = password;
         }
 
-        public void Logout()
+        public User GetUser(string phoneNumber)
         {
-            CurrentUser = null;
+            return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber);
         }
     }
 }

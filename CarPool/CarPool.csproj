@@ -46,19 +46,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppData\Database.cs" />
+    <Compile Include="AppData\CarPoolData.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Car.cs" />
+    <None Include="AppData\DistanceMatrix.json" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\JourneyDetails.cs" />
     <Compile Include="Models\Ride.cs" />
-    <Compile Include="Models\RideProvider.cs" />
-    <Compile Include="Models\RideTaker.cs" />
     <Compile Include="CarPoolMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="RideProviderActions.cs" />
-    <Compile Include="RideTakerActions.cs" />
+    <Compile Include="RideProviderFunctionalites.cs" />
+    <Compile Include="RideTakerFunctionalities.cs" />
+    <Compile Include="Services\IRideProviderServices.cs" />
+    <Compile Include="Services\IRideServices.cs" />
+    <Compile Include="Services\IRideTakerServices.cs" />
+    <Compile Include="Services\IUserServices.cs" />
     <Compile Include="Services\RideServices.cs" />
     <Compile Include="Services\UserServices.cs" />
     <Compile Include="Services\RideProviderServices.cs" />

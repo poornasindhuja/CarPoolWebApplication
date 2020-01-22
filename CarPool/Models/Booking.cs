@@ -28,7 +28,9 @@ namespace CarPool.Models
 
         public decimal CostOfBooking { get; set; }
 
-        public Booking(int bookingId, int rideId, string source, string destination, int userId, DateTime bookingDate,DateTime startTime,DateTime endTime,decimal cost)
+        public int NumberSeatsSelected { get; set; }
+
+        public Booking(int bookingId, int rideId, string source, string destination, int userId, DateTime bookingDate,DateTime startTime,DateTime endTime,decimal cost,int numberOfSeatsSelected)
         {
             this.BookingId = bookingId;
             this.RideId = rideId;
@@ -39,6 +41,7 @@ namespace CarPool.Models
             this.StartTime = startTime;
             this.EndTime = endTime;
             this.CostOfBooking = cost;
+            this.NumberSeatsSelected = numberOfSeatsSelected;
         }
     }
 }

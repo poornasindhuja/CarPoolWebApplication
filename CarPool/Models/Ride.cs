@@ -32,8 +32,6 @@ namespace CarPool.Models
 
         public DateTime DateOfRide { get; set; }
 
-        //List<User> RideTakers;
-
         public Ride(int id,int rideProviderID,string carNumber, string source, string destination, DateTime startTime, DateTime endTime, int noOfSeats, List<string> viaPlaces, decimal amount,DateTime dateOfRide)
         {
             this.RideId = id;
@@ -47,11 +45,6 @@ namespace CarPool.Models
             this.ViaPlaces = viaPlaces;
             this.PricePerKilometer = amount;
             this.DateOfRide = dateOfRide;
-        }
-
-        public Ride()
-        {
-                
         }
     }
 }

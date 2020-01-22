@@ -8,45 +8,42 @@ using CarPool.AppData;
 
 namespace CarPool.Services
 {
-    class RideTakerServices
+    class RideTakerServices:RideServices,IRideTakerServices
     {
-        readonly RideServices rideServices;
-
-        public RideTakerServices()
+        public void BookRide(int rideId,string pickUpLocation,string dropLocation,int numberOfSeatsSelected,int userId)
         {
-            rideServices = new RideServices();
+            var ride = CarPoolData.Rides.Find(r => r.RideId == rideId);
+
+            var startTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, pickUpLocation));
+
+            var endTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(pickUpLocation, dropLocation));
+
+            var costOfRide =GetDistanceBetweenPlaces(pickUpLocation, dropLocation) * ride.PricePerKilometer*numberOfSeatsSelected;
+
+            if (numberOfSeatsSelected <= ride.NoOfSeatsAvailable)
+            {
+                var booking = new Booking(CarPoolData.Bookings.Count + 1, rideId, pickUpLocation, dropLocation, userId, DateTime.Now, startTime, endTime, costOfRide, numberOfSeatsSelected);
+
+                CarPoolData.Bookings.Add(booking);
+            }  
         }
 
-        public void BookRide(int rideId,string pickUpLocation,string dropLocation)
+        public List<Booking> GetAllBookings(int userId)
         {
-            var ride = Database.Rides.Find(r => r.RideId == rideId);
-
-            var startTime = ride.StartTime.AddSeconds( rideServices.GetDurationBetweenPlaces(ride.Source, pickUpLocation));
-
-            var endTime= ride.StartTime.AddSeconds(rideServices.GetDurationBetweenPlaces(pickUpLocation, dropLocation));
-
-            var costOfRide = rideServices.GetDistanceBetweenPlaces(pickUpLocation, dropLocation) * ride.PricePerKilometer;
-
-            var booking = new Booking(Database.Bookings.Count+1, rideId, pickUpLocation, dropLocation, UserServices.CurrentUser.UserId, DateTime.Now,startTime,endTime,costOfRide);
-
-            Database.Bookings.Add(booking);
+            return CarPoolData.Bookings.FindAll(b => b.UserId == userId);
         }
 
-        public List<Booking> GetAllBookings()
+        public  List<Ride> GetAllRideOffers(int userId)
         {
-            return Database.Bookings.FindAll(b => b.UserId == UserServices.CurrentUser.UserId);
+            return CarPoolData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId);
         }
 
-        public  List<Ride> GetAllRideOffers()
+        public List<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
         {
-            return Database.Rides.FindAll(r => r.DateOfRide >= DateTime.Now && r.RideProviderId!=UserServices.CurrentUser.UserId);
-        }
+            var availableRides = new List<Ride>();
 
-        public List<Ride> SearchRides(string pickupLocation, string dropLocation)
-        {
-            List<Ride> availableRides = new List<Ride>();
             // returns all the ride offers available from pickup location to drop location.
-            foreach(Ride ride in GetAllRideOffers())
+            foreach(Ride ride in GetAllRideOffers(userId))
             {
                 if (ride.Source == pickupLocation)
                 {
@@ -64,13 +61,12 @@ namespace CarPool.Services
                     }
                 }   
             }
-            //return RideServices.Rides.FindAll(r => r.ViaPlaces.Contains(pickupLocation)||r.Source==pickupLocation && r.ViaPlaces.Contains(dropLocation)||r.Destination==dropLocation && r.ViaPlaces.IndexOf(pickupLocation)<r.ViaPlaces.IndexOf(dropLocation));   
             return availableRides;
         }
 
-        internal Car GetCarDetails(string carNumber)
+        public Car GetCarDetails(string carNumber)
         {
-            return Database.Cars.Find(c => c.CarNo == carNumber);
+            return CarPoolData.Cars.Find(c => c.CarNo == carNumber);
         }
 
     }

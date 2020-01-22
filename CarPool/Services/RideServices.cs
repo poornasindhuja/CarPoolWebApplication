@@ -13,45 +13,39 @@ namespace CarPool.Services
 {
     class RideServices
     {
+        public object DistanceMatrix { get; private set; }
+
         public bool IsvalidRideId(int rideId)
         {
-            return Database.Rides.Find(r => r.RideId == rideId) != null ? true : false;
+            return CarPoolData.Rides.Find(r => r.RideId == rideId) != null ? true : false;
         }
 
         public int GetDistanceBetweenPlaces(string source,string destination)
         {
-            dynamic jsonData = GetRootInfoBetweenTwoPlaces(source, destination);
-            int distance = jsonData.distance.value / 1000;
+            var jsonData = GetRootInfoBetweenTwoPlaces(source, destination);
+            int distance = jsonData.Distance.Value / 1000;
             return distance;
         }
 
         public int GetDurationBetweenPlaces(string source,string destination)
         {
-            dynamic jsonData = GetRootInfoBetweenTwoPlaces(source, destination);
-            return jsonData.duration.value / 60;
+            var jsonData = GetRootInfoBetweenTwoPlaces(source, destination);
+            return jsonData.Duration.Value;
         }
 
         public dynamic GetRootInfoBetweenTwoPlaces(string source,string destination)
         {
-            string jsonString, url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
+           
+            string jsonString;
 
-            url += source + "&destinations=" + destination + "&mode=driving&key=AIzaSyB3mJ4gmoEDfSjFISRXmngMlZarF0s6XcY";
-
-            HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create(string.Format(url));
-
-            WebReq.Method = "GET";
-
-            HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
-
-            using (Stream stream = WebResp.GetResponseStream())
+            using (StreamReader reader = new StreamReader(@"D:\CarPooling\CarPool\CarPool\AppData\DistanceMatrix.json", System.Text.Encoding.UTF8))
             {
-                StreamReader reader = new StreamReader(stream, System.Text.Encoding.UTF8);
                 jsonString = reader.ReadToEnd();
             }
 
-            dynamic data =JsonConvert.DeserializeObject(jsonString);
+            JourneyDetails data =JsonConvert.DeserializeObject<JourneyDetails>(jsonString);
 
-            return data.rows[0].elements[0];
+            return data.Rows[CarPoolData.Places.IndexOf(destination)].Elements[CarPoolData.Places.IndexOf(source)];
         }
     }
 }

@@ -8,40 +8,49 @@ namespace CarPool.Models
 {
     public class JourneyDetails
     {
-        public List<string> DestinationPlaces;
-        public List<string> OrginPlaces;
-        public List<distanceItem> rows;
+        private List<string> destinationPlaces;
+        private List<string> orginPlaces;
+        private List<DistanceItem> rows;
         string status;
-        public JourneyDetails()
-        {
-            DestinationPlaces = new List<string>();
-            OrginPlaces = new List<string>();
-            rows = new List<distanceItem>();
-        }
+
+        public List<string> DestinationPlaces { get => destinationPlaces; set => destinationPlaces = value; }
+        public List<string> OrginPlaces { get => orginPlaces; set => orginPlaces = value; }
+        public List<DistanceItem> Rows { get => rows; set => rows = value; }
+        public string Status { get => status; set => status = value; }
+
     }
     
-    public class distanceItem
+    public class DistanceItem
     {
-        public List<data> elements;
-        public distanceItem()
-        {
-            elements = new List<data>();
-        }
+        private List<Data> elements;
+
+        public List<Data> Elements { get => elements; set => elements = value; }
     }
-    public class data
+    public class Data
     {
-        public Duration duration;
-        public Distance distance;
-        public string status;
+        private Duration duration;
+        private Distance distance;
+        private string status;
+
+        
+        public Distance Distance { get => distance; set => distance = value; }
+        public Duration Duration { get => duration; set => duration = value; }
+        public string Status { get => status; set => status = value; }
     }
     public class Duration
     {
-        public string text;
-        public int value;
+        private string text;
+        private int value;
+
+        public string Text { get => text; set => text = value; }
+        public int Value { get => value; set => this.value = value; }
     }
     public class Distance
     {
-        public string text;
-        public int value;
+        private string text;
+        private int value;
+
+        public string Text { get => text; set => text = value; }
+        public int Value { get => value; set => this.value = value; }
     }
 }

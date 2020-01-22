@@ -7,15 +7,19 @@ namespace CarPool
 {
     class UserActions
     {
-        int choice;
+        int choice,userId;
 
         string phoneNumber, emailAddress, gender, password, userName, confirmPassword,petName;
 
-        UserServices userServices = new UserServices();
+        UserServices userServices;
+
+        public UserActions()
+        {
+            userServices = new UserServices();
+        }
 
         public void SignUp()
         {
-            SignUpValidations signUpValidations = new SignUpValidations();
             //User Name
             do
             {
@@ -34,7 +38,7 @@ namespace CarPool
                     Console.WriteLine("Please Enter your Phone Number");
                     phoneNumber = Console.ReadLine();
 
-                } while (!signUpValidations.IsValidatePhoneNumber(phoneNumber));
+                } while (!SignUpValidations.IsValidatePhoneNumber(phoneNumber));
             } while (userServices.IsExistingUser(phoneNumber));          
             // Email Address           
             do
@@ -42,7 +46,7 @@ namespace CarPool
                 Console.WriteLine("Please Enter your Email Address");
                 emailAddress = Console.ReadLine();
 
-            } while (!signUpValidations.IsValidEmailAddress(emailAddress));
+            } while (!SignUpValidations.IsValidEmailAddress(emailAddress));
 
             // Address
             Console.WriteLine("Please Enter your Address");
@@ -66,7 +70,7 @@ namespace CarPool
             {
                 Console.WriteLine("Please Set your password");
                 password = Console.ReadLine();
-            } while (!signUpValidations.IsValidPassword(password));
+            } while (!SignUpValidations.IsValidPassword(password));
 
             // Confirm password
             do
@@ -74,7 +78,6 @@ namespace CarPool
                 Console.WriteLine("Confirm your password");
                 confirmPassword = Console.ReadLine();
             } while (password != confirmPassword);
-            Console.Clear();
             Console.WriteLine("Security Question");
             Console.WriteLine("Please Enter your first pet Name");
             petName = Console.ReadLine();
@@ -87,7 +90,8 @@ namespace CarPool
                 {
                     userServices.SignUp(userName, phoneNumber, emailAddress, address, gender, password,petName);
                     Console.Clear();
-                    Console.WriteLine("Your account has been sucessfully created.");
+                    Console.WriteLine("Your account has been sucessfully created.\n Press any key to continue");
+                    Console.ReadKey();
                     break;
                 }
                 else if (choice == 2)
@@ -100,13 +104,13 @@ namespace CarPool
 
         public void SignIn()
         {           
-            string phoneNumber,password;
+            int repeat = 0;
 
-            while(true)
+            Console.Clear();
+            Console.WriteLine("----------------------------------Sign In-----------------------------------------\n");
+            // Getting a valid phoneNumber from user to login
+            do
             {
-                Console.Clear();
-                Console.WriteLine("----------------------------------Sign In-----------------------------------------\n");
-                // Getting a valid phoneNumber from user to login
                 do
                 {
                     Console.WriteLine("Please enter your phone number /enter * to go back:");
@@ -116,22 +120,41 @@ namespace CarPool
                         return;
                     }
                 } while (!SignInValidations.IsValidPhoneNumber(phoneNumber));
+                if (!userServices.IsExistingUser(phoneNumber))
+                {
+                    Console.WriteLine("An user with this phone number was not registered.Try again");
+                }
+                else
+                {
+                    break;
+                }
+            } while (true);
 
-                // Getting valid password from user 
+            // Getting valid password from user 
+            do
+            {
                 do
                 {
-                    Console.WriteLine("Please Enter your password:");
+                    Console.WriteLine("Please Enter your password");
                     password = Console.ReadLine();
-
+                    if (password == "*")
+                    {
+                        return;
+                    }
                 } while (!SignInValidations.IsValidPassword(password));
-
                 // It Checks whether user phoneNumber and password matched or not.
                 if (userServices.SignIn(phoneNumber, password))
                 {
+                    userId = userServices.GetUser(phoneNumber).UserId;
                     UserOptions();
                     break;
-                }    
-            }
+                }
+                else
+                {
+                    Console.WriteLine("wrong password");
+                    repeat++;
+                }
+            } while (repeat < 3);
         }
 
         public void ForgotPassword()
@@ -168,14 +191,14 @@ namespace CarPool
                 switch (choice)
                 {
                     case 1:
-                        RideProviderActions rideProviderActions = new RideProviderActions();
-                        rideProviderActions.ProviderOptions();
+                        RideProviderFunctionalites rideProviderFunctionalities = new RideProviderFunctionalites(userId);
+                        rideProviderFunctionalities.ProviderOptions();
                         break;
                     case 2:
-                        RideTakerActions rideTakerActions = new RideTakerActions();
+                        RideTakerFunctionalities rideTakerActions = new RideTakerFunctionalities(userId);
                         rideTakerActions.RideTakerOptions();
                         break;
-                    case 3:userServices.Logout();
+                    case 3:
                         CarPoolMenu.DisplayMainMenu();
                         break;
                         

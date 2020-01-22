@@ -12,4 +12,10 @@ namespace CarPool.Models
         Approved = 1,
         Rejected = 2
     }
+
+    public enum MainMenu
+    {
+
+    }
+
 }

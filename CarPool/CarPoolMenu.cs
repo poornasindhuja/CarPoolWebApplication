@@ -18,11 +18,11 @@ namespace CarPool
         }
 
         public static void DisplayMainMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("---------------WELCOME to CarPool----------------\n ");
+        {  
             while (true)
             {
+                Console.Clear();
+                Console.WriteLine("---------------WELCOME to CarPool----------------\n ");
                 Console.WriteLine("1.SignIn\n2.SignUp \n3.Forgot Password \n4.close Application");
                 Console.WriteLine("Please Enter your choice");
                 int.TryParse(Console.ReadLine(), out choice);

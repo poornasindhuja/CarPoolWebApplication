@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarPool.Validations
 {
-    class SignInValidations
+    static class SignInValidations
     {
 
         // It checks whether the given phone number is valid type of phonenumber.

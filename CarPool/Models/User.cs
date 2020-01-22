@@ -22,8 +22,6 @@ namespace CarPool.Models
 
         public string PetName { get; set; }
 
-        public string CarNo { get; set; }
-
         public string Password { get; set; }
 
         public User(int userId, string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
