@@ -11,13 +11,13 @@ namespace CarPool.Services
     {
         List<Ride> GetPastRideOffers(int userId);
 
-        void AddRide(int providerId, string carNo, string source, string destination, DateTime startTime, int noOfSeats, List<string> viaPlaces, decimal costPerKillometer, DateTime dateOfRide);
+        void AddRide(Ride ride);
 
         List<Ride> GetAvailableRideOffers(int userId);
 
         void ApproveBooking(int bookingId, BookingStatus value);
 
-        void AddCar(string carNo, string carName, int capacity, bool carType, int providerId);
+        void AddCar(Car car);
 
         bool IsCarLinked(int providerId);
 

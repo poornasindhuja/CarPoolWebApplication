@@ -8,7 +8,7 @@ using CarPool.Models;
 
 namespace CarPool.AppData
 {
-    static class CarPoolData
+    public static class CarPoolData
     {
         static readonly DateTime date = new DateTime(2020, 2, 1);
 
@@ -18,9 +18,9 @@ namespace CarPool.AppData
 
         private static List<Ride> rides = new List<Ride>()
         {
-            //new Ride(1,1,"09 TS 071998","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date),
-            //new Ride(2,1,"10 TS 071930","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},5,date),
-            //new Ride(3,2,"01 TS 045398","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date)
+            new Ride(1,1,"09 TS 071998","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date),
+            new Ride(2,1,"10 TS 071930","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},5,date),
+            new Ride(3,2,"01 TS 045398","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date)
         };
 
         private static List<Car> cars = new List<Car>()
@@ -40,7 +40,7 @@ namespace CarPool.AppData
 
         public static List<string> Places = new List<string>()
             {
-                "secunderabad", "miyapur", "madhapur","durgamcheruvu","lingampally","kothaguda","kondapur","hitech city"
+                "secunderabad", "miyapur", "madhapur","durgamcheruvu","lingampally","kothaguda","kondapur","hitechcity"
             };
 
         public static List<Ride> Rides { get => rides; set => rides = value; }

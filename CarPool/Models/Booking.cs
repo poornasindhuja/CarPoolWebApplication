@@ -8,6 +8,7 @@ namespace CarPool.Models
 {
     public class Booking
     {
+       
         public int BookingId { get; set; }
 
         public int RideId { get; set; }
@@ -42,6 +43,15 @@ namespace CarPool.Models
             this.EndTime = endTime;
             this.CostOfBooking = cost;
             this.NumberSeatsSelected = numberOfSeatsSelected;
+        }
+
+        public Booking(int rideId, string pickupLocation, string dropLocation, int noOfSeats, int userId)
+        {
+            this.RideId = rideId;
+            this.Source = pickupLocation;
+            this.Destination= dropLocation;
+            this.NumberSeatsSelected = noOfSeats;
+            this.UserId = userId;
         }
     }
 }

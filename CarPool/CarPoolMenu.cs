@@ -4,7 +4,7 @@ using System;
 
 namespace CarPool
 {
-    class CarPoolMenu
+    public class CarPoolMenu
     {  
         
         static UserActions userActions;

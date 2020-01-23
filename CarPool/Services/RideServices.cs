@@ -11,10 +11,9 @@ using Newtonsoft.Json;
 
 namespace CarPool.Services
 {
-    class RideServices
+    public class RideServices
     {
-        public object DistanceMatrix { get; private set; }
-
+       
         public bool IsvalidRideId(int rideId)
         {
             return CarPoolData.Rides.Find(r => r.RideId == rideId) != null ? true : false;
@@ -33,7 +32,7 @@ namespace CarPool.Services
             return jsonData.Duration.Value;
         }
 
-        public dynamic GetRootInfoBetweenTwoPlaces(string source,string destination)
+        public Data GetRootInfoBetweenTwoPlaces(string source,string destination)
         {
            
             string jsonString;
@@ -45,7 +44,7 @@ namespace CarPool.Services
 
             JourneyDetails data =JsonConvert.DeserializeObject<JourneyDetails>(jsonString);
 
-            return data.Rows[CarPoolData.Places.IndexOf(destination)].Elements[CarPoolData.Places.IndexOf(source)];
+            return data.Rows[CarPoolData.Places.IndexOf(destination.ToLower())].Elements[CarPoolData.Places.IndexOf(source.ToLower())];
         }
     }
 }

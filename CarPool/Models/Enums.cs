@@ -13,9 +13,16 @@ namespace CarPool.Models
         Rejected = 2
     }
 
-    public enum MainMenu
+    public enum Places
     {
-
+        Secunderabad=1,
+        Miyapur,
+        Madhapur,
+        Durgamcheruvu,
+        Lingampally,
+        Kothaguda,
+        Kondapur,
+        Hitechcity
     }
 
 }

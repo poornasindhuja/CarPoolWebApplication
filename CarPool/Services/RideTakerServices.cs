@@ -8,22 +8,18 @@ using CarPool.AppData;
 
 namespace CarPool.Services
 {
-    class RideTakerServices:RideServices,IRideTakerServices
+    public class RideTakerServices:RideServices,IRideTakerServices
     {
-        public void BookRide(int rideId,string pickUpLocation,string dropLocation,int numberOfSeatsSelected,int userId)
+        public void BookRide(Booking booking)
         {
-            var ride = CarPoolData.Rides.Find(r => r.RideId == rideId);
-
-            var startTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, pickUpLocation));
-
-            var endTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(pickUpLocation, dropLocation));
-
-            var costOfRide =GetDistanceBetweenPlaces(pickUpLocation, dropLocation) * ride.PricePerKilometer*numberOfSeatsSelected;
-
-            if (numberOfSeatsSelected <= ride.NoOfSeatsAvailable)
+            var ride = CarPoolData.Rides.Find(r => r.RideId == booking.RideId);
+            booking.BookingId = CarPoolData.Bookings.Count + 1;
+            booking.StartTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, booking.Source));
+            booking.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(booking.Source, booking.Destination));
+            booking.CostOfBooking =GetDistanceBetweenPlaces(booking.Source, booking.Destination) * ride.PricePerKilometer*booking.NumberSeatsSelected;
+            booking.BookingDate = DateTime.Now;
+            if (booking.NumberSeatsSelected <= ride.NoOfSeatsAvailable)
             {
-                var booking = new Booking(CarPoolData.Bookings.Count + 1, rideId, pickUpLocation, dropLocation, userId, DateTime.Now, startTime, endTime, costOfRide, numberOfSeatsSelected);
-
                 CarPoolData.Bookings.Add(booking);
             }  
         }
@@ -38,21 +34,21 @@ namespace CarPool.Services
             return CarPoolData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId);
         }
 
-        public List<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
+        public IList<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
         {
             var availableRides = new List<Ride>();
 
             // returns all the ride offers available from pickup location to drop location.
             foreach(Ride ride in GetAllRideOffers(userId))
             {
-                if (ride.Source == pickupLocation)
+                if (ride.Source.ToLower() == pickupLocation.ToLower())
                 {
-                    if (ride.ViaPlaces.Contains(dropLocation) || ride.Destination == dropLocation)
+                    if (ride.ViaPlaces.Contains(dropLocation.ToLower()) || ride.Destination.ToLower() == dropLocation.ToLower())
                     {
                         availableRides.Add(ride);
                     }
                 }
-                else if(ride.ViaPlaces.Contains(pickupLocation))
+                else if(ride.ViaPlaces.Contains(pickupLocation.ToLower()))
                 {
                     if((ride.ViaPlaces.Contains(dropLocation)&& ride.ViaPlaces.IndexOf(dropLocation)>ride.ViaPlaces.IndexOf(pickupLocation))
                         || ride.Destination == dropLocation)

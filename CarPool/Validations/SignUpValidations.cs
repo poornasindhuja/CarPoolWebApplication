@@ -9,10 +9,16 @@ using System.Text.RegularExpressions;
 
 namespace CarPool.Validations
 {
-    static class SignUpValidations
+    public class SignUpValidations:ISignUpValidations
     {
-        
-        public static bool IsValidPassword(string password)
+        IUserServices userServices;
+
+        public SignUpValidations()
+        {
+            userServices = new UserServices();
+        }
+
+        public bool IsValidPassword(string password)
         {
             if (password.Length == 0)
             {
@@ -27,10 +33,10 @@ namespace CarPool.Validations
             return true;
         }
 
-        public static bool IsValidEmailAddress(string emailAddress)
+        public bool IsValidEmailAddress(string emailAddress)
         {
-            string strRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4})(\]?)$";
-            Regex re = new Regex(strRegex);
+            string emailPattern = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4})(\]?)$";
+            Regex re = new Regex(emailPattern);
             if (!re.IsMatch(emailAddress))
             {
                 Console.WriteLine("Invalid Email Address");
@@ -39,32 +45,19 @@ namespace CarPool.Validations
             return true;
         }
 
-        public static bool IsValidatePhoneNumber(string phoneNumber)
+        public bool IsValidPhoneNumber(string phoneNumber)
         {
-            if (phoneNumber.Length == 0)
+            Regex regex = new Regex("^(0-9)*");
+            if(regex.IsMatch(phoneNumber)&& phoneNumber.Length==10 && !userServices.IsExistingUser(phoneNumber))
             {
-                Console.WriteLine("Phone Number should not be empty");
-                return false;
-            }
-            else
-            {
-                foreach (char ch in phoneNumber)
-                {
-                    if (ch < '0' || ch > '9')
-                    {
-                        Console.WriteLine("Phone Number should not contain alphabet or special characters");
-                        return false;
-                    }
-                }
+                return true;
+            } 
+            return false;
+        }
 
-                if (phoneNumber.Length != 10)
-                {
-                    Console.WriteLine("Phone Number should contain exactly 10 digits");
-                    return false;
-                }
-            }
-            
-            return true;
+        public bool IsValidName(string name)
+        {
+            return name.Length != 0 ? true : false;
         }
     }
 }

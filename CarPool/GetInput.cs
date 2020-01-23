@@ -1,0 +1,71 @@
+﻿using CarPool.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarPool
+{
+    public class GetInput
+    {
+        public string GetStringInput(string displayMessage, string errorMessage, Func<string, bool> Validationfunction)
+        {
+            do
+            {
+                Console.Write(displayMessage);
+                var input = Console.ReadLine();
+                if (!Validationfunction(input))
+                {
+                    Console.WriteLine(errorMessage);
+                }
+                else
+                {
+                    return input;
+                }
+            } while (true);
+        }
+
+        public int GetIntegerInput(string displayMessage, string errorMessage, Func<int, bool> Validationfunction)
+        {
+            do
+            {
+                Console.Write(displayMessage);
+                int.TryParse(Console.ReadLine(), out int inputData);
+                if (!Validationfunction(inputData))
+                {
+                    Console.WriteLine(errorMessage);
+                }
+                else
+                {
+                    return inputData;
+                }
+            } while (true);
+        }
+
+
+
+        public int GetLocation()
+        {
+            int i=1, choice;
+            foreach (string place in Enum.GetNames(typeof(Places)))
+            {
+                Console.WriteLine($"{i++}.{place}");
+            }
+            do
+            {
+                int.TryParse(Console.ReadLine(), out choice);
+                if(choice < 1 || choice > i-1)
+                {
+                    Console.WriteLine("Please choose valid option");
+                }
+                else
+                {
+                    break;
+                }
+            } while (true);
+           
+            return choice;
+        }
+    }
+}

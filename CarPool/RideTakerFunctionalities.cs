@@ -8,7 +8,7 @@ using CarPool.Services;
 
 namespace CarPool
 {
-    class RideTakerFunctionalities
+    public class RideTakerFunctionalities
     {
         int choice,userId;
 
@@ -79,8 +79,7 @@ namespace CarPool
                     $"Journey Time:{bookings[i].StartTime.ToShortTimeString()}-{bookings[i].EndTime.ToShortTimeString()}");
                 //$"Status:{(bookings[i].Status?"Approved":"NotApproved")}");              
                     Console.WriteLine($"Status:{Enum.GetName(typeof(BookingStatus),bookings[i].Status)}\tCost:{bookings[i].CostOfBooking}"); 
-            }
-            
+            }       
             Console.WriteLine($"-------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
@@ -123,7 +122,7 @@ namespace CarPool
                         int.TryParse(Console.ReadLine(), out noOfSeats);
                     } while (noOfSeats > availableRides[choice - 1].NoOfSeatsAvailable || noOfSeats < 1);
 
-                } while (!rideTakerServices.IsvalidRideId(availableRides[choice - 1].RideId));
+                } while (!rideTakerServices.IsvalidRideId(availableRides.ElementAt(choice-1).RideId));
 
                 while (true)
                 {
@@ -132,7 +131,7 @@ namespace CarPool
                     int.TryParse(Console.ReadLine(), out choice);
                     if (choice == 1)
                     {
-                        rideTakerServices.BookRide(availableRides[choice - 1].RideId, pickupLocation, dropLocation, noOfSeats,userId);
+                        rideTakerServices.BookRide(new Booking(availableRides[choice - 1].RideId, pickupLocation, dropLocation, noOfSeats,userId));
                         Console.Clear();
                         Console.WriteLine("Request Sent sucessfully");
                         break;
@@ -149,7 +148,7 @@ namespace CarPool
             }           
         }
 
-        public void DisplayRideOffers(List<Ride> rideOffers,string source,string destination)
+        public void DisplayRideOffers(IList<Ride> rideOffers,string source,string destination)
         {
             int index = 1;
 
@@ -188,7 +187,6 @@ namespace CarPool
             decimal costOfRide;
 
             Console.Clear();
-
 
             var rideOffers = rideTakerServices.GetAllRideOffers(userId);
 

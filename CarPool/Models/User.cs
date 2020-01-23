@@ -26,12 +26,12 @@ namespace CarPool.Models
 
         public User(int userId, string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
         {
-            UserId = userId;
-            UserName = userName;
-            PhoneNumber = phoneNumber;
-            EmailAddress = emailAddress;
-            Address = address;
-            Gender = gender;
+            this.UserId = userId;
+            this.UserName = userName;
+            this.PhoneNumber = phoneNumber;
+            this.EmailAddress = emailAddress;
+            this.Address = address;
+            this.Gender = gender;
             this.Password = password;
             this.PetName = petName;
         }

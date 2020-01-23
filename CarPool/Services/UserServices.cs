@@ -14,20 +14,14 @@ namespace CarPool.Services
 
         public  User CurrentUser;
        
-        public bool SignIn(string phoneNumber,string password)
+        public bool IsCorrectPassword(string phoneNumber,string password)
+        {
+            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber && u.Password == password) != null ? true : false;
+        }
+
+        public void SignIn(string phoneNumber)
         {
             CurrentUser =CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber);
-
-            if (CurrentUser == null)
-            {
-                return false;
-            }
-            else if (password != CurrentUser.Password)
-            {
-                return false;
-            }
-            
-            return true;
         }
 
         public User GetUser(int userId)
@@ -37,25 +31,18 @@ namespace CarPool.Services
 
         public bool IsExistingUser(string phoneNumber)
         {
-            foreach (User user in CarPoolData.Users)
-            {
-                if (user.PhoneNumber == phoneNumber)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return CarPoolData.Users.FirstOrDefault(u=>u.PhoneNumber==phoneNumber)!=null?true:false;
         }
 
-        public void SignUp(string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
+        public void SignUp(User user)
         {
-            
-            CarPoolData.Users.Add(new User(CarPoolData.Users.Count+1, userName, phoneNumber, emailAddress, address, gender, password,petName));
+            user.UserId = CarPoolData.Users.Count + 1;
+            CarPoolData.Users.Add(user);
         }
 
         public bool IsValidPetName(string phoneNumber,string petName)
         {
-            return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber).PetName == petName;
+            return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null ? true : false;
         }
 
         public void ResetPassword(string phoneNumber, string password)
@@ -67,5 +54,6 @@ namespace CarPool.Services
         {
             return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber);
         }
+
     }
 }

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\CarPoolData.cs" />
+    <Compile Include="GetInput.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Car.cs" />
     <None Include="AppData\DistanceMatrix.json" />
@@ -67,6 +68,9 @@
     <Compile Include="Services\RideProviderServices.cs" />
     <Compile Include="Services\RideTakerServices.cs" />
     <Compile Include="UserActions.cs" />
+    <Compile Include="Validations\IRideDataValidations.cs" />
+    <Compile Include="Validations\ISignInValidations.cs" />
+    <Compile Include="Validations\ISignUpValidations.cs" />
     <Compile Include="Validations\RideDataValidations.cs" />
     <Compile Include="Validations\SignInValidations.cs" />
     <Compile Include="Validations\SignUpValidations.cs" />

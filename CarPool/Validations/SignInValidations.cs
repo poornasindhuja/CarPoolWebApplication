@@ -1,43 +1,38 @@
-﻿using System;
+﻿using CarPool.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CarPool.Validations
 {
-    static class SignInValidations
+    public class SignInValidations:ISignInValidations
     {
+        IUserServices userServices;
 
-        // It checks whether the given phone number is valid type of phonenumber.
-        public static bool IsValidPhoneNumber(string phoneNumber)
+        private string phoneNumber;
+
+        public SignInValidations()
         {
-            if (phoneNumber.Length == 0)
+            userServices = new UserServices();
+        }
+        // It checks whether the given phone number is valid type of phonenumber.
+        public bool IsValidPhoneNumber(string phoneNumber)
+        {
+            Regex regex = new Regex("^(0-9)*");
+            if (regex.IsMatch(phoneNumber) && phoneNumber.Length == 10 && userServices.IsExistingUser(phoneNumber))
             {
-                Console.WriteLine("Phone Number should not be Empty");
-                return false;
+                this.phoneNumber = phoneNumber;
+                return true;           
             }
-            else if (phoneNumber.Length != 10)
-            {
-                Console.WriteLine("Phone Number Should Consist of 10 digits");
-                return false;
-            }
-            return true;
+            return false;
         }
 
-        internal static bool IsValidPassword(string password)
+        public bool IsValidPassword(string password)
         {
-            if (password.Length == 0)
-            {
-                Console.WriteLine("Password should not be empty");
-                return false;
-            }
-            else if(password.Length<4)
-            {
-                Console.WriteLine("Password should have minimum 4 charactors");
-                return false;
-            }
-            return true;
+            return userServices.IsCorrectPassword(phoneNumber, password);
         }
     }
 }

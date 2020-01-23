@@ -46,5 +46,9 @@ namespace CarPool.Models
             this.PricePerKilometer = amount;
             this.DateOfRide = dateOfRide;
         }
+        public Ride()
+        {
+
+        }
     }
 }

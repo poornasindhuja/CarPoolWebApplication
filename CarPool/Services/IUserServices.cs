@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace CarPool.Services
 {
-    interface IUserServices
+    public interface IUserServices
     {
-        bool SignIn(string phoneNumber, string password);
+        void SignIn(string phoneNumber);
 
-        void SignUp(string userName, string phoneNumber, string emailAddress, string address, string gender, string password, string petName);
+        void SignUp(User user);
 
         User GetUser(int userId);
 
@@ -22,5 +22,7 @@ namespace CarPool.Services
         void ResetPassword(string phoneNumber, string password);
 
         User GetUser(string phoneNumber);
+
+        bool IsCorrectPassword(string phoneNumber, string password);
     }
 }

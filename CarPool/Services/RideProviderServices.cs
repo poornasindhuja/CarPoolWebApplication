@@ -8,13 +8,14 @@ using CarPool.Models;
 
 namespace CarPool.Services
 {
-    class RideProviderServices:RideServices,IRideProviderServices
+    public class RideProviderServices:RideServices,IRideProviderServices
     {
 
-        public void AddRide(int providerId,string carNo,string source,string destination,DateTime startTime,int noOfSeats,List<string> viaPlaces,decimal costPerKillometer,DateTime dateOfRide)
+        public void AddRide(Ride ride)
         {
-            DateTime endTime = startTime.AddSeconds(GetDurationBetweenPlaces(source, destination));
-            CarPoolData.Rides.Add(new Ride((CarPoolData.Rides.Count+1),providerId,carNo, source, destination, startTime, endTime, noOfSeats, viaPlaces, costPerKillometer,dateOfRide));
+            ride.RideId = CarPoolData.Rides.Count + 1;
+            ride.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(ride.Source,ride.Destination));
+            CarPoolData.Rides.Add(ride);
         }
 
         public List<Ride> GetPastRideOffers(int userId)
@@ -41,14 +42,14 @@ namespace CarPool.Services
             }
         }
        
-        public void AddCar(string carNo, string carName, int capacity, bool carType, int providerId)
+        public void AddCar(Car car)
         {
-            CarPoolData.Cars.Add(new Car(carNo, carName, capacity, carType, providerId));
+            CarPoolData.Cars.Add(car);
         }
 
         public bool IsCarLinked(int providerId)
         {
-            return CarPoolData.Cars.FindAll(c => c.OwnerId == providerId).Count!=0 ? true : false;
+            return CarPoolData.Cars.Count(c => c.OwnerId == providerId)!=0 ? true : false;
         }
 
         public List<Car> GetCarsOfUser(int userId)

@@ -22,5 +22,9 @@ namespace CarPool.Models
             this.CarType = carType;
             this.OwnerId= ownerId;
         }
+        public Car()
+        {
+
+        }
     }
 }
