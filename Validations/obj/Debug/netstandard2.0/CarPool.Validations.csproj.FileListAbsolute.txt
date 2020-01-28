@@ -14,3 +14,4 @@ D:\CarPooling\CarPool\Validations\obj\Debug\netstandard2.0\CarPool.Validations.A
 D:\CarPooling\CarPool\Validations\obj\Debug\netstandard2.0\CarPool.Validations.csproj.CopyComplete
 D:\CarPooling\CarPool\Validations\obj\Debug\netstandard2.0\CarPool.Validations.dll
 D:\CarPooling\CarPool\Validations\obj\Debug\netstandard2.0\CarPool.Validations.pdb
+D:\CarPooling\CarPool\Validations\bin\Debug\netstandard2.0\DistanceMatrix.json

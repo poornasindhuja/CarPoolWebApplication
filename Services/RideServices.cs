@@ -35,7 +35,7 @@ namespace CarPool.Services
         {          
             string jsonString;
 
-            using (StreamReader reader = new StreamReader(@"D:\CarPooling\CarPool\AppData\DistanceMatrix.json", System.Text.Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(@"DistanceMatrix.json", System.Text.Encoding.UTF8))
             {
                 jsonString = reader.ReadToEnd();
             }

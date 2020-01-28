@@ -10,3 +10,4 @@ D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.AssemblyI
 D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.csproj.CopyComplete
 D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.dll
 D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.pdb
+D:\CarPooling\CarPool\AppData\bin\Debug\netstandard2.0\DistanceMatrix.json

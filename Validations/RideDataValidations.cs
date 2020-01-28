@@ -14,14 +14,8 @@ namespace CarPool.Validations
         {
             time += ":00";
             string strRegex = @"(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)";
-            Regex re = new Regex(strRegex);
-            if (!re.IsMatch(time))
-            {
-                Console.WriteLine("Invalid Time Format");
-                return false;
-            }
-
-            return true;
+            Regex regex = new Regex(strRegex);
+            return regex.IsMatch(time);
         }
         public bool IsValidPlace(string place)
         {
@@ -30,7 +24,7 @@ namespace CarPool.Validations
 
         public bool IsValidDateFormat(string dateInput)
         {
-            string dateFormat = @"^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](20)\d\d$";
+            string dateFormat = @"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\d\d$.";
             Regex regex = new Regex(dateFormat);
             
             //string[] date = dateInput.Split('/');
@@ -42,7 +36,7 @@ namespace CarPool.Validations
             //    Console.WriteLine("Invalid date format");
             //    return false;
             //}
-            return regex.IsMatch(dateFormat);
+            return regex.IsMatch(dateInput);
         }
 
         public bool IsValidNumberOfSeats(int count)
