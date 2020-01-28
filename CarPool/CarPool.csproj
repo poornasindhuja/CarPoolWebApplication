@@ -46,38 +46,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppData\CarPoolData.cs" />
-    <Compile Include="GetInput.cs" />
-    <Compile Include="Models\Booking.cs" />
-    <Compile Include="Models\Car.cs" />
-    <None Include="AppData\DistanceMatrix.json" />
-    <Compile Include="Models\Enums.cs" />
-    <Compile Include="Models\JourneyDetails.cs" />
-    <Compile Include="Models\Ride.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="CarPoolMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="RideProviderFunctionalites.cs" />
     <Compile Include="RideTakerFunctionalities.cs" />
-    <Compile Include="Services\IRideProviderServices.cs" />
-    <Compile Include="Services\IRideServices.cs" />
-    <Compile Include="Services\IRideTakerServices.cs" />
-    <Compile Include="Services\IUserServices.cs" />
-    <Compile Include="Services\RideServices.cs" />
-    <Compile Include="Services\UserServices.cs" />
-    <Compile Include="Services\RideProviderServices.cs" />
-    <Compile Include="Services\RideTakerServices.cs" />
     <Compile Include="UserActions.cs" />
-    <Compile Include="Validations\IRideDataValidations.cs" />
-    <Compile Include="Validations\ISignInValidations.cs" />
-    <Compile Include="Validations\ISignUpValidations.cs" />
-    <Compile Include="Validations\RideDataValidations.cs" />
-    <Compile Include="Validations\SignInValidations.cs" />
-    <Compile Include="Validations\SignUpValidations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppData\CarPool.AppData.csproj">
+      <Project>{1eeac84d-d6f8-462c-a6bd-e7eb32bec892}</Project>
+      <Name>CarPool.AppData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\CarPool.Models.csproj">
+      <Project>{3380e036-3ab5-4c1c-9a08-fefcb035a349}</Project>
+      <Name>CarPool.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\CarPool.Services.csproj">
+      <Project>{3c8154d2-1846-4ef8-93f0-87859465065b}</Project>
+      <Name>CarPool.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Validations\CarPool.Validations.csproj">
+      <Project>{b8f94b3a-2a97-4743-ba88-3d0bb80c01b5}</Project>
+      <Name>CarPool.Validations</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

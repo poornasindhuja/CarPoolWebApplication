@@ -5,13 +5,15 @@ using CarPool.Models;
 
 namespace CarPool
 {
-    public class UserActions:GetInput
+    public class UserActions:Helper
     {        
         public int choice,UserId;
 
         string phoneNumber,confirmPassword,password,petName;
 
-        ISignUpValidations signUpValidations;
+        
+
+        ISignInValidations signInValidations;
 
         IUserServices userServices;
 
@@ -21,13 +23,14 @@ namespace CarPool
         {
             userServices = new UserServices();
 
-            signUpValidations = new SignUpValidations();
+            signInValidations = new SignInValidations();
 
             this.User = new User();
         }
 
         public void SignUp()
         {
+            ISignUpValidations signUpValidations = new SignUpValidations();
             User.UserName = GetStringInput("Please Enter your Name: ", "Name should not be empty", signUpValidations.IsValidName);
             User.PhoneNumber = GetStringInput("Please Enter your phone number: ", "Invalid phone number", signUpValidations.IsValidPhoneNumber);
             User.EmailAddress = GetStringInput("Please Enter your email address: ","Invalid email address",signUpValidations.IsValidEmailAddress);       
@@ -78,7 +81,6 @@ namespace CarPool
 
         public void SignIn()
         {           
-            ISignInValidations signInValidations = new SignInValidations();
             Console.Clear();
             Console.WriteLine("----------------------------------Sign In-----------------------------------------\n");
             phoneNumber = GetStringInput("Please enter your phone number: ", "Invalid phonenumber", signInValidations.IsValidPhoneNumber);
@@ -91,7 +93,7 @@ namespace CarPool
         public void ForgotPassword()
         {
             Console.Clear();
-            phoneNumber = GetStringInput("Please enter your Phone Number: ", "Invalid phone number", signUpValidations.IsValidPhoneNumber);
+            phoneNumber = GetStringInput("Please enter your Phone Number: ", "Invalid phone number", signInValidations.IsValidPhoneNumber);
             Console.WriteLine("Please enter your first petname");
             petName = Console.ReadLine();
             if (userServices.IsValidPetName(phoneNumber, petName))

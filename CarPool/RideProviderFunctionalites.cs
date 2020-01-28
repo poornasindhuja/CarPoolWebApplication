@@ -11,7 +11,7 @@ using CarPool.Validations;
 
 namespace CarPool
 {
-    public class RideProviderFunctionalites : GetInput
+    public class RideProviderFunctionalites : Helper
     {
         int choice, capacity, providerId;
 
@@ -211,13 +211,11 @@ namespace CarPool
 
         public void CreateRideOffer()
         {
-            DateTime dateOfRide;
-
             Ride ride = new Ride();
 
-            int noOfSeats, index = 1;
+            int noOfSeats;
 
-            string time, source, destination;
+            string time;
 
             Console.Clear();
             if (rideProviderServices.IsCarLinked(providerId))

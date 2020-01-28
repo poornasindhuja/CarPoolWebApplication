@@ -1,0 +1,12 @@
+D:\CarPooling\CarPool\AppData\bin\Debug\netstandard2.0\CarPool.AppData.deps.json
+D:\CarPooling\CarPool\AppData\bin\Debug\netstandard2.0\CarPool.AppData.dll
+D:\CarPooling\CarPool\AppData\bin\Debug\netstandard2.0\CarPool.AppData.pdb
+D:\CarPooling\CarPool\AppData\bin\Debug\netstandard2.0\CarPool.Models.dll
+D:\CarPooling\CarPool\AppData\bin\Debug\netstandard2.0\CarPool.Models.pdb
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.csprojAssemblyReference.cache
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.csproj.CoreCompileInputs.cache
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.AssemblyInfoInputs.cache
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.AssemblyInfo.cs
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.csproj.CopyComplete
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.dll
+D:\CarPooling\CarPool\AppData\obj\Debug\netstandard2.0\CarPool.AppData.pdb
