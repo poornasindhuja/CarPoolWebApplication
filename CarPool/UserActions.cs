@@ -11,8 +11,6 @@ namespace CarPool
 
         string phoneNumber,confirmPassword,password,petName;
 
-        
-
         ISignInValidations signInValidations;
 
         IUserServices userServices;

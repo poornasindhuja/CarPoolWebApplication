@@ -89,14 +89,16 @@ namespace CarPool
         {
             int noOfSeats;
 
+            Helper helper = new Helper();
+
             Console.Clear();
             Console.WriteLine("please Enter pick up location:");
 
-            string pickupLocation = Console.ReadLine();
+            string pickupLocation =Enum.GetName(typeof(Places),helper.GetLocation());
 
             Console.WriteLine("please Enter Drop location");
 
-            string dropLocation = Console.ReadLine();
+            string dropLocation = Enum.GetName(typeof(Places), helper.GetLocation());
 
             var availableRides = rideTakerServices.SearchRides(pickupLocation.ToLower(), dropLocation.ToLower(),userId);
 
@@ -121,7 +123,6 @@ namespace CarPool
                         Console.WriteLine("Enter number of seats you want to book");
                         int.TryParse(Console.ReadLine(), out noOfSeats);
                     } while (noOfSeats > availableRides[choice - 1].NoOfSeatsAvailable || noOfSeats < 1);
-
                 } while (!rideTakerServices.IsvalidRideId(availableRides.ElementAt(choice-1).RideId));
 
                 while (true)
@@ -189,31 +190,32 @@ namespace CarPool
             Console.Clear();
 
             var rideOffers = rideTakerServices.GetAllRideOffers(userId);
-
-            Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
-            foreach (Ride r in rideOffers)
-            {
-                Console.WriteLine($"{index++}.RideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
-                    $"\nFrom: { r.Source}\t\tTo: {r.Destination}\nVia:");
-                foreach (string place in r.ViaPlaces)
-                {
-                    Console.Write(place + " ");
-                }
-
-                var currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
-
-                Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n " +
-                    $"Journey Date:{r.DateOfRide.ToShortDateString()}Car Details\nCarName:{ currentCar.CarName}\t Ac/NON-AC:{(currentCar.CarType ? "Ac" : "Non-Ac")}\n" +
-                    $"CarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
-
-                costOfRide = rideTakerServices.GetDistanceBetweenPlaces(r.Source, r.Destination) * r.PricePerKilometer;
-                Console.WriteLine($"Cost:{costOfRide}");
-                Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
-            }
-            if (rideOffers.Count==0)
+            if (rideOffers.Count == 0)
             {
                 Console.WriteLine("No rides Available to show");
             }
+            else
+            {
+                Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
+                foreach (Ride r in rideOffers)
+                {
+                    Console.WriteLine($"Ride Number{index++}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
+                        $"\nFrom: { r.Source}\t\tTo: {r.Destination}\nVia:");
+                    foreach (string place in r.ViaPlaces)
+                    {
+                        Console.Write(place + " ");
+                    }
+
+                    var currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
+
+                    Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\n" +
+                        $"Seats Available={r.NoOfSeatsAvailable}\nJourney Date:{r.DateOfRide.ToShortDateString()}Car Details\nCarName:{ currentCar.CarName}" +
+                        $"\t Ac/NON-AC:{(currentCar.CarType ? "Ac" : "Non-Ac")}\nCarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
+                    costOfRide = rideTakerServices.GetDistanceBetweenPlaces(r.Source, r.Destination) * r.PricePerKilometer;
+                    Console.WriteLine($"Cost:{costOfRide}");
+                    Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
+                }
+            } 
             Console.WriteLine("Press any key to GoBack");
             Console.ReadKey();
         }

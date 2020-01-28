@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CarPool.Models;
 
-namespace CarPool.AppData
+namespace CarPool.AppRootData
 {
-    public static class CarPoolData
+    public static class CarPoolRootData
     {
         static readonly DateTime date = new DateTime(2020, 2, 1);
 
@@ -42,7 +42,6 @@ namespace CarPool.AppData
             {
                 "secunderabad", "miyapur", "madhapur","durgamcheruvu","lingampally","kothaguda","kondapur","hitechcity"
             };
-
         public static List<Ride> Rides { get => rides; set => rides = value; }
         public static List<Car> Cars { get => cars; set => cars = value; }
         public static List<User> Users { get => users; set => users = value; }

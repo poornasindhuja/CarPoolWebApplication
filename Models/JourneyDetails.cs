@@ -22,11 +22,11 @@ namespace CarPool.Models
     
     public class DistanceItem
     {
-        private List<Data> elements;
+        private List<RootData> elements;
 
-        public List<Data> Elements { get => elements; set => elements = value; }
+        public List<RootData> Elements { get => elements; set => elements = value; }
     }
-    public class Data
+    public class RootData
     {
         private Duration duration;
         private Distance distance;

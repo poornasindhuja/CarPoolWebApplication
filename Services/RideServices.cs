@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using CarPool.AppData;
+using CarPool.AppRootData;
 using CarPool.Models;
 using Newtonsoft.Json;
 
@@ -15,23 +15,24 @@ namespace CarPool.Services
     {
         public bool IsvalidRideId(int rideId)
         {
-            return CarPoolData.Rides.FirstOrDefault(r => r.RideId == rideId) != null ? true : false;
+            return CarPoolRootData.Rides.FirstOrDefault(r => r.RideId == rideId) != null ? true : false;
         }
 
         public int GetDistanceBetweenPlaces(string source,string destination)
         {
-            var jsonData = GetRootInfoBetweenTwoPlaces(source, destination);
-            int distance = jsonData.Distance.Value / 1000;
+            
+            var jsonRootData = GetRootInfoBetweenTwoPlaces(source, destination);
+            int distance = jsonRootData.Distance.Value / 1000;
             return distance;
         }
 
         public int GetDurationBetweenPlaces(string source,string destination)
         {
-            var jsonData = GetRootInfoBetweenTwoPlaces(source, destination);
-            return jsonData.Duration.Value;
+            var jsonRootData = GetRootInfoBetweenTwoPlaces(source, destination);
+            return jsonRootData.Duration.Value;
         }
 
-        public Data GetRootInfoBetweenTwoPlaces(string source,string destination)
+        public RootData GetRootInfoBetweenTwoPlaces(string source,string destination)
         {          
             string jsonString;
 
@@ -39,9 +40,9 @@ namespace CarPool.Services
             {
                 jsonString = reader.ReadToEnd();
             }
-            JourneyDetails data =JsonConvert.DeserializeObject<JourneyDetails>(jsonString);
+            JourneyDetails RootData =JsonConvert.DeserializeObject<JourneyDetails>(jsonString);
 
-            return data.Rows[CarPoolData.Places.IndexOf(destination.ToLower())].Elements[CarPoolData.Places.IndexOf(source.ToLower())];
+            return RootData.Rows[CarPoolRootData.Places.IndexOf(destination.ToLower())].Elements[CarPoolRootData.Places.IndexOf(source.ToLower())];
         }
     }
 }

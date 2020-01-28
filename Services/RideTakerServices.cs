@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarPool.Models;
-using CarPool.AppData;
+using CarPool.AppRootData;
 
 namespace CarPool.Services
 {
@@ -12,26 +12,26 @@ namespace CarPool.Services
     {
         public void BookRide(Booking booking)
         {
-            var ride = CarPoolData.Rides.Find(r => r.RideId == booking.RideId);
-            booking.BookingId = CarPoolData.Bookings.Count + 1;
+            var ride = CarPoolRootData.Rides.Find(r => r.RideId == booking.RideId);
+            booking.BookingId = CarPoolRootData.Bookings.Count + 1;
             booking.StartTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, booking.Source));
             booking.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(booking.Source, booking.Destination));
             booking.CostOfBooking =GetDistanceBetweenPlaces(booking.Source, booking.Destination) * ride.PricePerKilometer*booking.NumberSeatsSelected;
             booking.BookingDate = DateTime.Now;
             if (booking.NumberSeatsSelected <= ride.NoOfSeatsAvailable)
             {
-                CarPoolData.Bookings.Add(booking);
+                CarPoolRootData.Bookings.Add(booking);
             }  
         }
 
         public List<Booking> GetAllBookings(int userId)
         {
-            return CarPoolData.Bookings.FindAll(b => b.UserId == userId);
+            return CarPoolRootData.Bookings.FindAll(b => b.UserId == userId);
         }
 
         public  List<Ride> GetAllRideOffers(int userId)
         {
-            return CarPoolData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId);
+            return CarPoolRootData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId);
         }
 
         public IList<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
@@ -62,7 +62,7 @@ namespace CarPool.Services
 
         public Car GetCarDetails(string carNumber)
         {
-            return CarPoolData.Cars.Find(c => c.CarNo == carNumber);
+            return CarPoolRootData.Cars.Find(c => c.CarNo == carNumber);
         }
 
     }

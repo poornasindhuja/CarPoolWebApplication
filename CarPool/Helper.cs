@@ -31,19 +31,31 @@ namespace CarPool
             do
             {
                 Console.Write(displayMessage);
-                int.TryParse(Console.ReadLine(), out int inputData);
-                if (!Validationfunction(inputData))
+                int.TryParse(Console.ReadLine(), out int inputRootData);
+                if (!Validationfunction(inputRootData))
                 {
                     Console.WriteLine(errorMessage);
                 }
                 else
                 {
-                    return inputData;
+                    return inputRootData;
                 }
             } while (true);
         }
 
+        public decimal GetDecimalInput()
+        {
+            decimal value;
+            do
+            { 
+                if (Decimal.TryParse(Console.ReadLine(), out value))
+                {
+                    return value;
+                }
+                Console.WriteLine("Invalid Format");
+            } while (true);           
 
+        }
 
         public int GetLocation()
         {
@@ -63,8 +75,7 @@ namespace CarPool
                 {
                     break;
                 }
-            } while (true);
-           
+            } while (true);           
             return choice;
         }
     }
