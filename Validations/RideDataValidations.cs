@@ -1,11 +1,11 @@
-﻿using CarPool.AppRootData;
+﻿using CarPool.AppData;
 using System.Text.RegularExpressions;
 using CarPool.Services;
 using System;
 
 namespace CarPool.Validations
 {
-    public class RideRootDataValidations:IRideRootDataValidations
+    public class RideDataValidations:IRideDataValidations
     {
         public bool IsValidTimeFormat(string time)
         {
@@ -17,7 +17,7 @@ namespace CarPool.Validations
 
         public bool IsValidPlace(string place)
         {
-            return CarPoolRootData.Places.Contains(place.ToLower());
+            return CarPoolData.Places.Contains(place.ToLower());
         }
 
         public bool IsValidDateFormat(string inputDate)

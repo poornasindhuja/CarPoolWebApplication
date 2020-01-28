@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CarPool.Models;
 
-namespace CarPool.AppRootData
+namespace CarPool.AppData
 {
-    public static class CarPoolRootData
+    public static class CarPoolData
     {
         static readonly DateTime date = new DateTime(2020, 2, 1);
 

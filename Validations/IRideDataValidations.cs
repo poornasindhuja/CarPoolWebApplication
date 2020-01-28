@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarPool.Validations
 {
-    public interface IRideRootDataValidations
+    public interface IRideDataValidations
     {
         bool IsValidTimeFormat(string time);
 

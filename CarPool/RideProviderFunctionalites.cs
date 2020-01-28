@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CarPool.AppRootData;
+using CarPool.AppData;
 using CarPool.Models;
 using CarPool.Services;
 using CarPool.Validations;
@@ -23,7 +23,7 @@ namespace CarPool
 
         IUserServices userServices;
 
-        IRideRootDataValidations rideRootDataValidations;
+        IRideDataValidations rideDataValidations;
 
         public RideProviderFunctionalites(int providerId)
         {
@@ -31,7 +31,7 @@ namespace CarPool
 
             userServices = new UserServices();
 
-            rideRootDataValidations = new RideRootDataValidations();
+            rideDataValidations = new RideDataValidations();
 
             this.providerId = providerId;
         }
@@ -239,18 +239,18 @@ namespace CarPool
             {
                 AddCar(providerId);
             }
-            var date = GetStringInput("Enter date of Journey(dd/mm/yyyy):", "Invalid date format", rideRootDataValidations.IsValidDateFormat).Split('/');
+            var date = GetStringInput("Enter date of Journey(dd/mm/yyyy):", "Invalid date format", rideDataValidations.IsValidDateFormat).Split('/');
             ride.DateOfRide = DateTime.Parse(date[1] + " / " + date[0] + " / " + date[2]);
 
             Console.WriteLine("\nPlease select Starting Location");
             ride.Source = Enum.GetName(typeof(Places), GetLocation());
 
-            time = GetStringInput("Please enter start time (HH:MM) In 24 Hour Format: ", "Invalid time", rideRootDataValidations.IsValidTimeFormat);
+            time = GetStringInput("Please enter start time (HH:MM) In 24 Hour Format: ", "Invalid time", rideDataValidations.IsValidTimeFormat);
             ride.StartTime = DateTime.ParseExact(time+":00", "HH:mm:ss", CultureInfo.InvariantCulture);
 
             Console.WriteLine("\nPlease select destination Location");
             ride.Destination = Enum.GetName(typeof(Places), GetLocation());
-            ride.NoOfSeatsAvailable = GetIntegerInput("Please enter No of seats available", "Invalid RootData", (int number) => { return !(number > capacity - 1 || number < 1); });         
+            ride.NoOfSeatsAvailable = GetIntegerInput("Please enter No of seats available", "Invalid Data", (int number) => { return !(number > capacity - 1 || number < 1); });         
             Console.WriteLine("Enter Intermediate places seperated by ',':");
             List<string> viaPlaces = new List<string>(Console.ReadLine().Split(','));
             for (int i = 0; i < viaPlaces.Count; i++)

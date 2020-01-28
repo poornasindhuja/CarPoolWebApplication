@@ -31,14 +31,14 @@ namespace CarPool
             do
             {
                 Console.Write(displayMessage);
-                int.TryParse(Console.ReadLine(), out int inputRootData);
-                if (!Validationfunction(inputRootData))
+                int.TryParse(Console.ReadLine(), out int inputData);
+                if (!Validationfunction(inputData))
                 {
                     Console.WriteLine(errorMessage);
                 }
                 else
                 {
-                    return inputRootData;
+                    return inputData;
                 }
             } while (true);
         }
