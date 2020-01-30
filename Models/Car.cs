@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CarPool.Models
 {
     public class Car
     {
+        [Required]
         public string CarNo { get; set; }
         public string CarName { get; set; }
         public bool CarType { get; set; }

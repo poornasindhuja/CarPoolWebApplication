@@ -7,7 +7,7 @@ namespace CarPool
 {
     public class UserActions:Helper
     {        
-        public int choice,UserId;
+        public int Choice,UserId;
 
         string phoneNumber,confirmPassword,password,petName;
 
@@ -28,52 +28,32 @@ namespace CarPool
 
         public void SignUp()
         {
-            ISignUpValidations signUpValidations = new SignUpValidations();
-            User.UserName = GetStringInput("Please Enter your Name: ", "Name should not be empty", signUpValidations.IsValidName);
+            ISignUpValidations signUpValidations = new SignUpValidations();  
+            //Getting User details
+            User.UserName = GetStringMatch("Please Enter your Name: ","Name should not be empty", Patterns.Text);
             User.PhoneNumber = GetStringInput("Please Enter your phone number: ", "Invalid phone number", signUpValidations.IsValidPhoneNumber);
-            User.EmailAddress = GetStringInput("Please Enter your email address: ","Invalid email address",signUpValidations.IsValidEmailAddress);       
+            User.EmailAddress = GetStringMatch("Please Enter your email address: ","Invalid email address",Patterns.EmailAddress);       
             Console.Write("Please Enter your Address:");
-            User.Address = Console.ReadLine();            
-
-            Console.WriteLine("Please Select your Gender by entering your choice\n1.Male\n2.Female\n3.Others");
-            while (true)
-            {
-                int.TryParse(Console.ReadLine(), out choice);
-                if(choice>0 && choice<3)
-                {
-                    User.Gender = choice == 1 ? "Male" : choice == 2 ? "Female" : "Other";
-                    break;
-                }
-                Console.WriteLine("Please enter a valid option");
-            }
-            User.Password = GetStringInput("Please set your password: ", "your password is week.try anthor password", signUpValidations.IsValidPassword);
-            // Confirm password
-            do
-            {
-                Console.Write("Confirm your password:");
-                confirmPassword = Console.ReadLine();
-            } while (User.Password != confirmPassword);
+            User.Address = Console.ReadLine();
+            Choice =Convert.ToInt16(GetStringMatch("Please Select your Gender by entering your Choice\n1.Male\n2.Female\n3.Others\n", "Please enter a valid option", @"^[1-3]"));
+            User.Gender = Choice == 1 ? "Male" : Choice == 2 ? "Female" : "Other";           
+            User.Password = GetStringMatch("Please set your password: ", "your password is week.try anthor password",Patterns.Password);
+            confirmPassword = GetStringMatch("Confirm your password:", "password and confirm password does not match", User.Password);
             Console.WriteLine("Security Question");
-            Console.Write("Please Enter your first pet Name: ");
-            User.PetName = Console.ReadLine();
-            while (true)
+            User.PetName = GetStringMatch("Please Enter your first pet Name: ", "pet name should not be empty",Patterns.Text);
+            var registrationChoice = GetStringMatch("Enter 1 to register\nEnter 2 to cancel\n", "please enter a valid option", @"^[1-2]");
+            if (Convert.ToInt16(registrationChoice) == 1)
             {
-                Console.WriteLine("Enter 1 to register");
-                Console.WriteLine("Enter 2 to cancel");
-                int.TryParse(Console.ReadLine(), out choice);
-                if (choice == 1)
+                if (userServices.SignUp(User))
                 {
-                    userServices.SignUp(User);
                     Console.Clear();
                     Console.WriteLine("Your account has been sucessfully created.\n Press any key to continue");
-                    Console.ReadKey();
-                    break;
                 }
-                else if (choice == 2)
+                else
                 {
-                    break;
-                }              
-                Console.WriteLine("please enter a valid option");
+                    Console.WriteLine("Oops! Problem in registration");
+                }
+                Console.ReadKey();
             }
         }
 
@@ -121,9 +101,10 @@ namespace CarPool
                 Console.WriteLine("Please Choose one of the following options");
                 Console.WriteLine("1.RideProvider");
                 Console.WriteLine("2.RideTaker");
-                Console.WriteLine("3.logout");
-                int.TryParse(Console.ReadLine(), out choice);
-                switch (choice)
+                Console.WriteLine("3.View profile");
+                Console.WriteLine("4.logout");
+                int.TryParse(Console.ReadLine(), out Choice);
+                switch (Choice)
                 {
                     case 1:
                         RideProviderFunctionalites rideProviderFunctionalities = new RideProviderFunctionalites(UserId);
@@ -133,12 +114,27 @@ namespace CarPool
                         RideTakerFunctionalities rideTakerActions = new RideTakerFunctionalities(UserId);
                         rideTakerActions.RideTakerOptions();
                         break;
-                    case 3:
+                    case 3:DisplayProfile();
+                        break;
+                    case 4:
                         CarPoolMenu.DisplayMainMenu();
                         break;
                         
                 }
             }   
+        }
+
+        public void DisplayProfile()
+        {
+            var user = userServices.GetUser(phoneNumber);
+            Console.WriteLine($"Name:{user.UserName}");
+            Console.WriteLine($"Phone:{user.PhoneNumber}");
+            Console.WriteLine($"Email:{user.EmailAddress}");
+            Console.WriteLine($"Gender:{user.Gender}");
+            Console.WriteLine($"Address:{user.Address}");
+            Console.WriteLine($"Password:{user.Password}");
+            Console.Write("Press any key to go back");
+            Console.ReadKey();
         }
     }
 }

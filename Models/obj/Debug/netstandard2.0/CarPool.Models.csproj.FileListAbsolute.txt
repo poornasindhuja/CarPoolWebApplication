@@ -6,4 +6,3 @@ D:\CarPooling\CarPool\Models\obj\Debug\netstandard2.0\CarPool.Models.AssemblyInf
 D:\CarPooling\CarPool\Models\obj\Debug\netstandard2.0\CarPool.Models.AssemblyInfo.cs
 D:\CarPooling\CarPool\Models\obj\Debug\netstandard2.0\CarPool.Models.dll
 D:\CarPooling\CarPool\Models\obj\Debug\netstandard2.0\CarPool.Models.pdb
-D:\CarPooling\CarPool\Models\obj\Debug\netstandard2.0\CarPool.Models.csprojAssemblyReference.cache

@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppData\CarPool.AppData.csproj" />
-    <ProjectReference Include="..\Models\CarPool.Models.csproj" />
   </ItemGroup>
 
 </Project>

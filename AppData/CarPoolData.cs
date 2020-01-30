@@ -14,7 +14,7 @@ namespace CarPool.AppData
 
         static readonly DateTime startTime = DateTime.ParseExact("12:00:00", "HH:mm:ss", CultureInfo.InvariantCulture);
 
-        static DateTime endTime = DateTime.ParseExact("13:40:00", "HH:mm:ss", CultureInfo.InvariantCulture);
+        static readonly DateTime endTime = DateTime.ParseExact("13:40:00", "HH:mm:ss", CultureInfo.InvariantCulture);
 
         private static List<Ride> rides = new List<Ride>()
         {

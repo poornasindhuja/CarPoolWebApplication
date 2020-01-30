@@ -9,7 +9,7 @@ namespace CarPool
         
         static UserActions userActions;
 
-        static int choice;
+        static int Choice;
 
         static void Main(string[] args)
         {
@@ -24,9 +24,9 @@ namespace CarPool
                 Console.Clear();
                 Console.WriteLine("---------------WELCOME to CarPool----------------\n ");
                 Console.WriteLine("1.SignIn\n2.SignUp \n3.Forgot Password \n4.close Application");
-                Console.WriteLine("Please Enter your choice");
-                int.TryParse(Console.ReadLine(), out choice);
-                switch (choice)
+                Console.WriteLine("Please Enter your Choice");
+                int.TryParse(Console.ReadLine(), out Choice);
+                switch (Choice)
                 {
                     case 1:
                         userActions.SignIn();
@@ -41,7 +41,7 @@ namespace CarPool
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("Invalid choice\n please choose a valid option");
+                        Console.WriteLine("Invalid Choice\n please choose a valid option");
                         break;
                 }
 

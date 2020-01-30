@@ -1,9 +1,11 @@
 ﻿using CarPool.Models;
 using System;
+using CarPool.DataValidations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace CarPool
 {
@@ -15,6 +17,7 @@ namespace CarPool
             {
                 Console.Write(displayMessage);
                 var input = Console.ReadLine();
+                
                 if (!Validationfunction(input))
                 {
                     Console.WriteLine(errorMessage);
@@ -26,13 +29,28 @@ namespace CarPool
             } while (true);
         }
 
-        public int GetIntegerInput(string displayMessage, string errorMessage, Func<int, bool> Validationfunction)
+        public string GetStringMatch(string displayMessage,string errorMessage, string pattern)
+        {
+            do
+            {
+                Console.Write(displayMessage);
+                var input = Console.ReadLine();
+                Regex regex = new Regex(pattern);
+                if (regex.IsMatch(input))
+                {
+                    return input;
+                }
+                Console.WriteLine(errorMessage);
+            } while (true);
+        }
+
+        public int GetIntegerInRange(string displayMessage, string errorMessage, int minimumValue, int maximumValue)
         {
             do
             {
                 Console.Write(displayMessage);
                 int.TryParse(Console.ReadLine(), out int inputData);
-                if (!Validationfunction(inputData))
+                if (inputData < minimumValue || inputData > maximumValue)
                 {
                     Console.WriteLine(errorMessage);
                 }
@@ -43,40 +61,22 @@ namespace CarPool
             } while (true);
         }
 
-        public decimal GetDecimalInput()
+        public int GetUserChoiceInEnum<T>()
         {
-            decimal value;
-            do
-            { 
-                if (Decimal.TryParse(Console.ReadLine(), out value))
-                {
-                    return value;
-                }
-                Console.WriteLine("Invalid Format");
-            } while (true);           
-
-        }
-
-        public int GetLocation()
-        {
-            int i=1, choice;
-            foreach (string place in Enum.GetNames(typeof(Places)))
+            // It will display all the strings in enum (of type T) and the the position of string which user has choosed
+            int i = 1;
+            foreach (string value in Enum.GetNames(typeof(T)))
             {
-                Console.WriteLine($"{i++}.{place}");
+                Console.WriteLine($"{i++}.{value}");
             }
             do
             {
-                int.TryParse(Console.ReadLine(), out choice);
-                if(choice < 1 || choice > i-1)
+                int.TryParse(Console.ReadLine(), out int Choice);
+                if (Choice >= 1 || Choice < i)
                 {
-                    Console.WriteLine("Please choose valid option");
+                    return Choice - 1;
                 }
-                else
-                {
-                    break;
-                }
-            } while (true);           
-            return choice;
+            } while (true);
         }
     }
 }

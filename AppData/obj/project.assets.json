@@ -37,10 +37,6 @@
       },
       "CarPool.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Newtonsoft.Json": "12.0.3"
-        },
         "compile": {
           "bin/placeholder/CarPool.Models.dll": {}
         },
@@ -227,8 +223,8 @@
     },
     "CarPool.Models/1.0.0": {
       "type": "project",
-      "path": "../Models/CarPool.Models.csproj",
-      "msbuildProject": "../Models/CarPool.Models.csproj"
+      "path": "../CarPool.dels/CarPool.Models.csproj",
+      "msbuildProject": "../CarPool.dels/CarPool.Models.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -268,8 +264,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "D:\\CarPooling\\CarPool\\Models\\CarPool.Models.csproj": {
-              "projectPath": "D:\\CarPooling\\CarPool\\Models\\CarPool.Models.csproj"
+            "D:\\CarPooling\\CarPool\\CarPool.dels\\CarPool.Models.csproj": {
+              "projectPath": "D:\\CarPooling\\CarPool\\CarPool.dels\\CarPool.Models.csproj"
             }
           }
         }

@@ -10,7 +10,7 @@ namespace CarPool
 {
     public class RideTakerFunctionalities
     {
-        int choice,userId;
+        int Choice,userId;
 
         IRideTakerServices rideTakerServices;
 
@@ -27,20 +27,21 @@ namespace CarPool
 
         public void RideTakerOptions()
         {
+            // Displays the options for ridetaker
             bool repeat = true;
 
             while (repeat)
             {
                 Console.Clear();
-                Console.WriteLine("Please Choose one of the following options");
-                Console.WriteLine("1.view Ride Offers");
-                Console.WriteLine("2.Book a Ride");
-                Console.WriteLine("3.View Bookings");
-                Console.WriteLine("4.Go Back");
-                Console.WriteLine("5.Logout");
-                int.TryParse(Console.ReadLine(), out choice);
+                Console.WriteLine("Please Choose one of the following options" +
+                    "1.view Ride Offers" +
+                    "2.Book a Ride" +
+                    "3.View Bookings" +
+                    "4.Go Back" +
+                    "5.Logout");
+                int.TryParse(Console.ReadLine(), out Choice);
 
-                switch (choice)
+                switch (Choice)
                 {
                     case 1:
                         DisplayAllRideOffers();
@@ -94,11 +95,11 @@ namespace CarPool
             Console.Clear();
             Console.WriteLine("please Enter pick up location:");
 
-            string pickupLocation =Enum.GetName(typeof(Places),helper.GetLocation());
+            string pickupLocation =Enum.GetName(typeof(Places),helper.GetUserChoiceInEnum<Places>());
 
             Console.WriteLine("please Enter Drop location");
 
-            string dropLocation = Enum.GetName(typeof(Places), helper.GetLocation());
+            string dropLocation = Enum.GetName(typeof(Places), helper.GetUserChoiceInEnum<Places>());
 
             var availableRides = rideTakerServices.SearchRides(pickupLocation.ToLower(), dropLocation.ToLower(),userId);
 
@@ -113,8 +114,8 @@ namespace CarPool
                 do
                 {
                     Console.WriteLine("Please select your option/Enter '0' to go back:");
-                    int.TryParse(Console.ReadLine(), out choice);
-                    if (choice == 0)
+                    int.TryParse(Console.ReadLine(), out Choice);
+                    if (Choice == 0)
                     {
                         return;
                     }
@@ -122,22 +123,28 @@ namespace CarPool
                     {
                         Console.WriteLine("Enter number of seats you want to book");
                         int.TryParse(Console.ReadLine(), out noOfSeats);
-                    } while (noOfSeats > availableRides[choice - 1].NoOfSeatsAvailable || noOfSeats < 1);
-                } while (!rideTakerServices.IsvalidRideId(availableRides.ElementAt(choice-1).RideId));
+                    } while (noOfSeats > availableRides[Choice - 1].NoOfSeatsAvailable || noOfSeats < 1);
+                } while (!rideTakerServices.IsValidRideId(availableRides.ElementAt(Choice-1).RideId));
 
                 while (true)
                 {
                     Console.Clear();
                     Console.WriteLine("Enter 1 to confirm Booking.\nEnter 2 to cancel Booking");
-                    int.TryParse(Console.ReadLine(), out choice);
-                    if (choice == 1)
+                    int.TryParse(Console.ReadLine(), out Choice);
+                    if (Choice == 1)
                     {
-                        rideTakerServices.BookRide(new Booking(availableRides[choice - 1].RideId, pickupLocation, dropLocation, noOfSeats,userId));
-                        Console.Clear();
-                        Console.WriteLine("Request Sent sucessfully");
+                        if (rideTakerServices.BookRide(new Booking(availableRides[Choice - 1].RideId, pickupLocation, dropLocation, noOfSeats, userId)))
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Request Sent sucessfully");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Request can not be sent");
+                        }
                         break;
                     }
-                    else if (choice == 2)
+                    else if (Choice == 2)
                     {
                         break;
                     }
@@ -149,7 +156,7 @@ namespace CarPool
             }           
         }
 
-        public void DisplayRideOffers(IList<Ride> rideOffers,string source,string destination)
+        private void DisplayRideOffers(IList<Ride> rideOffers,string source,string destination)
         {
             int index = 1;
 
