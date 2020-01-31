@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using CarPool.DataValidations;
 using CarPool.AppData;
 using CarPool.Models;
 
@@ -49,7 +48,7 @@ namespace CarPool.Services
                 return false;
             }
         }
-       
+
         public bool AddCar(Car car)
         {
             var errors = new List<string>();
@@ -58,15 +57,12 @@ namespace CarPool.Services
                 CarPoolData.Cars.Add(car);
                 return true;
             }
-            else
-            {
-                return false;
-            }     
+            return false;
         }
 
         public bool IsCarLinked(int providerId)
         {
-            return CarPoolData.Cars.Count(c => c.OwnerId == providerId)!=0 ? true : false;
+            return CarPoolData.Cars.Count(c => c.OwnerId == providerId)!=0 ;
         }
 
         public List<Car> GetCarsOfUser(int userId)
@@ -89,13 +85,4 @@ namespace CarPool.Services
             return CarPoolData.Bookings.FindAll(b => b.RideId == rideId && b.Status == BookingStatus.Pending);
         }
     }
-
-    public class InvalidDataException : Exception
-    {
-        public InvalidDataException(string error):base(error)
-        {
-
-        }
-    }
-
 }

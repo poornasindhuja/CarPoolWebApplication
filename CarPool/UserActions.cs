@@ -61,8 +61,8 @@ namespace CarPool
         {           
             Console.Clear();
             Console.WriteLine("----------------------------------Sign In-----------------------------------------\n");
-            phoneNumber = GetStringInput("Please enter your phone number: ", "Invalid phonenumber", signInValidations.IsValidPhoneNumber);
-            password = GetStringInput("Please Enter your password: ", "Wrong password", signInValidations.IsValidPassword);
+            phoneNumber = GetStringInput("Please enter your phone number: ", "Invalid phonenumber", signInValidations.IsValidUserPhoneNumber);
+            password = GetStringInput("Please Enter your password/Enter * to go back: ", "Wrong password", signInValidations.IsValidPassword);
             userServices.SignIn(phoneNumber);
             UserId = userServices.GetUser(phoneNumber).UserId;
             UserOptions();
@@ -71,7 +71,7 @@ namespace CarPool
         public void ForgotPassword()
         {
             Console.Clear();
-            phoneNumber = GetStringInput("Please enter your Phone Number: ", "Invalid phone number", signInValidations.IsValidPhoneNumber);
+            phoneNumber = GetStringInput("Please enter your Phone Number: ", "Invalid phone number", signInValidations.IsValidUserPhoneNumber);
             Console.WriteLine("Please enter your first petname");
             petName = Console.ReadLine();
             if (userServices.IsValidPetName(phoneNumber, petName))

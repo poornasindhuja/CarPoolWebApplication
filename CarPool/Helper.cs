@@ -1,6 +1,5 @@
 ﻿using CarPool.Models;
 using System;
-using CarPool.DataValidations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,6 +56,24 @@ namespace CarPool
                 else
                 {
                     return inputData;
+                }
+            } while (true);
+        }
+
+        public int GetUserChoiceInList(List<string> values)
+        {
+            // It will display all the strings in list and returns the the position of string which user has choosed
+            int i = 1;
+            foreach (string value in values)
+            {
+                Console.WriteLine($"{i++}.{value}");
+            }
+            do
+            {
+                int.TryParse(Console.ReadLine(), out int Choice);
+                if (Choice >= 1 || Choice < i)
+                {
+                    return Choice - 1;
                 }
             } while (true);
         }

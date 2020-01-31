@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using CarPool.Models;
 using CarPool.AppData;
-using CarPool.DataValidations;
 
 namespace CarPool.Services
 {
@@ -21,17 +19,17 @@ namespace CarPool.Services
 
         public void SignIn(string phoneNumber)
         {
-            CurrentUser =CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber);
+            CurrentUser =CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
         }
 
         public User GetUser(int userId)
         {
-            return CarPoolData.Users.Find(u => u.UserId == userId);
+            return CarPoolData.Users.FirstOrDefault(u => u.UserId == userId);
         }
 
         public bool IsExistingUser(string phoneNumber)
         {
-            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber) != null ? true : false;
+            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber) != null;
         }
 
         public bool SignUp(User user)
@@ -47,17 +45,17 @@ namespace CarPool.Services
 
         public bool IsValidPetName(string phoneNumber,string petName)
         {
-            return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null;
+            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null;
         }
 
         public void ResetPassword(string phoneNumber, string password)
         {
-            CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber).Password = password;
+            CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber).Password = password;
         }
 
         public User GetUser(string phoneNumber)
         {
-            return CarPoolData.Users.Find(u => u.PhoneNumber == phoneNumber);
+            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
         }
 
     }

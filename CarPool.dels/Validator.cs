@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace CarPool.DataValidations
+namespace CarPool.Models
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
     public class NotNullAttribute : ValidationAttribute
@@ -18,17 +18,6 @@ namespace CarPool.DataValidations
         }
     }
 
-
-    public class EmailAttribute : NotNullAttribute
-    {
-        // Returns true if it is a valid email address
-        public override bool IsValid(object value)
-        {
-            return new RegularExpressionAttribute(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4})(\]?)$").IsValid(value);
-        }
-
-    }
-
     public class PhoneNumberAttribute : NotNullAttribute
     {
         // Returns true if it is a valid phone number
@@ -37,30 +26,6 @@ namespace CarPool.DataValidations
             return new Regex(@"^(\+[1-9][0-9])?[6-9](0-9){9}").IsMatch(value.ToString());
         }
     }
-
-    //public class DataValidater
-    //{
-    //    // Returns true if the object(object of any data model) satisfies all the validation attributes.
-    //    public bool Validate(object model, out List<string> validationResults)
-    //    {
-    //        validationResults = new List<string>();
-    //        foreach (var propertyInfo in model.GetType().GetProperties())
-    //        {
-    //            foreach (var attribute in propertyInfo.GetCustomAttributes(true))
-    //            {
-    //                var notNullAttribute = attribute as NotNullAttribute;
-    //                if (notNullAttribute != null)
-    //                {
-    //                    if (!notNullAttribute.IsValid(propertyInfo.GetValue(model)))
-    //                    {
-    //                        validationResults.Add(notNullAttribute.ErrorMessage);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        return validationResults.Count == 0 ? true : false;
-    //    }
-    //}
 
     public class PresentOrFutureDateAttribute : NotNullAttribute
     {

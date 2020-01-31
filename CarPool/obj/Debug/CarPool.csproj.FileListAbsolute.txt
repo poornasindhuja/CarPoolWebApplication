@@ -114,3 +114,4 @@ D:\CarPooling\CarPool\CarPool\obj\Debug\CarPool.csproj.CoreCompileInputs.cache
 D:\CarPooling\CarPool\CarPool\obj\Debug\CarPool.csproj.CopyComplete
 D:\CarPooling\CarPool\CarPool\obj\Debug\CarPool.exe
 D:\CarPooling\CarPool\CarPool\obj\Debug\CarPool.pdb
+D:\CarPooling\CarPool\CarPool\bin\Debug\RideCharges.json

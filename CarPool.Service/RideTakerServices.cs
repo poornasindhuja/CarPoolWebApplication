@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CarPool.Models;
 using CarPool.AppData;
-using CarPool.DataValidations;
 
 namespace CarPool.Services
 {
@@ -24,10 +23,10 @@ namespace CarPool.Services
             booking.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(booking.Source, booking.Destination));
             var placesList = new List<string>
             {
-                ride.Source
+                ride.Source.ToLower()
             };
             placesList.AddRange(ride.ViaPlaces);
-            placesList.Add(ride.Destination);
+            placesList.Add(ride.Destination.ToLower());
             var root = placesList.GetRange(placesList.IndexOf(booking.Source.ToLower()) + 1, placesList.IndexOf(booking.Destination.ToLower()) - 1);
             booking.CostOfBooking = GetDistanceBetweenPlaces(booking.Source, booking.Destination,root) * ride.PricePerKilometer * booking.NumberSeatsSelected;
             booking.BookingDate = DateTime.Now;

@@ -38,19 +38,6 @@ namespace CarPool.Models
 
         public int NumberSeatsSelected { get; set; }
 
-        public Booking(int bookingId, int rideId, string source, string destination, int userId, DateTime bookingDate,DateTime startTime,DateTime endTime,decimal cost,int numberOfSeatsSelected)
-        {
-            this.BookingId = bookingId;
-            this.RideId = rideId;
-            this.Source = source;
-            this.Destination = destination;
-            this.UserId = userId;
-            this.BookingDate = bookingDate;
-            this.StartTime = startTime;
-            this.EndTime = endTime;
-            this.CostOfBooking = cost;
-            this.NumberSeatsSelected = numberOfSeatsSelected;
-        }
 
         public Booking(int rideId, string pickupLocation, string dropLocation, int noOfSeats, int userId)
         {

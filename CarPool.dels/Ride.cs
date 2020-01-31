@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using CarPool.DataValidations;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarPool.Models
 {
@@ -30,8 +26,6 @@ namespace CarPool.Models
         public string CarNumber { get; set; }
 
         public List<string> ViaPlaces { get; set; }
-
-        public List<DateTime> ViaTimings { get; set; }
 
         public int RideProviderId { get; set; }
 

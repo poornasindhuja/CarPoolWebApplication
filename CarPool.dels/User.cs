@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using CarPool.DataValidations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CarPool.Models
 {

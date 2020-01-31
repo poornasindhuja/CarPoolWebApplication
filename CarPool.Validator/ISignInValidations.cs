@@ -8,7 +8,7 @@ namespace CarPool.Validations
 {
     public interface ISignInValidations
     {
-        bool IsValidPhoneNumber(string phoneNumber);
+        bool IsValidUserPhoneNumber(string phoneNumber);
 
         bool IsValidPassword(string password);
     }

@@ -6,10 +6,14 @@
 
   <ItemGroup>
     <None Remove="DistanceMatrix.json" />
+    <None Remove="RideCharges.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="DistanceMatrix.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RideCharges.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

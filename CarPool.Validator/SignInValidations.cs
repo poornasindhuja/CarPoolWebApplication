@@ -20,7 +20,7 @@ namespace CarPool.Validations
             userServices = new UserServices();
         }
         // It checks whether the given phone number is valid type of phonenumber.
-        public bool IsValidPhoneNumber(string phoneNumber)
+        public bool IsValidUserPhoneNumber(string phoneNumber)
         {
             Regex regex = new Regex("^[6-9][0-9]{9}");
             if (regex.IsMatch(phoneNumber) && phoneNumber.Length == 10 && userServices.IsExistingUser(phoneNumber))

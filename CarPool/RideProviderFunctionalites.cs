@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using CarPool.AppData;
 using CarPool.Models;
 using CarPool.Services;
 
@@ -9,19 +8,23 @@ namespace CarPool
 {
     public class RideProviderFunctionalites : Helper
     {
-        public int Choice, capacity, providerId;
+        public int Choice, capacity, providerId, carType;
 
-        public string carNo;
+        public string CarNumber;
 
         IRideProviderServices rideProviderServices;
 
         IUserServices userServices;
+
+        TravellingChargeServices travellingChargeServices;
 
         public RideProviderFunctionalites(int providerId)
         {
             rideProviderServices = new RideProviderServices();
 
             userServices = new UserServices();
+
+            travellingChargeServices = new TravellingChargeServices();
 
             this.providerId = providerId;
         }
@@ -70,7 +73,15 @@ namespace CarPool
 
         private void DisplayAllBookingRequests()
         {
-            DisplayBookings(rideProviderServices.GetAllBookings(providerId));
+            var bookingRequests = rideProviderServices.GetAllBookings(providerId);
+            if (bookingRequests.Count != 0)
+            {
+                DisplayBookings(bookingRequests);
+            }
+            else
+            {
+                Console.WriteLine("Oops there are no booking requests");
+            }
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
         }
@@ -149,7 +160,7 @@ namespace CarPool
             foreach (Booking booking in bookings)
             {
                 var requester = userServices.GetUser(booking.UserId);
-                Console.WriteLine($"Booking number{i++}.\nRequested BY:{requester.UserName}\t" +
+                Console.WriteLine($"Booking number: {i++}.\nRequested BY:{requester.UserName}\t" +
                     $"Phone Number:{requester.PhoneNumber}\nPick Up Location:{booking.Source}\tDrop Location:{booking.Destination}\n" +
                     $"Number of seats requested:{booking.NumberSeatsSelected}\tAmount you will get:Rs.{booking.CostOfBooking}" +
                     $"\n--------------------------------------------------------------------------------------------------------\n");      
@@ -213,12 +224,16 @@ namespace CarPool
 
             string time;
 
+            int optionNumber = 1;
+
+            List<Car> availableCars;
+
             Console.Clear();
             // It will check if the user has provided ride offers previously,display list of cars he used previously and ask user to selsct one among them or new car.
             if (rideProviderServices.IsCarLinked(providerId))
             {
                 Console.WriteLine("List Of Cars Used:");
-                var availableCars = rideProviderServices.GetCarsOfUser(providerId);
+                availableCars = rideProviderServices.GetCarsOfUser(providerId);
                 Console.WriteLine("Please Choose One of the following cars:");
                 for (int i = 0; i < availableCars.Count; i++)
                 {
@@ -236,8 +251,9 @@ namespace CarPool
                     }
                     else if(Choice>0&&Choice<=availableCars.Count)
                     {
-                        carNo = availableCars[Choice - 1].CarNo;
+                        CarNumber = availableCars[Choice - 1].CarNo;
                         capacity = availableCars[Choice - 1].Capacity;
+                        carType = availableCars[Choice - 1].CarType;
                         break;
                     }
                 } while (true);
@@ -266,14 +282,30 @@ namespace CarPool
             ride.Destination = Enum.GetName(typeof(Places), GetUserChoiceInEnum<Places>());
             ride.NoOfSeatsAvailable = GetIntegerInRange("Please enter No of seats available", "Invalid Data",1,capacity-1);  
             // List of via points.
-            Console.WriteLine("Enter Intermediate places seperated by ','(Please choose in the above listed places only):");
-            var viaPlaces = new List<string>(Console.ReadLine().Split(',')).ConvertAll(place=>place.ToLower());
-            viaPlaces.RemoveAll(p => !CarPoolData.Places.Contains(p));
-
-            ride.PricePerKilometer =Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise): ", "Invalid cost",Patterns.Amount));
-            ride.CarNumber = carNo;
+            Console.WriteLine("Enter Intermediate places seperated by spaces:");
+            var places = Enum.GetNames(typeof(Places));
+            var viaPlaces = new List<string>();
+            foreach (string value in places)
+            {
+                Console.WriteLine($"{optionNumber++}.{value}");
+            }
+            foreach(string choice in Console.ReadLine().Split(' '))
+            {
+                int.TryParse(choice, out int index);
+                if (index > 0 && index < places.Length)
+                {
+                    viaPlaces.Add(places[index - 1]);
+                }
+            }
+            
+            do
+            {
+                ride.PricePerKilometer = Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise): ", "Invalid cost", Patterns.Amount));
+            } while (travellingChargeServices.getMaximumCharge(carType)<ride.PricePerKilometer);
+            
+            ride.CarNumber = CarNumber;
             ride.RideProviderId = providerId;
-            ride.ViaPlaces = viaPlaces;
+            ride.ViaPlaces = viaPlaces.ConvertAll(p => p.ToLower());
             rideProviderServices.AddRide(ride);
             Console.Write("Ride Added Sucessfully");
             Console.Write("Press any key");
@@ -282,22 +314,16 @@ namespace CarPool
 
         public bool AddCar(int providerId)
         {
-            bool IsAcCar;
-
-            string carName;
-
-            carNo = GetStringMatch("Enter car number", "car number should not be empty",Patterns.CarNumber);
-            carName = GetStringMatch("Enter the car name", "car name should not be empty", Patterns.Name);
+            CarNumber = GetStringMatch("Enter car number", "car number should not be empty",Patterns.CarNumber);
+            var carName = GetStringMatch("Enter the car name", "car name should not be empty", Patterns.Name);
             capacity =Convert.ToInt16(GetStringMatch("Enter Capacity of car[4-8]", "Invalid Capacity", Patterns.CarCapacity));
-            var carTypeChoice = Convert.ToInt16(GetStringMatch("select Car Type\n1.Ac\n2.Non-AC", "Invalid cartype", @"^[1-2]"));
-            IsAcCar = (carTypeChoice == 1);
-            if(!rideProviderServices.AddCar(new Car(carNo, carName, capacity,IsAcCar, providerId)))
+            carType = GetUserChoiceInList(travellingChargeServices.CarTypes);
+            if(!rideProviderServices.AddCar(new Car(CarNumber, carName, capacity,carType, providerId)))
             { 
                 Console.WriteLine("Oops! you cant add this car");
                 return false;
             }
             return true;
         }
-
     }
 }

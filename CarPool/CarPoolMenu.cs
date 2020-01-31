@@ -5,8 +5,7 @@ using System;
 namespace CarPool
 {
     public class CarPoolMenu
-    {  
-        
+    {        
         static UserActions userActions;
 
         static int Choice;

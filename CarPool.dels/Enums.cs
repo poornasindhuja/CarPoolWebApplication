@@ -25,9 +25,14 @@ namespace CarPool.Models
         Hitechcity
     }
 
-    public enum RideProviderOptions
-    {
-        
-    }
+    //public enum CarType
+    //{    
+    //    PrimeSuv,
+    //    PrimeExec,
+    //    PrimePlay,
+    //    PrimeSeldon,
+    //    mini,
+    //    micro,
+    //}
 
 }

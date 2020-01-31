@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Booking.cs" />
     <Compile Include="Car.cs" />
+    <Compile Include="TravellCharges.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="JourneyDetail.cs" />

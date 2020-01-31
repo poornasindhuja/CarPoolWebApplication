@@ -1,0 +1,34 @@
+﻿{
+  "cars": [
+    {
+      "id": 0,
+      "carType": "Prime Suv",
+      "maxCost": 25
+    },
+    {
+      "id": 1,
+      "carType": "Prime Exec",
+      "maxCost": 23
+    },
+    {
+      "id": 2,
+      "carType": "Prime Play",
+      "maxCost": 20
+    },
+    {
+      "id": 3,
+      "carType": "Prime Seldon",
+      "maxCost": 18
+    },
+    {
+      "id": 4,
+      "carType": "mini",
+      "maxCost": 13
+    },
+    {
+      "id": 5,
+      "carType": "micro",
+      "maxCost": 12
+    }
+  ]
+}

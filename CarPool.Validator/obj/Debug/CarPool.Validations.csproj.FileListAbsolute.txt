@@ -110,3 +110,4 @@ D:\CarPooling\CarPool\CarPool.Validator\obj\Debug\CarPool.Validations.csproj.Cor
 D:\CarPooling\CarPool\CarPool.Validator\obj\Debug\CarPool.Validations.csproj.CopyComplete
 D:\CarPooling\CarPool\CarPool.Validator\obj\Debug\CarPool.Validator.dll
 D:\CarPooling\CarPool\CarPool.Validator\obj\Debug\CarPool.Validator.pdb
+D:\CarPooling\CarPool\CarPool.Validator\bin\Debug\RideCharges.json

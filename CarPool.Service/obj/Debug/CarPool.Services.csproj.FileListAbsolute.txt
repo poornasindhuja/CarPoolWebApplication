@@ -108,3 +108,4 @@ D:\CarPooling\CarPool\CarPool.Service\obj\Debug\CarPool.Services.csproj.CoreComp
 D:\CarPooling\CarPool\CarPool.Service\obj\Debug\CarPool.Services.csproj.CopyComplete
 D:\CarPooling\CarPool\CarPool.Service\obj\Debug\CarPool.Service.dll
 D:\CarPooling\CarPool\CarPool.Service\obj\Debug\CarPool.Service.pdb
+D:\CarPooling\CarPool\CarPool.Service\bin\Debug\RideCharges.json
