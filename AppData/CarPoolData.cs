@@ -18,9 +18,9 @@ namespace CarPool.AppData
 
         private static List<Ride> rides = new List<Ride>()
         {
-            new Ride(1,1,"09 TS 071998","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date),
-            new Ride(2,1,"10 TS 071930","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},5,date),
-            new Ride(3,2,"01 TS 045398","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitech","durgamcheruvu"},4,date)
+            new Ride(1,1,"09 TS 071998","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitechcity","durgamcheruvu"},4,date),
+            new Ride(2,1,"10 TS 071930","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitechcity","durgamcheruvu"},5,date),
+            new Ride(3,2,"01 TS 045398","miyapur","madhapur",startTime,endTime,3,new List<string>(){"kothaguda","kondapur","hitechcity","durgamcheruvu"},4,date)
         };
 
         private static List<Car> cars = new List<Car>()

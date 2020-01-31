@@ -28,7 +28,8 @@ namespace CarPool.Services
             };
             placesList.AddRange(ride.ViaPlaces);
             placesList.Add(ride.Destination);
-            booking.CostOfBooking = GetDistanceBetweenPlaces(booking.Source, booking.Destination, placesList.GetRange(placesList.IndexOf(booking.Source) + 1, placesList.IndexOf(booking.Destination) - 1)) * ride.PricePerKilometer * booking.NumberSeatsSelected;
+            var root = placesList.GetRange(placesList.IndexOf(booking.Source.ToLower()) + 1, placesList.IndexOf(booking.Destination.ToLower()) - 1);
+            booking.CostOfBooking = GetDistanceBetweenPlaces(booking.Source, booking.Destination,root) * ride.PricePerKilometer * booking.NumberSeatsSelected;
             booking.BookingDate = DateTime.Now;
             if (booking.NumberSeatsSelected <= ride.NoOfSeatsAvailable)
             {

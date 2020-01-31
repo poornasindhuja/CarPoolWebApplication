@@ -98,11 +98,11 @@ namespace CarPool
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Please Choose one of the following options");
-                Console.WriteLine("1.RideProvider");
-                Console.WriteLine("2.RideTaker");
-                Console.WriteLine("3.View profile");
-                Console.WriteLine("4.logout");
+                Console.WriteLine("Please Choose one of the following options\n" +
+                    "1.RideProvider\n" +
+                    "2.RideTaker\n" +
+                    "3.View profile\n" +
+                    "4.logout");
                 int.TryParse(Console.ReadLine(), out Choice);
                 switch (Choice)
                 {
@@ -119,7 +119,8 @@ namespace CarPool
                     case 4:
                         CarPoolMenu.DisplayMainMenu();
                         break;
-                        
+                    default:Console.WriteLine("Invallid Choice");
+                        break;
                 }
             }   
         }

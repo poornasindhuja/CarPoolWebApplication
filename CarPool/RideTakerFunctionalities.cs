@@ -33,12 +33,12 @@ namespace CarPool
             while (repeat)
             {
                 Console.Clear();
-                Console.WriteLine("Please Choose one of the following options" +
-                    "1.view Ride Offers" +
-                    "2.Book a Ride" +
-                    "3.View Bookings" +
-                    "4.Go Back" +
-                    "5.Logout");
+                Console.WriteLine("Please Choose one of the following options\n" +
+                    "1.view Ride Offers\n" +
+                    "2.Book a Ride\n" +
+                    "3.View Bookings\n" +
+                    "4.Go Back\n" +
+                    "5.Logout\n");
                 int.TryParse(Console.ReadLine(), out Choice);
 
                 switch (Choice)
@@ -61,9 +61,7 @@ namespace CarPool
                         Console.WriteLine("Invalid option\n please choose a valid option");
                         break;
                 }
-
             }
-
         }
 
         private void ViewBookings()
@@ -88,9 +86,9 @@ namespace CarPool
 
         private void BookRide()
         {
-            int noOfSeats;
+            var helper = new Helper();
 
-            Helper helper = new Helper();
+            int noOfSeatsSelected;
 
             Console.Clear();
             Console.WriteLine("please Enter pick up location:");
@@ -111,93 +109,40 @@ namespace CarPool
             else
             {
                 DisplayRideOffers(availableRides, pickupLocation, dropLocation);
-                do
+                Choice = helper.GetIntegerInRange(minimumValue: 0, maximumValue: availableRides.Count,
+                                    displayMessage: "Please enter the ride number you want to make booking /Enter '0' to go back: ", errorMessage: "Invalid ride number");
+                if (Choice == 0)
                 {
-                    Console.WriteLine("Please select your option/Enter '0' to go back:");
-                    int.TryParse(Console.ReadLine(), out Choice);
-                    if (Choice == 0)
-                    {
-                        return;
-                    }
-                    do
-                    {
-                        Console.WriteLine("Enter number of seats you want to book");
-                        int.TryParse(Console.ReadLine(), out noOfSeats);
-                    } while (noOfSeats > availableRides[Choice - 1].NoOfSeatsAvailable || noOfSeats < 1);
-                } while (!rideTakerServices.IsValidRideId(availableRides.ElementAt(Choice-1).RideId));
+                    return;
+                }
+                else
+                {
+                    noOfSeatsSelected = helper.GetIntegerInRange(displayMessage: "Enter number of seats you want to book: ", errorMessage: "Invalid number of seats",
+                    minimumValue: 1, maximumValue: availableRides[Choice - 1].NoOfSeatsAvailable);
+                }
 
-                while (true)
+                var bookingChoice = helper.GetIntegerInRange(displayMessage: "Enter 1 to confirm Booking.\nEnter 2 to cancel Booking", errorMessage: "Invalid option", minimumValue: 1, maximumValue: 2);
+                if (Choice == 1)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Enter 1 to confirm Booking.\nEnter 2 to cancel Booking");
-                    int.TryParse(Console.ReadLine(), out Choice);
-                    if (Choice == 1)
+                    if (rideTakerServices.BookRide(new Booking(availableRides[Choice - 1].RideId, pickupLocation, dropLocation, noOfSeatsSelected, userId)))
                     {
-                        if (rideTakerServices.BookRide(new Booking(availableRides[Choice - 1].RideId, pickupLocation, dropLocation, noOfSeats, userId)))
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Request Sent sucessfully");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Request can not be sent");
-                        }
-                        break;
-                    }
-                    else if (Choice == 2)
-                    {
-                        break;
+                        Console.Clear();
+                        Console.WriteLine("Request Sent sucessfully");
                     }
                     else
                     {
-                        Console.WriteLine("Invalid Choice");
+                        Console.WriteLine("Request can not be sent");
                     }
                 }
             }           
         }
 
-        private void DisplayRideOffers(IList<Ride> rideOffers,string source,string destination)
+        private void DisplayRideOffers(IList<Ride> rideOffers,string source=null,string destination=null)
         {
             int index = 1;
 
             decimal costOfRide;
-            
-            Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
-            foreach (Ride r in rideOffers)
-            {
-                Console.WriteLine($"{index++}.RideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
-                    $"\nFrom: { r.Source}\t\tTo: {r.Destination}\nVia:");
-                foreach (string place in r.ViaPlaces)
-                {
-                    Console.Write(place + " ");
-                }
-
-                var currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
-
-                Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n " +
-                    $"Journey Date:{r.DateOfRide.ToShortDateString()}Car Details\nCarName:{ currentCar.CarName}\t Ac/NON-AC:{(currentCar.CarType?"Ac":"Non-Ac")}\n" +
-                    $"CarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
-
-                costOfRide = rideTakerServices.GetDistanceBetweenPlaces(source,destination) * r.PricePerKilometer;
-                Console.WriteLine($"Cost:{costOfRide}");
-                Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");   
-            }
-            if (rideOffers == null)
-            {
-                Console.WriteLine("No rides Available to show");
-            }
-        }
-
-        private void DisplayAllRideOffers()
-        {
-            int index = 1;
-
-            decimal costOfRide;
-
-            Console.Clear();
-
-            var rideOffers = rideTakerServices.GetAllRideOffers(userId);
-            if (rideOffers.Count == 0)
+            if (rideOffers.Count==0)
             {
                 Console.WriteLine("No rides Available to show");
             }
@@ -206,27 +151,35 @@ namespace CarPool
                 Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
                 foreach (Ride r in rideOffers)
                 {
-                    Console.WriteLine($"Ride Number{index++}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
-                        $"\nFrom: { r.Source}\t\tTo: {r.Destination}\nVia:");
+                    Console.WriteLine($"Ride number:{index++}\tRideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
+                        $"\nFrom: { r.Source}\t\tTo: {r.Destination}");
+                    Console.Write("Via:|");
                     foreach (string place in r.ViaPlaces)
                     {
-                        Console.Write(place + " ");
+                        Console.Write(place + "|");
                     }
 
                     var currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
 
-                    Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\n" +
-                        $"Seats Available={r.NoOfSeatsAvailable}\nJourney Date:{r.DateOfRide.ToShortDateString()}Car Details\nCarName:{ currentCar.CarName}" +
-                        $"\t Ac/NON-AC:{(currentCar.CarType ? "Ac" : "Non-Ac")}\nCarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
-                    costOfRide = rideTakerServices.GetDistanceBetweenPlaces(r.Source, r.Destination) * r.PricePerKilometer;
+                    Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n" +
+                        $"Journey Date:{r.DateOfRide.ToShortDateString()}\nCar Details:\nCar type:{(currentCar.CarType ? "Ac" : "Non-Ac")} car\t" +
+                        $"CarNo:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
+                    source = source!=null ? source : r.Source;
+                    destination = destination != null ? destination : r.Destination;
+                    costOfRide = rideTakerServices.GetDistanceBetweenPlaces(source, destination) * r.PricePerKilometer;
                     Console.WriteLine($"Cost:{costOfRide}");
                     Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
                 }
-            } 
+            }     
+        }
+
+        private void DisplayAllRideOffers()
+        {         
+            Console.Clear();
+            var rideOffers = rideTakerServices.GetAllRideOffers(userId);
+            DisplayRideOffers(rideOffers);
             Console.WriteLine("Press any key to GoBack");
             Console.ReadKey();
         }
-    }
-
-    
+    }   
 }

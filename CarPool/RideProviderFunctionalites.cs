@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CarPool.AppData;
 using CarPool.Models;
 using CarPool.Services;
-using CarPool.Validations;
 
 namespace CarPool
 {
@@ -40,7 +36,7 @@ namespace CarPool
                     "1.Create New Ride Offer\n" +
                     "2.Created Ride Offers\n" +
                     "3.Past Rides\n" +
-                    "4.Get All Booking requests" +
+                    "4.Get All Booking requests\n" +
                     "5.Go Back\n" +
                     "6.logout");
 
@@ -74,7 +70,7 @@ namespace CarPool
 
         private void DisplayAllBookingRequests()
         {
-            rideProviderServices.GetAllBookings(providerId);
+            DisplayBookings(rideProviderServices.GetAllBookings(providerId));
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
         }
@@ -120,6 +116,7 @@ namespace CarPool
                 Console.ReadKey();
                 return;
             }
+            // Displaying the ride offers created by the user that are not completed
             Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
             for (int i = 0; i < currentRides.Count; i++)
             {
@@ -129,15 +126,19 @@ namespace CarPool
                     $"\nNumber of seats yet to be filled:{currentRides[i].NoOfSeatsAvailable}" +
                     $"\n-----------------------------------------------------------------------------------------------------\n\n");
             }
-            rideNo = GetIntegerInRange(minimumValue: 0, maximumValue: currentRides.Count,displayMessage:"please Enter an ride number from above to approve booking requests for that ride/enter 0 to go back",
-                errorMessage:"Invalid ride number");
-            if (rideNo == 0)
+
+            while (true)
             {
-                return;
-            }
-            else if (rideNo <= currentRides.Count)
-            {
-                ApproveBookings(currentRides[rideNo - 1].RideId);
+                rideNo = GetIntegerInRange(minimumValue: 0, maximumValue: currentRides.Count, displayMessage: "please Enter an ride number from above to approve booking requests for that ride/enter 0 to go back",
+               errorMessage: "Invalid ride number");
+                if (rideNo == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    ApproveBookings(currentRides[rideNo - 1].RideId);
+                }
             }
         }
 
@@ -267,16 +268,9 @@ namespace CarPool
             // List of via points.
             Console.WriteLine("Enter Intermediate places seperated by ','(Please choose in the above listed places only):");
             var viaPlaces = new List<string>(Console.ReadLine().Split(',')).ConvertAll(place=>place.ToLower());
-            foreach(string place in viaPlaces)
-            {
-                if (!CarPoolData.Places.Contains(place))
-                {
-                    Console.WriteLine($"{place}Could not be an intermediate place");
-                    viaPlaces.Remove(place);
-                } 
-            }
-            Console.WriteLine("Cost per Kilometer(Rupees.paise)");
-            ride.PricePerKilometer =Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise)", "Invalid cost",Patterns.Amount));
+            viaPlaces.RemoveAll(p => !CarPoolData.Places.Contains(p));
+
+            ride.PricePerKilometer =Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise): ", "Invalid cost",Patterns.Amount));
             ride.CarNumber = carNo;
             ride.RideProviderId = providerId;
             ride.ViaPlaces = viaPlaces;

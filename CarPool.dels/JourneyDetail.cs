@@ -10,17 +10,17 @@ namespace CarPool.Models
     {
         private List<string> destinationPlaces;
         private List<string> orginPlaces;
-        private List<DistanceItem> rows;
+        private List<DistanceMatrixRow> rows;
         string status;
 
         public List<string> DestinationPlaces { get => destinationPlaces; set => destinationPlaces = value; }
         public List<string> OrginPlaces { get => orginPlaces; set => orginPlaces = value; }
-        public List<DistanceItem> Rows { get => rows; set => rows = value; }
+        public List<DistanceMatrixRow> Rows { get => rows; set => rows = value; }
         public string Status { get => status; set => status = value; }
 
     }
 
-    public class DistanceItem
+    public class DistanceMatrixRow
     {
         private List<DistanceMatrixElement> elements;
 
