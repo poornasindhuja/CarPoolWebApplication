@@ -17,6 +17,7 @@ namespace CarPool.Validations
 
         public bool IsValidPhoneNumber(string phoneNumber)
         {
+            // Returns true if the number doesn't exist in users list and valid kind of number.
             Regex regex = new Regex("^[1-9](0-9){9}");
             if(!userServices.IsExistingUser(phoneNumber))
             {

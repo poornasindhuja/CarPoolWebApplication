@@ -96,7 +96,7 @@ namespace CarPool
             {
                 foreach (Ride r in currentRides)
                 {
-                    Console.WriteLine($"{i++}.RideId:{r.RideId}\n From:{r.Source}\tTo:{r.Destination} \nStartTime:{r.StartTime.ToShortTimeString()}\tEndTime:{r.EndTime.ToShortTimeString()}");
+                    Console.WriteLine($"{i++}.RideId:{r.RideId}\nFrom:{r.Source}\t\t\tTo:{r.Destination} \nStartTime:{r.StartTime.ToShortTimeString()}\tEndTime:{r.EndTime.ToShortTimeString()}");
                     int j = 1;
                     foreach (Booking booking in rideProviderServices.GetBookingsForRide(r.RideId))
                     {
@@ -131,7 +131,7 @@ namespace CarPool
             Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
             for (int i = 0; i < currentRides.Count; i++)
             {
-                Console.WriteLine($"RideNo:{i + 1}\tRidedate:{currentRides[i].DateOfRide.Date.ToShortDateString()}\n From:{currentRides[i].Source}\tTo:{currentRides[i].Destination} " +
+                Console.WriteLine($"RideNo:{i + 1}\tRidedate:{currentRides[i].DateOfRide.Date.ToShortDateString()}\nFrom:{currentRides[i].Source}\t\tTo:{currentRides[i].Destination} " +
                     $"\nStartTime:{currentRides[i].StartTime.ToShortTimeString()}\tEndTime:{currentRides[i].EndTime.ToShortTimeString()}\n" +
                     $"New Booking Requests:{rideProviderServices.GetNewBookingRequests(currentRides[i].RideId).Count}" +
                     $"\nNumber of seats yet to be filled:{currentRides[i].NoOfSeatsAvailable}" +
@@ -218,7 +218,7 @@ namespace CarPool
 
         }
 
-        public void CreateRideOffer()
+        private void CreateRideOffer()
         {
             Ride ride = new Ride();
 
@@ -253,7 +253,7 @@ namespace CarPool
                     {
                         CarNumber = availableCars[Choice - 1].CarNo;
                         capacity = availableCars[Choice - 1].Capacity;
-                        carType = availableCars[Choice - 1].CarType;
+                        carType =(int)availableCars[Choice - 1].CarType;
                         break;
                     }
                 } while (true);
@@ -301,7 +301,7 @@ namespace CarPool
             do
             {
                 ride.PricePerKilometer = Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise): ", "Invalid cost", Patterns.Amount));
-            } while (travellingChargeServices.getMaximumCharge(carType)<ride.PricePerKilometer);
+            } while (travellingChargeServices.GetMaximumCharge(carType)<ride.PricePerKilometer);
             
             ride.CarNumber = CarNumber;
             ride.RideProviderId = providerId;
@@ -312,13 +312,14 @@ namespace CarPool
             Console.ReadKey();
         }
 
-        public bool AddCar(int providerId)
+        private bool AddCar(int providerId)
         {
             CarNumber = GetStringMatch("Enter car number", "car number should not be empty",Patterns.CarNumber);
             var carName = GetStringMatch("Enter the car name", "car name should not be empty", Patterns.Name);
             capacity =Convert.ToInt16(GetStringMatch("Enter Capacity of car[4-8]", "Invalid Capacity", Patterns.CarCapacity));
-            carType = GetUserChoiceInList(travellingChargeServices.CarTypes);
-            if(!rideProviderServices.AddCar(new Car(CarNumber, carName, capacity,carType, providerId)))
+            //carType = GetUserChoiceInList(travellingChargeServices.CarTypes);
+            carType =GetUserChoiceInEnum<CarType>();
+            if(!rideProviderServices.AddCar(new Car { CarNo=CarNumber, CarName=carName, Capacity=capacity, CarType=(CarType)carType, OwnerId=providerId }))
             { 
                 Console.WriteLine("Oops! you cant add this car");
                 return false;

@@ -45,10 +45,10 @@ namespace CarPool.Services
 
         public  List<Ride> GetAllRideOffers(int userId)
         {
-            return CarPoolData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId);
+            return CarPoolData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId && r.NoOfSeatsAvailable>0);
         }
 
-        public IList<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
+        public List<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
         {
             var availableRides = new List<Ride>();
 
@@ -65,7 +65,7 @@ namespace CarPool.Services
                 else if(ride.ViaPlaces.Contains(pickupLocation.ToLower()))
                 {
                     if((ride.ViaPlaces.Contains(dropLocation)&& ride.ViaPlaces.IndexOf(dropLocation)>ride.ViaPlaces.IndexOf(pickupLocation))
-                        || ride.Destination == dropLocation)
+                        || ride.Destination.ToLower() == dropLocation)
                     {
                         availableRides.Add(ride);
                     }

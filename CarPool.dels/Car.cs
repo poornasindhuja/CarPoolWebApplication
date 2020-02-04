@@ -14,7 +14,7 @@ namespace CarPool.Models
 
         public string CarName { get; set; }
 
-        public int CarType { get; set; }
+        public CarType CarType { get; set; }
 
         [Required]
         [Range(4,8,ErrorMessage ="Car capacity should lies between 4 and 8")]
@@ -23,7 +23,7 @@ namespace CarPool.Models
         [Required]
         public int OwnerId { get; set; }
 
-        public Car(string carNo, string carName, int capacity, int carType,int ownerId)
+        public Car(string carNo, string carName, int capacity, CarType carType,int ownerId)
         {
             this.CarNo = carNo;
             this.CarName = carName;

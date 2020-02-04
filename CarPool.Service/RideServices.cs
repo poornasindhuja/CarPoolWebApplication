@@ -13,7 +13,19 @@ namespace CarPool.Services
         JourneyDetail journeyDetail;
         public RideServices()
         {
-            GetRootInfo();
+            string jsonString;
+            try
+            {
+                using (StreamReader reader = new StreamReader(@"DistanceMatrix.json", System.Text.Encoding.UTF8))
+                {
+                    jsonString = reader.ReadToEnd();
+                }
+                journeyDetail = JsonConvert.DeserializeObject<JourneyDetail>(jsonString);
+            }
+            catch (Exception e)
+            {
+                // ........what to do? how to handle exception.
+            }
         }
         public bool IsValidRideId(int rideId)
         {
@@ -49,21 +61,5 @@ namespace CarPool.Services
             return jsonData.Duration.Value;
         }
 
-        public void GetRootInfo()
-        {          
-            string jsonString;
-            try
-            {
-                using (StreamReader reader = new StreamReader(@"DistanceMatrix.json", System.Text.Encoding.UTF8))
-                {
-                    jsonString = reader.ReadToEnd();
-                }
-                journeyDetail = JsonConvert.DeserializeObject<JourneyDetail>(jsonString);
-            }
-            catch (Exception e)
-            {
-                // ........what to do? how to handle exception.
-            }          
-        }
     }
 }

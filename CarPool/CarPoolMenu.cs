@@ -6,13 +6,13 @@ namespace CarPool
 {
     public class CarPoolMenu
     {        
-        static UserActions userActions;
+        static UserFunctionalities userActions;
 
         static int Choice;
 
         static void Main(string[] args)
         {
-            userActions = new UserActions();
+            userActions = new UserFunctionalities();
             DisplayMainMenu();
         }
 

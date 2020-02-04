@@ -8,8 +8,6 @@ namespace CarPool.Services
 {
     public class TravellingChargeServices
     {
-        public List<string> CarTypes { get; private set; }
-
         public TravellCharges TravellCharges { get; private set; }
 
         public TravellingChargeServices()
@@ -22,7 +20,6 @@ namespace CarPool.Services
             }
 
             TravellCharges = JsonConvert.DeserializeObject<TravellCharges>(carsData);
-            CarTypes = TravellCharges.Cars.Select(p => p.CarType).ToList<string>();
         }
       
         public decimal GetMaximumCharge(int carType)

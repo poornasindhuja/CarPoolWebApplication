@@ -11,14 +11,15 @@ namespace CarPool.Services
     {
         public bool AddRide(Ride ride)
         {
+            bool isValidData = false;
             if(GenericValidator.Validate(ride,out ICollection<ValidationResult> results))
             {
                 ride.RideId = CarPoolData.Rides.Count + 1;
                 ride.EndTime = ride.StartTime.AddSeconds(GetDurationBetweenPlaces(ride.Source, ride.Destination));
                 CarPoolData.Rides.Add(ride);
-                return true;
+                isValidData = true;
             }
-            return false;
+            return isValidData;
         }
 
         public List<Ride> GetPastRideOffers(int userId)
@@ -75,9 +76,11 @@ namespace CarPool.Services
             return CarPoolData.Bookings.FindAll(b => b.RideId == rideId);
         }
 
+        // returns all the bookings get by the user
         public List<Booking> GetAllBookings(int userId)
         {
-            return CarPoolData.Bookings.FindAll(b => b.UserId==userId);
+            var ridesList = CarPoolData.Rides.FindAll(r => r.RideProviderId == userId).ConvertAll(r=>r.RideId);
+            return CarPoolData.Bookings.FindAll(b => ridesList.Contains(b.RideId));
         }
 
         public List<Booking> GetNewBookingRequests(int rideId)

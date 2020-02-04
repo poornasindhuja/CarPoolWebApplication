@@ -74,7 +74,7 @@ namespace CarPool
             for(int i = 0; i < bookings.Count; i++)
             {
                 Console.WriteLine($"\n-------------------------------------------------------------------------------------------------------------\n" +
-                    $"{i++}.Booking Date:{bookings[i].BookingDate.ToShortDateString()}\nFrom:{bookings[i].Source}\t\tTo:{bookings[i].Destination}\n" +
+                    $"{i+1}.Booking Date:{bookings[i].BookingDate.ToShortDateString()}\nFrom:{bookings[i].Source}\t\tTo:{bookings[i].Destination}\n" +
                     $"Journey Time:{bookings[i].StartTime.ToShortTimeString()}-{bookings[i].EndTime.ToShortTimeString()}\n" +
                     $"Status:{Enum.GetName(typeof(BookingStatus),bookings[i].Status)}\tCost:{bookings[i].CostOfBooking}"); 
             }       
@@ -132,6 +132,7 @@ namespace CarPool
                     {
                         Console.WriteLine("Request can not be sent");
                     }
+                    Console.ReadKey();
                 }
             }           
         }
@@ -140,10 +141,12 @@ namespace CarPool
         {
             int index = 1;
 
+            var travellingChargeServices = new TravellingChargeServices();
             decimal costOfRide;
             if (rideOffers.Count==0)
             {
-                Console.WriteLine("No rides Available to show");
+                Console.WriteLine("No rides Available to show\nPress any key");
+                Console.ReadKey();
             }
             else
             {
@@ -161,7 +164,7 @@ namespace CarPool
                     var currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
 
                     Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n" +
-                        $"Journey Date:{r.DateOfRide.ToShortDateString()}\nCar Details:\nCar type:{}\t" +
+                        $"Journey Date:{r.DateOfRide.ToShortDateString()}\nCar Details:\nCar type:{currentCar.Capacity-1}\t" +
                         $"CarNumber:{currentCar.CarNo}\t capacity:{currentCar.Capacity}");
                     source = source!=null ? source : r.Source;
                     destination = destination != null ? destination : r.Destination;

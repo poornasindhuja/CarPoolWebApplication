@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace CarPool.Models
 {
     public enum BookingStatus
     {
-        Pending = 0,
-        Approved = 1,
-        Rejected = 2
+        Pending ,
+        Approved ,
+        Rejected 
     }
 
     public enum Places
@@ -25,14 +26,19 @@ namespace CarPool.Models
         Hitechcity
     }
 
-    //public enum CarType
-    //{    
-    //    PrimeSuv,
-    //    PrimeExec,
-    //    PrimePlay,
-    //    PrimeSeldon,
-    //    mini,
-    //    micro,
-    //}
-
+    public enum CarType
+    {
+        [Description("Prime SUV")]
+        PrimeSuv,
+        [Description("Prime Play")]
+        PrimePlay,
+        [Description("Prime Exec")]
+        PrimeExec,
+        [Description("PrimeSeldon")]
+        PrimeSeldon,
+        [Description("mini")]
+        mini,
+        [Description("micro")]
+        Micro
+    }
 }

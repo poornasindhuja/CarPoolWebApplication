@@ -5,7 +5,7 @@ using CarPool.Models;
 
 namespace CarPool
 {
-    public class UserActions:Helper
+    public class UserFunctionalities:Helper
     {        
         public int Choice,UserId;
 
@@ -17,7 +17,7 @@ namespace CarPool
 
         public User User { get; set; }
       
-        public UserActions()
+        public UserFunctionalities()
         {
             userServices = new UserServices();
 
@@ -62,7 +62,7 @@ namespace CarPool
             Console.Clear();
             Console.WriteLine("----------------------------------Sign In-----------------------------------------\n");
             phoneNumber = GetStringInput("Please enter your phone number: ", "Invalid phonenumber", signInValidations.IsValidUserPhoneNumber);
-            password = GetStringInput("Please Enter your password/Enter * to go back: ", "Wrong password", signInValidations.IsValidPassword);
+            password = GetStringInput("Please Enter your password ", "Wrong password", signInValidations.IsValidPassword);
             userServices.SignIn(phoneNumber);
             UserId = userServices.GetUser(phoneNumber).UserId;
             UserOptions();

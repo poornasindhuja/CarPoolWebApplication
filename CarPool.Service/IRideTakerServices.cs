@@ -15,7 +15,7 @@ namespace CarPool.Services
 
         List<Ride> GetAllRideOffers(int userId);
 
-        IList<Ride> SearchRides(string pickupLocation, string dropLocation, int userId);
+        List<Ride> SearchRides(string pickupLocation, string dropLocation, int userId);
 
         Car GetCarDetails(string carNumber);
     }

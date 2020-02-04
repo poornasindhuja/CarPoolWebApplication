@@ -25,9 +25,9 @@ namespace CarPool.AppData
 
         private static List<Car> cars = new List<Car>()
         {
-            new Car("09 TS 071998","Maruthi",4,5,1),
-            new Car("10 TS 071930","Suzuki",4,4,1),
-            new Car("01 TS 045398","Indica",4,5,2)
+            new Car("09 TS 071998","Maruthi",4,CarType.Micro,1),
+            new Car("10 TS 071930","Suzuki",4,CarType.PrimeExec,1),
+            new Car("01 TS 045398","Indica",4,CarType.mini,2)
         };
 
         private static List<User> users = new List<User>()

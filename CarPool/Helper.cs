@@ -48,15 +48,17 @@ namespace CarPool
             do
             {
                 Console.Write(displayMessage);
-                int.TryParse(Console.ReadLine(), out int inputData);
-                if (inputData < minimumValue || inputData > maximumValue)
+                if(int.TryParse(Console.ReadLine(), out int inputData))
                 {
-                    Console.WriteLine(errorMessage);
-                }
-                else
-                {
-                    return inputData;
-                }
+                    if (inputData < minimumValue || inputData > maximumValue)
+                    {
+                        Console.WriteLine(errorMessage);
+                    }
+                    else
+                    {
+                        return inputData;
+                    }
+                }               
             } while (true);
         }
 
