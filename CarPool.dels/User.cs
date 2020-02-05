@@ -10,7 +10,7 @@ namespace CarPool.Models
         public string UserName { get; set; }
 
         [Required]
-        [PhoneNumber(ErrorMessage ="Invalid Phone number")]
+        [Phone]
         public string PhoneNumber { get; set; }
 
         [EmailAddress]

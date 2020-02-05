@@ -1,5 +1,4 @@
 ﻿using System;
-using CarPool.Validations;
 using CarPool.Services;
 using CarPool.Models;
 
@@ -9,9 +8,7 @@ namespace CarPool
     {        
         public int Choice,UserId;
 
-        string phoneNumber,confirmPassword,password,petName;
-
-        ISignInValidations signInValidations;
+        string phoneNumber,confirmPassword,password,petName;     
 
         IUserServices userServices;
 
@@ -21,17 +18,22 @@ namespace CarPool
         {
             userServices = new UserServices();
 
-            signInValidations = new SignInValidations();
-
             this.User = new User();
         }
 
         public void SignUp()
         {
-            ISignUpValidations signUpValidations = new SignUpValidations();  
             //Getting User details
             User.UserName = GetStringMatch("Please Enter your Name: ","Name should not be empty", Patterns.Text);
-            User.PhoneNumber = GetStringInput("Please Enter your phone number: ", "Invalid phone number", signUpValidations.IsValidPhoneNumber);
+            do
+            {
+                User.PhoneNumber = GetStringMatch("Please Enter your phone number: ", "Invalid phone number",Patterns.PhoneNumber);
+                if (!userServices.IsExistingUser(phoneNumber))
+                {
+                    break;
+                }
+                Console.WriteLine("An User with this phone number already exist.Try anthor number");
+            } while (true); 
             User.EmailAddress = GetStringMatch("Please Enter your email address: ","Invalid email address",Patterns.EmailAddress);       
             Console.Write("Please Enter your Address:");
             User.Address = Console.ReadLine();
@@ -61,17 +63,36 @@ namespace CarPool
         {           
             Console.Clear();
             Console.WriteLine("----------------------------------Sign In-----------------------------------------\n");
-            phoneNumber = GetStringInput("Please enter your phone number: ", "Invalid phonenumber", signInValidations.IsValidUserPhoneNumber);
-            password = GetStringInput("Please Enter your password ", "Wrong password", signInValidations.IsValidPassword);
-            userServices.SignIn(phoneNumber);
-            UserId = userServices.GetUser(phoneNumber).UserId;
-            UserOptions();
+            do
+            {
+                phoneNumber = GetStringMatch("Please Enter your phone number: ", "Invalid phone number", Patterns.PhoneNumber);
+                if (userServices.IsExistingUser(phoneNumber))
+                {
+                    break;
+                }
+                Console.WriteLine("Incorrect phone number");
+            } while (true);
+            do
+            {
+                Console.WriteLine("Please enter your password/enter * to go back");
+                password = Console.ReadLine();
+                if (password == "*")
+                {
+                    return;
+                }
+                if(userServices.SignIn(phoneNumber, password))
+                {
+                    UserId = userServices.GetUser(phoneNumber).UserId;
+                    UserOptions();
+                }
+                Console.WriteLine("Wrong Password");
+            }while(userServices.SignIn(phoneNumber,password));            
         }
 
         public void ForgotPassword()
         {
             Console.Clear();
-            phoneNumber = GetStringInput("Please enter your Phone Number: ", "Invalid phone number", signInValidations.IsValidUserPhoneNumber);
+            phoneNumber = GetStringInput("Please enter your Phone Number: ", "Invalid phone number", userServices.IsExistingUser);
             Console.WriteLine("Please enter your first petname");
             petName = Console.ReadLine();
             if (userServices.IsValidPetName(phoneNumber, petName))

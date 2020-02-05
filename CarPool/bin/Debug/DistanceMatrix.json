@@ -1,13 +1,13 @@
 ﻿{
   "destination_addresses": [
-    "Secunderabad, Telangana, India",
-    "Miyapur, Hyderabad, Telangana, India",
-    "Madhapur, Hyderabad, Telangana, India",
-    "Durgam Cheruvu, Hyderabad, Telangana",
-    "Lingampally, Telangana 501111, India",
-    "Kothaguda, Hyderabad, Telangana, India",
-    "Kondapur, Hyderabad, Telangana, India",
-    "HITEC City, Hyderabad, Telangana 500081, India"
+    "Secunderabad",
+    "Miyapur",
+    "Madhapur",
+    "Durgamcheruvu",
+    "Lingampally",
+    "Kothaguda",
+    "Kondapur",
+    "Hitechcity"
   ],
   "origin_addresses": [
     "Secunderabad, Telangana, India",
@@ -759,3 +759,4 @@
   ],
   "status": "OK"
 }
+

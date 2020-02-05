@@ -1,18 +1,18 @@
-﻿using CarPool.AppData;
-using CarPool.Models;
+﻿using CarPool.Models;
+using CarPool.Data;
 using System;
 
 namespace CarPool
 {
     public class CarPoolMenu
     {        
-        static UserFunctionalities userActions;
+        static UserFunctionalities userFunctionalities;
 
         static int Choice;
 
         static void Main(string[] args)
         {
-            userActions = new UserFunctionalities();
+            userFunctionalities = new UserFunctionalities();
             DisplayMainMenu();
         }
 
@@ -28,13 +28,13 @@ namespace CarPool
                 switch (Choice)
                 {
                     case 1:
-                        userActions.SignIn();
+                        userFunctionalities.SignIn();
                         break;
                     case 2:
-                        userActions.SignUp();
+                        userFunctionalities.SignUp();
                         break;
                     case 3:
-                        userActions.ForgotPassword();
+                        userFunctionalities.ForgotPassword();
                         break;
                     case 4:
                         Environment.Exit(0);

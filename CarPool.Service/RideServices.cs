@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CarPool.AppData;
 using CarPool.Models;
+using CarPool.AplicationData;
 using Newtonsoft.Json;
 
 namespace CarPool.Services
 {
     public class RideServices
     {
-        JourneyDetail journeyDetail;
+        readonly JourneyDetail journeyDetail;
+
+        public List<string> Places;
+
         public RideServices()
         {
             string jsonString;
@@ -21,11 +24,14 @@ namespace CarPool.Services
                     jsonString = reader.ReadToEnd();
                 }
                 journeyDetail = JsonConvert.DeserializeObject<JourneyDetail>(jsonString);
+                Places = journeyDetail.DestinationPlaces;
             }
             catch (Exception e)
             {
+
                 // ........what to do? how to handle exception.
             }
+            
         }
         public bool IsValidRideId(int rideId)
         {
@@ -34,30 +40,30 @@ namespace CarPool.Services
 
         public int GetDistanceBetweenPlaces(string source,string destination,List<string> viaPoints)
         {
-            // returns the distance from source to destination via intermediate places(viaPoints)
-            int distance=0;
+            // Returns the distance from source to destination via intermediate places(viaPoints)
+            int distance = 0;
             string start = source;
             viaPoints.Add(destination);
-            for (int i = 0; i <viaPoints.Count; i++)
+            for (int i = 0; i < viaPoints.Count; i++)
             {
-                var distanceMatrixData = journeyDetail.Rows[CarPoolData.Places.IndexOf(viaPoints[i].ToLower())].Elements[CarPoolData.Places.IndexOf(start.ToLower())];
+                var distanceMatrixData = journeyDetail.Rows[Places.IndexOf(viaPoints[i])].Elements[Places.IndexOf(start)];
                 distance += distanceMatrixData.Distance.Value;
                 start = viaPoints[i];
             }
-            return distance/1000;
+            return distance / 1000;
         }
 
         public int GetDistanceBetweenPlaces(string source, string destination)
         {
             // returns the distance from source to destination.
-            var distanceMatrixData = journeyDetail.Rows[CarPoolData.Places.IndexOf(destination.ToLower())].Elements[CarPoolData.Places.IndexOf(source.ToLower())];
+            var distanceMatrixData = journeyDetail.Rows[Places.IndexOf(destination)].Elements[Places.IndexOf(source)];
             var distance = distanceMatrixData.Distance.Value;
             return distance / 1000;
         }
 
         public int GetDurationBetweenPlaces(string source,string destination)
         {
-            var jsonData = journeyDetail.Rows[CarPoolData.Places.IndexOf(destination.ToLower())].Elements[CarPoolData.Places.IndexOf(source.ToLower())];
+            var jsonData = journeyDetail.Rows[Places.IndexOf(destination)].Elements[Places.IndexOf(source)];
             return jsonData.Duration.Value;
         }
 

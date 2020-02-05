@@ -9,7 +9,7 @@ namespace CarPool.Services
 {
     public interface IUserServices
     {
-        void SignIn(string phoneNumber);
+        bool SignIn(string phoneNumber,string password);
 
         bool SignUp(User user);
 
@@ -23,6 +23,5 @@ namespace CarPool.Services
 
         User GetUser(string phoneNumber);
 
-        bool IsCorrectPassword(string phoneNumber, string password);
     }
 }

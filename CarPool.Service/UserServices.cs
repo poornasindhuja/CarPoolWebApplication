@@ -2,7 +2,8 @@
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using CarPool.Models;
-using CarPool.AppData;
+using CarPool.AplicationData;
+using CarPool.Data;
 
 namespace CarPool.Services
 {
@@ -11,33 +12,42 @@ namespace CarPool.Services
     {
 
         public  User CurrentUser;
-       
-        public bool IsCorrectPassword(string phoneNumber,string password)
+        public Repository repository;
+
+        public UserServices()
         {
-            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber && u.Password == password) != null;
+            repository = new Repository();
         }
 
-        public void SignIn(string phoneNumber)
+        public bool SignIn(string phoneNumber,string password)
         {
-            CurrentUser =CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
+            // If phonenumber and password matches then user will successfully login.
+            bool IsCorrectPassword=false;
+            CurrentUser = repository.FindItem<User>(u => u.PhoneNumber == phoneNumber);
+            if (CurrentUser != null && CurrentUser.Password == password)
+            {
+                IsCorrectPassword = true;
+            }
+            return IsCorrectPassword;
         }
 
         public User GetUser(int userId)
         {
-            return CarPoolData.Users.FirstOrDefault(u => u.UserId == userId);
+            return repository.FindItem<User>(u => u.UserId == userId);
         }
 
         public bool IsExistingUser(string phoneNumber)
         {
-            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber) != null;
+            return repository.FindItem<User>(u => u.PhoneNumber == phoneNumber) != null;
         }
 
         public bool SignUp(User user)
         {
             if(GenericValidator.Validate(user,out ICollection<ValidationResult> results))
             {
-                user.UserId = CarPoolData.Users.Count + 1;
-                CarPoolData.Users.Add(user);
+                user.UserId = repository.GetAllData<User>().Count()+ 1;
+                repository.Add<User>(user);
+                //CarPoolData.Users.Add(user);
                 return true;
             }
             return false;           
@@ -45,17 +55,18 @@ namespace CarPool.Services
 
         public bool IsValidPetName(string phoneNumber,string petName)
         {
-            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null;
+            return repository.FindItem<User>(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null;
         }
 
         public void ResetPassword(string phoneNumber, string password)
         {
+            //.......?
             CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber).Password = password;
         }
 
         public User GetUser(string phoneNumber)
         {
-            return CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
+            return repository.FindItem<User>(u => u.PhoneNumber == phoneNumber);
         }
 
     }

@@ -1,0 +1,2 @@
+D:\CarPooling\CarPool\ClassLibrary1\obj\Debug\Database.csprojAssemblyReference.cache
+D:\CarPooling\CarPool\ClassLibrary1\obj\Debug\Database.csproj.CoreCompileInputs.cache

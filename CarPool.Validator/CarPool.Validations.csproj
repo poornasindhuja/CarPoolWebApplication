@@ -55,10 +55,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppData\CarPool.AppData.csproj">
-      <Project>{1eeac84d-d6f8-462c-a6bd-e7eb32bec892}</Project>
-      <Name>CarPool.AppData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CarPool.dels\CarPool.Models.csproj">
       <Project>{f3894b4e-b909-4b78-a55c-a0c3275e9a79}</Project>
       <Name>CarPool.Models</Name>

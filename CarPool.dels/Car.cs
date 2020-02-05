@@ -9,6 +9,7 @@ namespace CarPool.Models
 {
     public class Car
     {
+        [Key]
         [Required]
         public string CarNo { get; set; }
 
@@ -23,17 +24,5 @@ namespace CarPool.Models
         [Required]
         public int OwnerId { get; set; }
 
-        public Car(string carNo, string carName, int capacity, CarType carType,int ownerId)
-        {
-            this.CarNo = carNo;
-            this.CarName = carName;
-            this.Capacity = capacity;
-            this.CarType = carType;
-            this.OwnerId= ownerId;
-        }
-        public Car()
-        {
-
-        }
     }
 }

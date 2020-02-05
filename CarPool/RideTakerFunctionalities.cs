@@ -156,11 +156,14 @@ namespace CarPool
                     Console.WriteLine($"Ride number:{index++}\tRideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
                         $"\nFrom: { r.Source}\t\tTo: {r.Destination}");
                     Console.Write("Via:|");
-                    foreach (string place in r.ViaPlaces)
+                    if (r.ViaPlaces != null)
                     {
-                        Console.Write(place + "|");
+                        foreach (string place in r.ViaPlaces)
+                        {
+                            Console.Write(place + "|");
+                        }
                     }
-
+                   
                     var currentCar = rideTakerServices.GetCarDetails(r.CarNumber);
 
                     Console.WriteLine($"\nStarting Time:{ r.StartTime.ToShortTimeString()}\t\t\t Reach By:{r.EndTime.ToShortTimeString()}\nSeats Available={r.NoOfSeatsAvailable}\n" +

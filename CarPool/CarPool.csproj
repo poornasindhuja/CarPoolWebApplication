@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,9 +62,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppData\CarPool.AppData.csproj">
-      <Project>{1eeac84d-d6f8-462c-a6bd-e7eb32bec892}</Project>
-      <Name>CarPool.AppData</Name>
+    <ProjectReference Include="..\CarPool.Data\CarPool.Data.csproj">
+      <Project>{2d842116-f965-474e-8c70-7f6a55d3f9d5}</Project>
+      <Name>CarPool.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\CarPool.dels\CarPool.Models.csproj">
       <Project>{f3894b4e-b909-4b78-a55c-a0c3275e9a79}</Project>
@@ -72,10 +73,6 @@
     <ProjectReference Include="..\CarPool.Service\CarPool.Services.csproj">
       <Project>{2cce35ad-37ce-43c5-8923-ed6e88f0e907}</Project>
       <Name>CarPool.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CarPool.Validator\CarPool.Validations.csproj">
-      <Project>{84919f1c-4850-4330-a5fd-9b5054454145}</Project>
-      <Name>CarPool.Validations</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -57,9 +57,13 @@
     <Compile Include="UserServices.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppData\CarPool.AppData.csproj">
-      <Project>{1eeac84d-d6f8-462c-a6bd-e7eb32bec892}</Project>
-      <Name>CarPool.AppData</Name>
+    <ProjectReference Include="..\CarPool.AplicationData\CarPool.AplicationData.csproj">
+      <Project>{c78090e9-40fa-4a3b-8812-0a4197f83f82}</Project>
+      <Name>CarPool.AplicationData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CarPool.Data\CarPool.Data.csproj">
+      <Project>{2d842116-f965-474e-8c70-7f6a55d3f9d5}</Project>
+      <Name>CarPool.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\CarPool.dels\CarPool.Models.csproj">
       <Project>{f3894b4e-b909-4b78-a55c-a0c3275e9a79}</Project>

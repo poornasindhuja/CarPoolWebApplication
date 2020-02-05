@@ -4,21 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarPool.Models;
-using CarPool.AppData;
+using CarPool.AplicationData;
+using CarPool.Data;
 
 namespace CarPool.Services
 {
     public class RideTakerServices:RideServices,IRideTakerServices
     {
         public GenericValidator genericValidator;
+
+        public Repository repository;
+
         public RideTakerServices()
         {
             genericValidator = new GenericValidator();
+            repository = new Repository();
         }
         public bool BookRide(Booking booking)
         {
-            var ride = CarPoolData.Rides.Find(r => r.RideId == booking.RideId);
-            booking.BookingId = CarPoolData.Bookings.Count + 1;
+            var ride = repository.FindItem<Ride>(r => r.RideId == booking.RideId);
+            booking.BookingId = repository.Count<Booking>() + 1;
             booking.StartTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, booking.Source));
             booking.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(booking.Source, booking.Destination));
             var placesList = new List<string>
@@ -32,7 +37,7 @@ namespace CarPool.Services
             booking.BookingDate = DateTime.Now;
             if (booking.NumberSeatsSelected <= ride.NoOfSeatsAvailable)
             {
-                CarPoolData.Bookings.Add(booking);
+                repository.Add<Booking>(booking);
                 return true;         
             }
             return false;
@@ -40,12 +45,12 @@ namespace CarPool.Services
 
         public List<Booking> GetAllBookings(int userId)
         {
-            return CarPoolData.Bookings.FindAll(b => b.UserId == userId);
+            return repository.FindData<Booking>(b => b.UserId == userId);
         }
 
         public  List<Ride> GetAllRideOffers(int userId)
         {
-            return CarPoolData.Rides.FindAll(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId && r.NoOfSeatsAvailable>0);
+            return repository.FindData<Ride>(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId!=userId && r.NoOfSeatsAvailable>0);
         }
 
         public List<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
@@ -76,7 +81,7 @@ namespace CarPool.Services
 
         public Car GetCarDetails(string carNumber)
         {
-            return CarPoolData.Cars.Find(c => c.CarNo == carNumber);
+            return repository.FindItem<Car>(c => c.CarNo == carNumber);
         }
 
     }

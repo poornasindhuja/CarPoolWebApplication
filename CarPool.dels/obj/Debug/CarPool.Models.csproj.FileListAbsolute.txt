@@ -6,4 +6,3 @@ D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.Models.csproj.CoreCompileIn
 D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.Models.csproj.CopyComplete
 D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.dels.dll
 D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.dels.pdb
-D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.Models.csprojAssemblyReference.cache

@@ -47,5 +47,9 @@ namespace CarPool.Models
             this.NumberSeatsSelected = noOfSeats;
             this.UserId = userId;
         }
+        public Booking()
+        {
+
+        }
     }
 }
