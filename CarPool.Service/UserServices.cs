@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using CarPool.Models;
 using CarPool.AplicationData;
 using CarPool.Data;
+using AutoMapper;
+using CarPool.Service;
 
 namespace CarPool.Services
 {
@@ -23,7 +25,7 @@ namespace CarPool.Services
         {
             // If phonenumber and password matches then user will successfully login.
             bool IsCorrectPassword=false;
-            CurrentUser = repository.FindItem<User>(u => u.PhoneNumber == phoneNumber);
+            CurrentUser =repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber).Map<User>();
             if (CurrentUser != null && CurrentUser.Password == password)
             {
                 IsCorrectPassword = true;
@@ -33,21 +35,19 @@ namespace CarPool.Services
 
         public User GetUser(int userId)
         {
-            return repository.FindItem<User>(u => u.UserId == userId);
+            return repository.FindItem<Data.Models.User>(u => u.UserId == userId).Map<User>();
         }
 
         public bool IsExistingUser(string phoneNumber)
         {
-            return repository.FindItem<User>(u => u.PhoneNumber == phoneNumber) != null;
+            return repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber).Map<User> ()!= null;
         }
 
         public bool SignUp(User user)
         {
             if(GenericValidator.Validate(user,out ICollection<ValidationResult> results))
             {
-                user.UserId = repository.GetAllData<User>().Count()+ 1;
-                repository.Add<User>(user);
-                //CarPoolData.Users.Add(user);
+                repository.Add<Data.Models.User>(MapperHelper.Map<Data.Models.User>(user));
                 return true;
             }
             return false;           
@@ -55,18 +55,19 @@ namespace CarPool.Services
 
         public bool IsValidPetName(string phoneNumber,string petName)
         {
-            return repository.FindItem<User>(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null;
+            return repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber && u.PetName == petName) != null;
         }
 
         public void ResetPassword(string phoneNumber, string password)
         {
-            //.......?
-            CarPoolData.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber).Password = password;
+            var user=repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber);
+            user.Password = password;
+            repository.Update<Data.Models.User>(user);
         }
 
         public User GetUser(string phoneNumber)
         {
-            return repository.FindItem<User>(u => u.PhoneNumber == phoneNumber);
+            return repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber).Map<User>();
         }
 
     }

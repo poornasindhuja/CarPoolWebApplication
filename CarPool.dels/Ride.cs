@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarPool.Models
 {
     public class Ride
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RideId { get; set; }
 
         //[AvailableSeats]

@@ -14,7 +14,7 @@ namespace CarPool.Services
         {
             string carsData;
 
-            using (StreamReader reader = new StreamReader(@"RideCharges.json", System.Text.Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(@"RideCharges.Json", System.Text.Encoding.UTF8))
             {
                carsData = reader.ReadToEnd();
             }

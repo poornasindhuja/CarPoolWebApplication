@@ -1,6 +1,7 @@
 ﻿using CarPool.Models;
 using CarPool.Data;
 using System;
+using CarPool.Services;
 
 namespace CarPool
 {
@@ -12,6 +13,7 @@ namespace CarPool
 
         static void Main(string[] args)
         {
+            MapperHelper.InitialiseMapper();
             userFunctionalities = new UserFunctionalities();
             DisplayMainMenu();
         }

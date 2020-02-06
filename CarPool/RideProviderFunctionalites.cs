@@ -305,7 +305,7 @@ namespace CarPool
             
             ride.CarNumber = CarNumber;
             ride.RideProviderId = providerId;
-            ride.ViaPlaces = viaPlaces.ConvertAll(p => p.ToLower());
+            ride.ViaPlaces = viaPlaces;
             rideProviderServices.AddRide(ride);
             Console.Write("Ride Added Sucessfully");
             Console.Write("Press any key");

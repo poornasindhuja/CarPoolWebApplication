@@ -9,15 +9,14 @@ namespace CarPool.Models
     public class JourneyDetail
     {
         private List<string> destination_addresses;
-        private List<string> orginPlaces;
+        private List<string> origin_addresses;
         private List<DistanceMatrixRow> rows;
         string status;
 
-        public List<string> DestinationPlaces { get => destination_addresses; set => destination_addresses = value; }
-        public List<string> OrginPlaces { get => orginPlaces; set => orginPlaces = value; }
+        public List<string> Destination_addresses { get => destination_addresses; set => destination_addresses = value; }
+        public List<string> Origin_addresses { get => origin_addresses; set => origin_addresses = value; }
         public List<DistanceMatrixRow> Rows { get => rows; set => rows = value; }
         public string Status { get => status; set => status = value; }
-
     }
 
     public class DistanceMatrixRow

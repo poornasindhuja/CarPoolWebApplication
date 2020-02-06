@@ -24,7 +24,7 @@ namespace CarPool.Services
                     jsonString = reader.ReadToEnd();
                 }
                 journeyDetail = JsonConvert.DeserializeObject<JourneyDetail>(jsonString);
-                Places = journeyDetail.DestinationPlaces;
+                Places = journeyDetail.Destination_addresses;
             }
             catch (Exception e)
             {

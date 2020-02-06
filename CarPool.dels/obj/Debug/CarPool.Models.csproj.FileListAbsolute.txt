@@ -1,8 +1,0 @@
-D:\CarPooling\CarPool\CarPool.dels\bin\Debug\CarPool.dels.dll
-D:\CarPooling\CarPool\CarPool.dels\bin\Debug\CarPool.dels.pdb
-D:\CarPooling\CarPool\CarPool.dels\bin\Debug\Newtonsoft.Json.dll
-D:\CarPooling\CarPool\CarPool.dels\bin\Debug\Newtonsoft.Json.xml
-D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.Models.csproj.CoreCompileInputs.cache
-D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.Models.csproj.CopyComplete
-D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.dels.dll
-D:\CarPooling\CarPool\CarPool.dels\obj\Debug\CarPool.dels.pdb

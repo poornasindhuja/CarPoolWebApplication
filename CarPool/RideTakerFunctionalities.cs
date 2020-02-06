@@ -98,7 +98,7 @@ namespace CarPool
 
             string dropLocation = Enum.GetName(typeof(Places), helper.GetUserChoiceInEnum<Places>());
 
-            var availableRides = rideTakerServices.SearchRides(pickupLocation.ToLower(), dropLocation.ToLower(),userId);
+            var availableRides = rideTakerServices.SearchRides(pickupLocation, dropLocation,userId);
 
             if (availableRides.Count == 0)
             {
@@ -153,6 +153,7 @@ namespace CarPool
                 Console.WriteLine("\n--------------------------------------------------------------------------------------------------------\n");
                 foreach (Ride r in rideOffers)
                 {
+
                     Console.WriteLine($"Ride number:{index++}\tRideId:{r.RideId}\t\tRideProvide Name:{userServices.GetUser(r.RideProviderId).UserName}" +
                         $"\nFrom: { r.Source}\t\tTo: {r.Destination}");
                     Console.Write("Via:|");

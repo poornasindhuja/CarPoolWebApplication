@@ -22,36 +22,36 @@ namespace CarPool.Services
             bool isValidData = false;
             if(GenericValidator.Validate(ride,out ICollection<ValidationResult> results))
             {
-                ride.RideId = repository.GetAllData<Ride>().Count() + 1;
                 ride.EndTime = ride.StartTime.AddSeconds(GetDurationBetweenPlaces(ride.Source, ride.Destination));
-                repository.Add<Ride>(ride);
+                repository.Add<Data.Models.Ride>(MapperHelper.Map<Data.Models.Ride>(ride));
                 isValidData = true;
             }
             return isValidData;
         }
 
         public List<Ride> GetPastRideOffers(int userId)
-        {
-            return repository.FindData<Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date < DateTime.Now.Date);
+        {            
+            return MapperHelper.MapCollection<Data.Models.Ride, Ride>(repository.FindAllItems<Data.Models.Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date < DateTime.Now.Date)).ToList();
         }
 
         public List<Ride> GetAvailableRideOffers(int userId)
         {
-            // Implement  (&& r.DateOfRide>= DateTime.Now)
-            return repository.FindData<Ride>(r => r.RideProviderId == userId);
+            return MapperHelper.MapCollection<Data.Models.Ride,Ride>(repository.FindAllItems<Data.Models.Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date >= DateTime.Now.Date)).ToList();
         }
 
         public bool ApproveBooking(int bookingId,BookingStatus value)
         {           
-            Booking booking = repository.FindItem<Booking>(b => b.BookingId == bookingId);
+            Booking booking = repository.FindItem<Data.Models.Booking>(b => b.BookingId == bookingId).Map<Booking>();
 
-            Ride currentRide = repository.FindItem<Ride>(r => r.RideId == booking.RideId);
+            var currentRide = repository.FindItem<Data.Models.Ride>(r => r.RideId == booking.RideId);
 
             if (booking != null && currentRide.NoOfSeatsAvailable > 0)
             {
-                //..........?
-                //CarPoolData.Bookings.Find(b => b.BookingId == bookingId).Status = value;
+                var bookingModel=repository.FindItem<Data.Models.Booking>(b => b.BookingId == bookingId).Map<Booking>();
+                bookingModel.Status = value;
+                repository.Update<Data.Models.Booking>(MapperHelper.Map<Data.Models.Booking>(bookingModel));
                 currentRide.NoOfSeatsAvailable = currentRide.NoOfSeatsAvailable - booking.NumberSeatsSelected;
+                repository.Update<Data.Models.Ride>(currentRide);
                 return true;
             }
             else
@@ -65,7 +65,7 @@ namespace CarPool.Services
             var errors = new List<string>();
             if (GenericValidator.Validate(car, out ICollection<ValidationResult> results))
             {
-                repository.Add<Car>(car);
+                repository.Add<Data.Models.Car>(MapperHelper.Map<Data.Models.Car>(car));
                 return true;
             }
             return false;
@@ -73,29 +73,29 @@ namespace CarPool.Services
 
         public bool IsCarLinked(int providerId)
         {
-            return repository.FindData<Car>(c => c.OwnerId == providerId).Count()!=0 ;
+            return repository.Count<Data.Models.Car>(c => c.OwnerId == providerId) !=0 ;
         }
 
         public List<Car> GetCarsOfUser(int userId)
         {
-            return repository.FindData<Car>(c => c.OwnerId == userId);
+            return MapperHelper.MapCollection<Data.Models.Car,Car>(repository.FindAllItems<Data.Models.Car>(c => c.OwnerId == userId)).ToList();
         }
 
         public List<Booking> GetBookingsForRide(int rideId)
         {
-            return repository.FindData<Booking>(b => b.RideId == rideId);
+            return MapperHelper.MapCollection<Data.Models.Booking,Booking>(repository.FindAllItems<Data.Models.Booking>(b => b.RideId == rideId)).ToList();
         }
 
-        // returns all the bookings get by the user
+        // Returns all the bookings get by the user
         public List<Booking> GetAllBookings(int userId)
         {
-            var ridesList = repository.FindData<Ride>(r => r.RideProviderId == userId).ConvertAll(r=>r.RideId);
-            return repository.FindData<Booking>(b => ridesList.Contains(b.RideId));
+            var ridesList = repository.FindAllItems<Data.Models.Ride>(r => r.RideProviderId == userId).ConvertAll(r=>r.RideId);
+            return MapperHelper.MapCollection<Data.Models.Booking,Booking>(repository.FindAllItems<Data.Models.Booking>(b => ridesList.Contains(b.RideId))).ToList();
         }
 
         public List<Booking> GetNewBookingRequests(int rideId)
         {
-            return repository.FindData<Booking>(b => b.RideId == rideId && b.Status == BookingStatus.Pending);
+            return MapperHelper.MapCollection<Data.Models.Booking,Booking>(repository.FindAllItems<Data.Models.Booking>(b => b.RideId == rideId && b.Status == (short)BookingStatus.Pending)).ToList();
         }
     }
 }
