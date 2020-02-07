@@ -2,7 +2,6 @@
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using CarPool.Models;
-using CarPool.AplicationData;
 using CarPool.Data;
 using AutoMapper;
 using CarPool.Service;

@@ -46,20 +46,12 @@
   <ItemGroup>
     <Compile Include="CarPoolData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="RideCharges.Json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CarPool.dels\CarPool.Models.csproj">
       <Project>{f3894b4e-b909-4b78-a55c-a0c3275e9a79}</Project>
       <Name>CarPool.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DistanceMatrix.Json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
