@@ -26,7 +26,7 @@ namespace CarPool.Services
             // If phonenumber and password matches then user will successfully login.
             bool IsCorrectPassword=false;
             CurrentUser =repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber).Map<User>();
-            if (CurrentUser != null && CurrentUser.Password == password)
+            if (CurrentUser != null && CurrentUser.Password == password) // I think there is no need of if loop
             {
                 IsCorrectPassword = true;
             }
@@ -47,7 +47,7 @@ namespace CarPool.Services
         {
             if(GenericValidator.Validate(user,out ICollection<ValidationResult> results))
             {
-                repository.Add<Data.Models.User>(MapperHelper.Map<Data.Models.User>(user));
+                repository.Add<Data.Models.User>(MapperHelper.Map<Data.Models.User>(user)); //is it the correct usage?
                 return true;
             }
             return false;           

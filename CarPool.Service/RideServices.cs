@@ -19,7 +19,7 @@ namespace CarPool.Services
             string jsonString;
             try
             {
-                using (StreamReader reader = new StreamReader(@"DistanceMatrix.json", System.Text.Encoding.UTF8))
+                using (StreamReader reader = new StreamReader(@"DistanceMatrix.json", System.Text.Encoding.UTF8))//Still is there the use of this implementation?
                 {
                     jsonString = reader.ReadToEnd();
                 }

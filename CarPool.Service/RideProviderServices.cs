@@ -6,7 +6,7 @@ using CarPool.Models;
 using CarPool.AplicationData;
 using CarPool.Data;
 
-namespace CarPool.Services
+namespace CarPool.Services // bad usage of MapperHelper
 {
     public class RideProviderServices:RideServices,IRideProviderServices
     {

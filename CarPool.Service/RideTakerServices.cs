@@ -21,12 +21,12 @@ namespace CarPool.Services
         {
             genericValidator = new GenericValidator();
             repository = new Repository();
-            repository = new Repository();
+            repository = new Repository();//is there need of initializing twice?
         }
         public bool BookRide(Booking booking)
         {
             var ride = repository.FindItem<Data.Models.Ride>(r => r.RideId == booking.RideId).Map<Ride>();
-            // booking.BookingId = repository.Count<Booking>() + 1;
+            // booking.BookingId = repository.Count<Booking>() + 1; remove unwanted code
             booking.StartTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, booking.Source));
             booking.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(booking.Source, booking.Destination));
             var placesList = new List<string>

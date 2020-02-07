@@ -32,12 +32,12 @@ namespace CarPool.Data
             return dbContext.Set<T>().ToList<T>();
         }
 
-        public List<T>FindAllItems<T>(Expression<Func<T, bool>> predicate) where T : class
+        public List<T>FindAllItems<T>(Expression<Func<T, bool>> predicate) where T : class //Is there diff b/w getall and find all?
         {
-            return dbContext.Set<T>().Where(predicate.Compile()).ToList<T>();
+            return dbContext.Set<T>().Where(predicate.Compile()).ToList<T>();//check can't you ue without compile?
         }
 
-        public T FindItem<T>(Expression<Func<T, bool>> predicate) where T : class
+        public T FindItem<T>(Expression<Func<T, bool>> predicate) where T : class// I think instead of findItem, get would give the appropriate name
         {
             return dbContext.Set<T>().FirstOrDefault(predicate.Compile());
         }

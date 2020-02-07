@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace CarPool.Services
 {
-    public class TravellingChargeServices
+    public class TravellingChargeServices // remove if not needed
     {
         public TravellCharges TravellCharges { get; private set; }
 
