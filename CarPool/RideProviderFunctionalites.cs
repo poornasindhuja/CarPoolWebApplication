@@ -149,6 +149,7 @@ namespace CarPool
                 else
                 {
                     ApproveBookings(currentRides[rideNo - 1].RideId);
+                    break;
                 }
             }
         }
@@ -307,8 +308,7 @@ namespace CarPool
             ride.RideProviderId = providerId;
             ride.ViaPlaces = viaPlaces;
             rideProviderServices.AddRide(ride);
-            Console.Write("Ride Added Sucessfully");
-            Console.Write("Press any key");
+            Console.WriteLine("Ride Added Sucessfully\nPress any key");
             Console.ReadKey();
         }
 
@@ -317,7 +317,7 @@ namespace CarPool
             CarNumber = GetStringMatch("Enter car number", "car number should not be empty",Patterns.CarNumber);
             var carName = GetStringMatch("Enter the car name", "car name should not be empty", Patterns.Name);
             capacity =Convert.ToInt16(GetStringMatch("Enter Capacity of car[4-8]", "Invalid Capacity", Patterns.CarCapacity));
-            //carType = GetUserChoiceInList(travellingChargeServices.CarTypes);
+            Console.WriteLine("Select car type:");
             carType =GetUserChoiceInEnum<CarType>();
             if(!rideProviderServices.AddCar(new Car { CarNo=CarNumber, CarName=carName, Capacity=capacity, CarType=(CarType)carType, OwnerId=providerId }))
             { 

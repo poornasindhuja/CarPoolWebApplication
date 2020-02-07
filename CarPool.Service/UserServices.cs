@@ -40,7 +40,8 @@ namespace CarPool.Services
 
         public bool IsExistingUser(string phoneNumber)
         {
-            return repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber).Map<User> ()!= null;
+            var t = repository.FindItem<Data.Models.User>(u => u.PhoneNumber == phoneNumber);
+            return t.Map<User>() != null;
         }
 
         public bool SignUp(User user)
