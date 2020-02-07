@@ -10,11 +10,10 @@ namespace CarPool.Data
 {
     class CarPoolDbContext:DbContext
     {
-      
-        //public CarPoolDbContext()
-        //{
-        //    Users = new List<User>();
-        //}
+        public CarPoolDbContext()
+        {
+            //this.Configuration.LazyLoadingEnabled = false;
+        }
         public DbSet<User> Users { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Car> Cars { get; set; }

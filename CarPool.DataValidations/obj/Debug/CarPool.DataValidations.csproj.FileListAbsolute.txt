@@ -1,6 +1,0 @@
-D:\CarPooling\CarPool\CarPool.DataValidations\bin\Debug\CarPool.DataValidations.dll
-D:\CarPooling\CarPool\CarPool.DataValidations\bin\Debug\CarPool.DataValidations.pdb
-D:\CarPooling\CarPool\CarPool.DataValidations\obj\Debug\CarPool.DataValidations.csprojAssemblyReference.cache
-D:\CarPooling\CarPool\CarPool.DataValidations\obj\Debug\CarPool.DataValidations.csproj.CoreCompileInputs.cache
-D:\CarPooling\CarPool\CarPool.DataValidations\obj\Debug\CarPool.DataValidations.dll
-D:\CarPooling\CarPool\CarPool.DataValidations\obj\Debug\CarPool.DataValidations.pdb

@@ -84,9 +84,10 @@ namespace CarPool
                 {
                     UserId = userServices.GetUser(phoneNumber).UserId;
                     UserOptions();
+                    break;
                 }
                 Console.WriteLine("Wrong Password");
-            }while(userServices.SignIn(phoneNumber,password));            
+            }while(true);            
         }
 
         public void ForgotPassword()

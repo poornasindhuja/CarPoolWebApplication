@@ -39,7 +39,7 @@ namespace CarPool.Data
 
         public T FindItem<T>(Expression<Func<T, bool>> predicate) where T : class// I think instead of findItem, get would give the appropriate name
         {
-            return dbContext.Set<T>().FirstOrDefault(predicate.Compile());
+            return dbContext.Set<T>().FirstOrDefault(predicate);
         }
 
         public void Update<T>(T tObject) where T : class
