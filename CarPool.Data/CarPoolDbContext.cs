@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace CarPool.Data
 {
-    class CarPoolDbContext:DbContext
-    {
-        public CarPoolDbContext()
-        {
-            //this.Configuration.LazyLoadingEnabled = false;
-        }
+    public class CarPoolDbContext:DbContext
+    {      
         public DbSet<User> Users { get; set; }
+
         public DbSet<Booking> Bookings { get; set; }
+
         public DbSet<Car> Cars { get; set; }
+
         public DbSet<Ride> Rides { get; set; }
 
         public void FixEfProviderServicesProblem()

@@ -13,7 +13,11 @@ namespace CarPool.Data
 {
     public class Repository
     {
-        CarPoolDbContext dbContext = new CarPoolDbContext();
+        CarPoolDbContext dbContext;
+        public Repository()
+        {
+            dbContext = new CarPoolDbContext();
+        }
 
         public void Add<T>(T tObject) where T : class
         {         

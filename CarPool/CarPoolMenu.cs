@@ -13,6 +13,7 @@ namespace CarPool
 
         static void Main(string[] args)
         {
+            var carPoolDbContext = new CarPoolDbContext();
             MapperHelper.InitialiseMapper();
             userFunctionalities = new UserFunctionalities();
             DisplayMainMenu();
