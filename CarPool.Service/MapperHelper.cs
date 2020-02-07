@@ -24,7 +24,7 @@ namespace CarPool.Services
         public static void InitialiseMapper()
         {
             var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile<MapperCode>();
+                cfg.AddProfile<MapperProfile>();
             });
             Mapper = config.CreateMapper();
         }

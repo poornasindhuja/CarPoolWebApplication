@@ -16,15 +16,11 @@ namespace CarPool
 
         IUserServices userServices;
 
-        TravellingChargeServices travellingChargeServices;
-
         public RideProviderFunctionalites(int providerId)
         {
             rideProviderServices = new RideProviderServices();
 
             userServices = new UserServices();
-
-            travellingChargeServices = new TravellingChargeServices();
 
             this.providerId = providerId;
         }
@@ -302,7 +298,7 @@ namespace CarPool
             do
             {
                 ride.PricePerKilometer = Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise): ", "Invalid cost", Patterns.Amount));
-            } while (travellingChargeServices.GetMaximumCharge(carType)<ride.PricePerKilometer);
+            } while (rideProviderServices.GetMaximumCharge(carType)<ride.PricePerKilometer);
             
             ride.CarNumber = CarNumber;
             ride.RideProviderId = providerId;

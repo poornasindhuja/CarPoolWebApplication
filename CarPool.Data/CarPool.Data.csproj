@@ -71,11 +71,22 @@
     <Compile Include="Migrations\202002060851443_AddedViaplaces.designer.cs">
       <DependentUpon>202002060851443_AddedViaplaces.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002071015413_PricelimitAdded.cs" />
+    <Compile Include="Migrations\202002071015413_PricelimitAdded.designer.cs">
+      <DependentUpon>202002071015413_PricelimitAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002071310085_CreateRouteInformation.cs" />
+    <Compile Include="Migrations\202002071310085_CreateRouteInformation.designer.cs">
+      <DependentUpon>202002071310085_CreateRouteInformation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\Place.cs" />
     <Compile Include="Models\Ride.cs" />
+    <Compile Include="Models\RouteInformation.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\PriceLimit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
   </ItemGroup>
@@ -97,6 +108,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002060851443_AddedViaplaces.resx">
       <DependentUpon>202002060851443_AddedViaplaces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002071015413_PricelimitAdded.resx">
+      <DependentUpon>202002071015413_PricelimitAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002071310085_CreateRouteInformation.resx">
+      <DependentUpon>202002071310085_CreateRouteInformation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

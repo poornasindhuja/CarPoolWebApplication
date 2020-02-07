@@ -41,7 +41,7 @@ namespace CarPool.Models
 
     public class GenericValidator
     {
-        public static bool Validate(object obj, out ICollection<ValidationResult> results)
+        public static bool Validate(object obj, out ICollection<ValidationResult> results) //insted of using out parameter you can return the validations itself
         {
             var context = new ValidationContext(obj);
             results = new List<ValidationResult>();

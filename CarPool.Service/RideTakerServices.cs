@@ -21,12 +21,10 @@ namespace CarPool.Services
         {
             genericValidator = new GenericValidator();
             repository = new Repository();
-            repository = new Repository();
         }
         public bool BookRide(Booking booking)
         {
-            var ride = repository.FindItem<Data.Models.Ride>(r => r.RideId == booking.RideId).Map<Ride>();
-            // booking.BookingId = repository.Count<Booking>() + 1;
+            var ride = repository.Get<Data.Models.Ride>(r => r.RideId == booking.RideId).Map<Ride>();
             booking.StartTime = ride.StartTime.AddSeconds( GetDurationBetweenPlaces(ride.Source, booking.Source));
             booking.EndTime= ride.StartTime.AddSeconds(GetDurationBetweenPlaces(booking.Source, booking.Destination));
             var placesList = new List<string>
@@ -84,7 +82,7 @@ namespace CarPool.Services
 
         public Car GetCarDetails(string carNumber)
         {
-            return repository.FindItem<Data.Models.Car>(c => c.CarNo == carNumber).Map<Car>();
+            return repository.Get<Data.Models.Car>(c => c.CarNo == carNumber).Map<Car>();
         }
 
     }

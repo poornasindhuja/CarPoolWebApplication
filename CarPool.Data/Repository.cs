@@ -31,19 +31,20 @@ namespace CarPool.Data
                 throw new Exception(e.Message);
             }
         }
-        public List<T> GetAllData<T>() where T : class
+       
+        public List<T> GetTable<T>() where T : class
         {
             return dbContext.Set<T>().ToList<T>();
         }
 
-        public List<T>FindAllItems<T>(Expression<Func<T, bool>> predicate) where T : class
+        public List<T>FindAllItems<T>(Expression<Func<T, bool>> predicate=null) where T : class
         {
             return dbContext.Set<T>().Where(predicate.Compile()).ToList<T>();
         }
 
-        public T FindItem<T>(Expression<Func<T, bool>> predicate) where T : class
+        public T Get<T>(Expression<Func<T, bool>> predicate) where T : class
         {
-            return dbContext.Set<T>().FirstOrDefault(predicate);
+            return dbContext.Set<T>().FirstOrDefault(predicate.Compile());
         }
 
         public void Update<T>(T tObject) where T : class

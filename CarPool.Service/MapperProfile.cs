@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace CarPool.Service
 {
-    public  class MapperCode:Profile
+    public  class MapperProfile:Profile // update the naming convention 
     {
-        public  MapperCode()
+        public  MapperProfile()
         {
             CreateMap<Models.User, Data.Models.User>();
             CreateMap<Models.Car, Data.Models.Car>().ForMember(destination=>destination.CarType,opts=>opts.MapFrom(source=>(short)source.CarType));     
