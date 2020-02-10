@@ -8,7 +8,6 @@ using CarPool.Service;
 
 namespace CarPool.Services
 {
-
     public class UserServices:IUserServices
     {
 

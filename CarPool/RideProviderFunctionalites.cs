@@ -177,9 +177,9 @@ namespace CarPool
                 DisplayBookings(bookings);
                 while (true)
                 {
-                    Console.WriteLine("Please choose the booking number you want to approve/reject:");
+                    Console.WriteLine();
 
-                    int.TryParse(Console.ReadLine(), out int bookingNo);
+                    int bookingNo = GetIntegerInRange("Please choose the booking number you want to approve/reject:", "Invalid booking number", 1, bookings.Count);
                     Choice = Convert.ToInt16(GetStringMatch("Enter 1 to approve\nEnter 2 to reject", "Invalid Option", @"^[12]"));
                     if (Choice == 1)
                     {

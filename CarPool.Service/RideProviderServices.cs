@@ -29,28 +29,57 @@ namespace CarPool.Services
 
         public List<Ride> GetPastRideOffers(int userId)
         {            
-            return repository.FindAllItems<Data.Models.Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date < DateTime.Now.Date).MapCollection<Data.Models.Ride, Ride>().ToList();
+            return repository.GetAll<Data.Models.Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date < DateTime.Now.Date).MapCollection<Data.Models.Ride, Ride>().ToList();
         }
 
         public List<Ride> GetAvailableRideOffers(int userId)
         {
-            return repository.FindAllItems<Data.Models.Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date >= DateTime.Now.Date).MapCollection<Data.Models.Ride, Ride>().ToList();
+            return repository.GetAll<Data.Models.Ride>(r => r.RideProviderId == userId && r.DateOfRide.Date >= DateTime.Now.Date).MapCollection<Data.Models.Ride, Ride>().ToList();
         }
 
         public bool ApproveBooking(int bookingId,BookingStatus value)
         {           
             Booking booking = repository.Get<Data.Models.Booking>(b => b.BookingId == bookingId).Map<Booking>();
 
-            var currentRide = repository.Get<Data.Models.Ride>(r => r.RideId == booking.RideId);
+            var currentRide = repository.Get<Data.Models.Ride>(r => r.RideId == booking.RideId).Map<Ride>();
 
-            if (booking != null && currentRide.NoOfSeatsAvailable > 0)
+            if (booking != null )
             {
-                var bookingModel=repository.Get<Data.Models.Booking>(b => b.BookingId == bookingId).Map<Booking>();
-                bookingModel.Status = value;
-                repository.Update<Data.Models.Booking>(bookingModel.Map<Data.Models.Booking>());
-                currentRide.NoOfSeatsAvailable = currentRide.NoOfSeatsAvailable - booking.NumberSeatsSelected;
-                repository.Update<Data.Models.Ride>(currentRide);
-                return true;
+                var route = currentRide.ViaPlaces;
+                route.Insert(0, currentRide.Source);
+                route.Insert(route.Count(), currentRide.Destination);
+                var maxSeatsAvailable = currentRide.NoOfSeatsAvailable;
+                bool isPickUpLocationExist = false;
+                foreach (var place in route)
+                {
+                    if (place == booking.Destination)
+                    {
+                        if (maxSeatsAvailable >= booking.NumberSeatsSelected)
+                        {
+                            var bookingModel = repository.Get<Data.Models.Booking>(b => b.BookingId == bookingId).Map<Booking>();
+                            bookingModel.Status = value;
+                            repository.Update<Data.Models.Booking>(bookingModel.Map<Data.Models.Booking>());
+                            return true;
+                        }
+                        break;
+                    }
+                    var seatsBeingFilled = repository.GetAll<Data.Models.Booking>(b => b.RideId == currentRide.RideId && b.Source == place && b.Status == (int)BookingStatus.Approved).Select(b=>b.NumberSeatsSelected).Sum();
+                    var seatsBeingEmpty = repository.GetAll<Data.Models.Booking>(b => b.RideId == currentRide.RideId && b.Destination == place && b.Status == (int)BookingStatus.Approved).Select(b=>b.NumberSeatsSelected).Sum();
+                    maxSeatsAvailable -= seatsBeingFilled;
+                    maxSeatsAvailable += seatsBeingEmpty;
+                    if (isPickUpLocationExist && maxSeatsAvailable <=currentRide.NoOfSeatsAvailable)
+                    {
+                        if (maxSeatsAvailable > 0)
+                        {
+                            currentRide.NoOfSeatsAvailable = maxSeatsAvailable;
+                        }
+
+                    }
+                    if (place == booking.Source && maxSeatsAvailable > 0)
+                    {
+                        isPickUpLocationExist = true;
+                    }
+                }                           
             }           
             return false;
         }
@@ -73,24 +102,24 @@ namespace CarPool.Services
 
         public List<Car> GetCarsOfUser(int userId)
         {
-            return repository.FindAllItems<Data.Models.Car>(c => c.OwnerId == userId).MapCollection<Data.Models.Car, Car>().ToList();
+            return repository.GetAll<Data.Models.Car>(c => c.OwnerId == userId).MapCollection<Data.Models.Car, Car>().ToList();
         }
 
         public List<Booking> GetBookingsForRide(int rideId)
         {
-            return repository.FindAllItems<Data.Models.Booking>(b => b.RideId == rideId).MapCollection<Data.Models.Booking, Booking>().ToList();
+            return repository.GetAll<Data.Models.Booking>(b => b.RideId == rideId).MapCollection<Data.Models.Booking, Booking>().ToList();
         }
 
         // Returns all the bookings get by the user
         public List<Booking> GetAllBookings(int userId)
         {
-            var ridesList = repository.FindAllItems<Data.Models.Ride>(r => r.RideProviderId == userId).ConvertAll(r=>r.RideId);
-            return repository.FindAllItems<Data.Models.Booking>(b => ridesList.Contains(b.RideId)).MapCollection<Data.Models.Booking, Booking>().ToList();
+            var ridesList = repository.GetAll<Data.Models.Ride>(r => r.RideProviderId == userId).ConvertAll(r=>r.RideId);
+            return repository.GetAll<Data.Models.Booking>(b => ridesList.Contains(b.RideId)).MapCollection<Data.Models.Booking, Booking>().ToList();
         }
 
         public List<Booking> GetNewBookingRequests(int rideId)
         {
-            return repository.FindAllItems<Data.Models.Booking>(b => b.RideId == rideId && b.Status == (short)BookingStatus.Pending).MapCollection<Data.Models.Booking, Booking>().ToList();
+            return repository.GetAll<Data.Models.Booking>(b => b.RideId == rideId && b.Status == (short)BookingStatus.Pending).MapCollection<Data.Models.Booking, Booking>().ToList();
         }
     }
 }

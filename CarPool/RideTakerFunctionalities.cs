@@ -141,8 +141,8 @@ namespace CarPool
         {
             int index = 1;
 
-            var travellingChargeServices = new TravellingChargeServices();
             decimal costOfRide;
+
             if (rideOffers.Count==0)
             {
                 Console.WriteLine("No rides Available to show\nPress any key");

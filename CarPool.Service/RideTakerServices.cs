@@ -45,36 +45,55 @@ namespace CarPool.Services
 
         public List<Booking> GetAllBookings(int userId)
         {
-            return MapperHelper.MapCollection<Data.Models.Booking,Booking>(repository.FindAllItems<Data.Models.Booking>(b => b.UserId == userId)).ToList();
+            return MapperHelper.MapCollection<Data.Models.Booking,Booking>(repository.GetAll<Data.Models.Booking>(b => b.UserId == userId)).ToList();
         }
 
         public  List<Ride> GetAllRideOffers(int userId)
         {
-            return MapperHelper.MapCollection<Data.Models.Ride,Ride>(repository.FindAllItems<Data.Models.Ride>(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId != userId && r.NoOfSeatsAvailable > 0)).ToList();
+            return MapperHelper.MapCollection<Data.Models.Ride,Ride>(repository.GetAll<Data.Models.Ride>(r => r.DateOfRide.Date >= DateTime.Now.Date && r.RideProviderId != userId && r.NoOfSeatsAvailable > 0)).ToList();
         }
 
         public List<Ride> SearchRides(string pickupLocation, string dropLocation,int userId)
         {
             var availableRides = new List<Ride>();
 
-            // returns all the ride offers available from pickup location to drop location.
-            foreach(Ride ride in GetAllRideOffers(userId))
+            // Returns all the ride offers available from pickup location to drop location.
+            foreach (Ride ride in GetAllRideOffers(userId))
             {
-                if (ride.Source == pickupLocation)
+                var route = ride.ViaPlaces;
+                route.Insert(0, ride.Source);
+                route.Insert(route.Count(), ride.Destination);
+                if(route.Contains(pickupLocation)&& (route.IndexOf(pickupLocation) < route.IndexOf(dropLocation)))
                 {
-                    if (ride.ViaPlaces.Contains(dropLocation) || ride.Destination == dropLocation)
+                    var maxSeatsAvailable = ride.NoOfSeatsAvailable;
+                    bool isPickUpLocationExist=false;
+                    foreach (var place in route)
                     {
-                        availableRides.Add(ride);
+                        if (place == dropLocation && maxSeatsAvailable > 0)
+                        {
+                            availableRides.Add(ride);
+                        }
+                        var seatsBeingFilled = repository.GetAll<Data.Models.Booking>(b => b.RideId == ride.RideId && b.Source == place && b.Status == (int)BookingStatus.Approved).Select(b => b.NumberSeatsSelected).Sum();
+                        var seatsBeingEmpty = repository.GetAll<Data.Models.Booking>(b => b.RideId == ride.RideId && b.Destination == place && b.Status == (int)BookingStatus.Approved).Select(b => b.NumberSeatsSelected).Sum();
+                        maxSeatsAvailable -= seatsBeingFilled;
+                        maxSeatsAvailable += seatsBeingEmpty;                       
+                        if (place==pickupLocation && maxSeatsAvailable > 0)
+                        {
+                            isPickUpLocationExist = true;
+                        }
+                        if (isPickUpLocationExist && maxSeatsAvailable <= ride.NoOfSeatsAvailable)
+                        {
+                            if (maxSeatsAvailable > 0)
+                            {
+                                ride.NoOfSeatsAvailable = maxSeatsAvailable;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
                 }
-                else if(ride.ViaPlaces.Contains(pickupLocation))
-                {
-                    if((ride.ViaPlaces.Contains(dropLocation)&& ride.ViaPlaces.IndexOf(dropLocation)>ride.ViaPlaces.IndexOf(pickupLocation))
-                        || ride.Destination == dropLocation)
-                    {
-                        availableRides.Add(ride);
-                    }
-                }   
             }
             return availableRides;
         }

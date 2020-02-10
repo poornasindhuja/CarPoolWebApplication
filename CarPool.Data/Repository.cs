@@ -37,7 +37,7 @@ namespace CarPool.Data
             return dbContext.Set<T>().ToList<T>();
         }
 
-        public List<T>FindAllItems<T>(Expression<Func<T, bool>> predicate=null) where T : class
+        public List<T>GetAll<T>(Expression<Func<T, bool>> predicate=null) where T : class
         {
             return dbContext.Set<T>().Where(predicate.Compile()).ToList<T>();
         }

@@ -28,7 +28,7 @@ namespace CarPool
             do
             {
                 User.PhoneNumber = GetStringMatch("Please Enter your phone number: ", "Invalid phone number",Patterns.PhoneNumber);
-                if (!userServices.IsExistingUser(phoneNumber))
+                if (!userServices.IsExistingUser(User.PhoneNumber))
                 {
                     break;
                 }

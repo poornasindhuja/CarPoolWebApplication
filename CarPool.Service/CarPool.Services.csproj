@@ -58,7 +58,6 @@
     <Compile Include="RideProviderServices.cs" />
     <Compile Include="RideServices.cs" />
     <Compile Include="RideTakerServices.cs" />
-    <Compile Include="TravellingChargeServices.cs" />
     <Compile Include="UserServices.cs" />
   </ItemGroup>
   <ItemGroup>
