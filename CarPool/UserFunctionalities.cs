@@ -46,14 +46,15 @@ namespace CarPool
             var registrationChoice = GetStringMatch("Enter 1 to register\nEnter 2 to cancel\n", "please enter a valid option", @"^[1-2]");
             if (Convert.ToInt16(registrationChoice) == 1)
             {
-                if (userServices.SignUp(User))
+                try
                 {
+                    userServices.SignUp(User);
                     Console.Clear();
                     Console.WriteLine("Your account has been sucessfully created.\n Press any key to continue");
                 }
-                else
+                catch(Exception e)
                 {
-                    Console.WriteLine("Oops! Problem in registration");
+                    Console.WriteLine(e.Message);
                 }
                 Console.ReadKey();
             }

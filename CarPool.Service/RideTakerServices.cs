@@ -11,14 +11,11 @@ using CarPool.Service;
 namespace CarPool.Services
 {
     public class RideTakerServices:RideServices,IRideTakerServices
-    {
-        public GenericValidator genericValidator;
-
+    {  
         public Repository repository;
 
         public RideTakerServices()
         {
-            genericValidator = new GenericValidator();
             repository = new Repository();
         }
         public bool BookRide(Booking booking)

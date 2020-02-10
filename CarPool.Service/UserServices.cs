@@ -38,12 +38,15 @@ namespace CarPool.Services
 
         public bool SignUp(User user)
         {
-            if(GenericValidator.Validate(user,out ICollection<ValidationResult> results))
+            if(GenericValidator.Validate(user,out List<string> errors))
             {
                 repository.Add<Data.Models.User>(MapperHelper.Map<Data.Models.User>(user)); //is it the correct usage?
                 return true;
             }
-            return false;           
+            else
+            {
+                throw new ValidationException(string.Join("\n",errors));
+            }          
         }
 
         public bool IsValidPetName(string phoneNumber,string petName)

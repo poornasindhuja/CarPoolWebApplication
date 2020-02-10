@@ -41,15 +41,24 @@ namespace CarPool.Models
 
     public class GenericValidator
     {
-        public static bool Validate(object obj, out ICollection<ValidationResult> results) //insted of using out parameter you can return the validations itself
+        public static bool Validate(object model,out List<string> errors)
         {
-            var context = new ValidationContext(obj);
-            results = new List<ValidationResult>();
-            return Validator.TryValidateObject(
-                obj, context, results,
-                validateAllProperties: true
-            );
-
+            errors = new List<string>();
+            foreach (var propertyInfo in model.GetType().GetProperties())
+            {
+                foreach (var attribute in propertyInfo.GetCustomAttributes(true))
+                {
+                    if (attribute is NotNullAttribute notNullAttribute)
+                    {
+                        if (!notNullAttribute.IsValid(propertyInfo.GetValue(model)))
+                        {
+                            errors.Add(notNullAttribute.ErrorMessage);
+                            break;
+                        }
+                    }
+                }
+            }            
+            return errors.Count!=0;
         }
     }
 }

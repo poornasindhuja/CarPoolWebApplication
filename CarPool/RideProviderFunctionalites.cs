@@ -127,10 +127,9 @@ namespace CarPool
             Console.WriteLine("---------------------------------------------------------------------------------------------------\n\n");
             for (int i = 0; i < currentRides.Count; i++)
             {
-                Console.WriteLine($"RideNo:{i + 1}\tRidedate:{currentRides[i].DateOfRide.Date.ToShortDateString()}\nFrom:{currentRides[i].Source}\t\tTo:{currentRides[i].Destination} " +
+                Console.WriteLine($"RideNo:{i + 1}\t\tRidedate:{currentRides[i].DateOfRide.Date.ToShortDateString()}\nFrom:{currentRides[i].Source}\t\tTo:{currentRides[i].Destination} " +
                     $"\nStartTime:{currentRides[i].StartTime.ToShortTimeString()}\tEndTime:{currentRides[i].EndTime.ToShortTimeString()}\n" +
                     $"New Booking Requests:{rideProviderServices.GetNewBookingRequests(currentRides[i].RideId).Count}" +
-                    $"\nNumber of seats yet to be filled:{currentRides[i].NoOfSeatsAvailable}" +
                     $"\n-----------------------------------------------------------------------------------------------------\n\n");
             }
 
@@ -303,8 +302,15 @@ namespace CarPool
             ride.CarNumber = CarNumber;
             ride.RideProviderId = providerId;
             ride.ViaPlaces = viaPlaces;
-            rideProviderServices.AddRide(ride);
-            Console.WriteLine("Ride Added Sucessfully\nPress any key");
+            try
+            {
+                rideProviderServices.AddRide(ride);
+                Console.WriteLine("Ride Added Sucessfully\nPress any key");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }            
             Console.ReadKey();
         }
 
@@ -315,9 +321,13 @@ namespace CarPool
             capacity =Convert.ToInt16(GetStringMatch("Enter Capacity of car[4-8]", "Invalid Capacity", Patterns.CarCapacity));
             Console.WriteLine("Select car type:");
             carType =GetUserChoiceInEnum<CarType>();
-            if(!rideProviderServices.AddCar(new Car { CarNo=CarNumber, CarName=carName, Capacity=capacity, CarType=(CarType)carType, OwnerId=providerId }))
-            { 
-                Console.WriteLine("Oops! you cant add this car");
+            try
+            {
+                rideProviderServices.AddCar(new Car { CarNo = CarNumber, CarName = carName, Capacity = capacity, CarType = (CarType)carType, OwnerId = providerId });
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Oops! you cant add this car\n{e.Message}");
                 return false;
             }
             return true;

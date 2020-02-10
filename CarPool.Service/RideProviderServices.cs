@@ -18,13 +18,16 @@ namespace CarPool.Services
 
         public bool AddRide(Ride ride)
         {
-            if(GenericValidator.Validate(ride,out ICollection<ValidationResult> results))
+            if(GenericValidator.Validate(ride,out List<string> errors))
             {
                 ride.EndTime = ride.StartTime.AddSeconds(GetDurationBetweenPlaces(ride.Source, ride.Destination));
                 repository.Add<Data.Models.Ride>(ride.Map<Data.Models.Ride>());
                 return true;
             }
-            return false;
+            else
+            {
+                throw new ValidationException(string.Join("\n", errors));
+            }
         }
 
         public List<Ride> GetPastRideOffers(int userId)
@@ -87,12 +90,15 @@ namespace CarPool.Services
         public bool AddCar(Car car)
         {
             var errors = new List<string>();
-            if (GenericValidator.Validate(car, out ICollection<ValidationResult> results))
+            if (GenericValidator.Validate(car,out List<string> errorList))
             {
                 repository.Add<Data.Models.Car>(car.Map<Data.Models.Car>());
                 return true;
             }
-            return false;
+            else
+            {
+                throw new ValidationException(string.Join("\n", errorList));
+            }
         }
 
         public bool IsCarLinked(int providerId)
