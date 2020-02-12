@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd8fb5f547824483bcf61de836e7097f" Name="Diagram1">
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.Booking" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.Car" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.Place" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.PriceLimit" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.Ride" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.RouteInformation" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarPool.Data.CarPoolDbContextModel.User" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="CarPool.Data.CarPoolDbContextModel.FK_dbo_Bookings_dbo_Rides_RideId" ManuallyRouted="false" />
+        <AssociationConnector Association="CarPool.Data.CarPoolDbContextModel.FK_dbo_Bookings_dbo_Users_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="CarPool.Data.CarPoolDbContextModel.FK_dbo_Cars_dbo_Users_User_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="CarPool.Data.CarPoolDbContextModel.FK_dbo_Rides_dbo_Cars_Car_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="CarPool.Data.CarPoolDbContextModel.FK_dbo_Rides_dbo_Users_User_UserId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
