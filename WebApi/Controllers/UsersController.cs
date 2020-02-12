@@ -19,6 +19,7 @@ namespace WebApi.Controllers
         // GET: api/Users
         public IQueryable<User> GetUsers()
         {
+            // It returns the user data present in database
             return db.Users;
         }
 
