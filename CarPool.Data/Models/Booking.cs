@@ -40,5 +40,8 @@ namespace CarPool.Data.Models
         public decimal CostOfBooking { get; set; }
 
         public int NumberSeatsSelected { get; set; }
+
+        public Ride Ride { get; set; }
+        public User User { get; set; }
     }
 }

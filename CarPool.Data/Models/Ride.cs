@@ -39,5 +39,9 @@ namespace CarPool.Data.Models
 
         [Required]
         public DateTime DateOfRide { get; set; }
+
+        List<Booking> Bookings { get; set; }
+        public User User { get; set; }
+        public Car Car { get; set; }
     }
 }

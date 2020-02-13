@@ -48,17 +48,17 @@ namespace CarPool.Models
             {
                 foreach (var attribute in propertyInfo.GetCustomAttributes(true))
                 {
-                    if (attribute is NotNullAttribute notNullAttribute)
+                    var notNullAttribute = attribute as NotNullAttribute;
+                    if (notNullAttribute != null)
                     {
                         if (!notNullAttribute.IsValid(propertyInfo.GetValue(model)))
                         {
                             errors.Add(notNullAttribute.ErrorMessage);
-                            break;
                         }
                     }
                 }
-            }            
-            return errors.Count!=0;
+            }
+            return errors.Count == 0 ? true : false;
         }
     }
 }

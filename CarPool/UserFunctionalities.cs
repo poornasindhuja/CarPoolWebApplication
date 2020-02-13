@@ -43,6 +43,7 @@ namespace CarPool
             confirmPassword = GetStringMatch("Confirm your password:", "password and confirm password does not match", User.Password);
             Console.WriteLine("Security Question");
             User.PetName = GetStringMatch("Please Enter your first pet Name: ", "pet name should not be empty",Patterns.Text);
+            User.Password = GetHashCode(User.Password);
             var registrationChoice = GetStringMatch("Enter 1 to register\nEnter 2 to cancel\n", "please enter a valid option", @"^[1-2]");
             if (Convert.ToInt16(registrationChoice) == 1)
             {
@@ -81,7 +82,7 @@ namespace CarPool
                 {
                     return;
                 }
-                if(userServices.SignIn(phoneNumber, password))
+                if(userServices.SignIn(phoneNumber, GetHashCode(password)))
                 {
                     UserId = userServices.GetUser(phoneNumber).UserId;
                     UserOptions();
@@ -105,7 +106,7 @@ namespace CarPool
                 confirmPassword = Console.ReadLine();
                 if (password == confirmPassword)
                 {
-                    userServices.ResetPassword(phoneNumber, password);
+                    userServices.ResetPassword(phoneNumber, GetHashCode(password));
                     Console.WriteLine("password sucessfully changed");
                 }
             }

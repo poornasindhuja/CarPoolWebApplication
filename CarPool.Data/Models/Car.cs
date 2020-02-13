@@ -21,8 +21,9 @@ namespace CarPool.Data.Models
         [Range(4,8,ErrorMessage ="Car capacity should lies between 4 and 8")]
         public int Capacity { get; set; }
 
-        [Required]
+        [Required]        
         public int OwnerId { get; set; }
 
+        public User User { get; set; }
     }
 }

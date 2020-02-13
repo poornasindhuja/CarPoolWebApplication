@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using CarPool.Models;
 using CarPool.Services;
@@ -297,7 +298,8 @@ namespace CarPool
             do
             {
                 ride.PricePerKilometer = Convert.ToDecimal(GetStringMatch("Please Enter Cost per Kilometer(Rupees.paise): ", "Invalid cost", Patterns.Amount));
-            } while (rideProviderServices.GetMaximumCharge(carType)<ride.PricePerKilometer);
+               
+            } while (rideProviderServices.GetMaximumCharge(carType) < ride.PricePerKilometer);
             
             ride.CarNumber = CarNumber;
             ride.RideProviderId = providerId;
@@ -307,7 +309,7 @@ namespace CarPool
                 rideProviderServices.AddRide(ride);
                 Console.WriteLine("Ride Added Sucessfully\nPress any key");
             }
-            catch(Exception e)
+            catch(ValidationException e)
             {
                 Console.WriteLine(e.Message);
             }            

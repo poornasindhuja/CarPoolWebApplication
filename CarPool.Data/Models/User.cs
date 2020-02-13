@@ -28,7 +28,10 @@ namespace CarPool.Data.Models
         [Required]
         public string PetName { get; set; }
 
-        [StringLength(maximumLength: 16, MinimumLength = 4, ErrorMessage = "Password Length should consists of minimum 4 characters")]
         public string Password { get; set; }
+
+        public List<Car> Cars { get; set; }
+        public List<Booking> Bookings { get; set; }
+        public List<Ride> Rides { get; set; }
     }
 }
