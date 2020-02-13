@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool", "..\CarPool\CarPool\CarPool.csproj", "{364C753D-93C7-4B7F-88A6-1AA1573861F8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool.Data", "..\CarPool\CarPool.Data\CarPool.Data.csproj", "{2D842116-F965-474E-8C70-7F6A55D3F9D5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool.Models", "..\CarPool\CarPool.dels\CarPool.Models.csproj", "{F3894B4E-B909-4B78-A55C-A0C3275E9A79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool.Services", "..\CarPool\CarPool.Service\CarPool.Services.csproj", "{2CCE35AD-37CE-43C5-8923-ED6E88F0E907}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{1F482761-86C3-40E9-B51F-4348C268588B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool.Api", "CarPool.Api\CarPool.Api.csproj", "{99602CAA-1F8D-485F-BB49-EC6D920AF177}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool", "..\CarPool\CarPool\CarPool.csproj", "{364C753D-93C7-4B7F-88A6-1AA1573861F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPool.Data", "..\CarPool\CarPool.Data\CarPool.Data.csproj", "{2D842116-F965-474E-8C70-7F6A55D3F9D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3894B4E-B909-4B78-A55C-A0C3275E9A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3894B4E-B909-4B78-A55C-A0C3275E9A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3894B4E-B909-4B78-A55C-A0C3275E9A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +33,18 @@ Global
 		{1F482761-86C3-40E9-B51F-4348C268588B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F482761-86C3-40E9-B51F-4348C268588B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F482761-86C3-40E9-B51F-4348C268588B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99602CAA-1F8D-485F-BB49-EC6D920AF177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99602CAA-1F8D-485F-BB49-EC6D920AF177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99602CAA-1F8D-485F-BB49-EC6D920AF177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99602CAA-1F8D-485F-BB49-EC6D920AF177}.Release|Any CPU.Build.0 = Release|Any CPU
+		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{364C753D-93C7-4B7F-88A6-1AA1573861F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D842116-F965-474E-8C70-7F6A55D3F9D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
