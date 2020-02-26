@@ -9,8 +9,9 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
+            //Database.SetInitializer<CarPoolDbContext>(new DropCreateDatabaseIfModelChanges<CarPoolDbContext>());
         }
 
         protected override void Seed(CarPool.Data.CarPoolDbContext context)

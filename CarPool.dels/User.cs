@@ -25,24 +25,7 @@ namespace CarPool.Models
         [Required]
         public string PetName { get; set; }
 
-        [StringLength(maximumLength:16 ,MinimumLength =4,ErrorMessage ="Password Length should consists of minimum 4 characters")]
         public string Password { get; set; }
 
-        public User(int userId, string userName, string phoneNumber, string emailAddress, string address, string gender, string password,string petName)
-        {
-            this.UserId = userId;
-            this.UserName = userName;
-            this.PhoneNumber = phoneNumber;
-            this.EmailAddress = emailAddress;
-            this.Address = address;
-            this.Gender = gender;
-            this.Password = password;
-            this.PetName = petName;
-        }
-
-        public User()
-        {
-            
-        }
     }
 }

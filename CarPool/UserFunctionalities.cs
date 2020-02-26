@@ -20,7 +20,6 @@ namespace CarPool
 
             this.User = new User();
         }
-
         public void SignUp()
         {
             //Getting User details

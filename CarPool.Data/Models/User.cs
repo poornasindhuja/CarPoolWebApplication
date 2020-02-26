@@ -28,6 +28,7 @@ namespace CarPool.Data.Models
         [Required]
         public string PetName { get; set; }
 
+  
         public string Password { get; set; }
 
         public List<Car> Cars { get; set; }
